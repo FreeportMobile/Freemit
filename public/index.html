@@ -1,0 +1,43 @@
+<html>
+
+<head>
+    <title>Freemit</title>
+</head>
+
+<body>
+    <h1>Freemit</h1>
+
+
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        console.log('--- STARTED');
+        var socket = io.connect('http://localhost:9000');
+
+        socket.on('connected', function (data) {
+            console.log(data.msg);
+            socket.emit('adduser', { msg: "--- CONNECTED" });
+            socket.emit('addbank', { msg: "--- CONNECTED" });
+            socket.emit('addexchange', { msg: "--- CONNECTED" });            
+        });
+        
+        
+       socket.on('adduser', function (data) {
+            console.log(data.msg);
+        });
+        
+        socket.on('addbank', function (data) {
+            console.log(data.msg);
+        });
+        
+        socket.on('addexchange', function (data) {
+            console.log(data.msg);
+        });
+        
+     
+        
+    </script>
+</body>
+
+</html>

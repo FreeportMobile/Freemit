@@ -1,0 +1,10 @@
+node_modules
+typings
+logs
+data.json
+npm-debug.log
+rethinkdb_data
+.coveralls.yml
+coverage
+apidoc
+mocha.log
