@@ -12,7 +12,7 @@
   "dependencies": {
     "dotenv": "^2.0.0",
     "express": "^4.13.4",
-    "mongodb": "^2.1.16",
+    "mongoose": "^4.4.13",
     "socket.io": "^1.4.5"
   },
   "devDependencies": {
