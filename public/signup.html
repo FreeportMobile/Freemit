@@ -157,9 +157,12 @@
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
+
+//-- SET UP EVENT LISTENERS
 document.getElementById("get_code").addEventListener("click", getCode);
 document.getElementById("cancel_btn").addEventListener("click", cancelBtn);
 
+//-- GET AND CHECK THE CODE AND NUMBER
 function getCode() {
     var countryCode = document.getElementById("country_code").value;
     var phoneNumber = document.getElementById("phone_number").value;
@@ -185,12 +188,14 @@ function getCode() {
     }
 }
 
+//-- IF THE CHECKS PASS THEN SEND THE NUMBER
 function sendCode(countryCode, phoneNumber){
-    var socket = io('http://localhost');
-    socket.emit('mobilelogin', { countryCode:countryCode, phoneNumber:phoneNumber });
+        var socket = io.connect('http://localhost:9000');
+        socket.emit('mobilelogin', { countryCode:countryCode, phoneNumber:phoneNumber });
 }
 
-function cancel_btn() {
+//-- GO BACK TO HOME
+function cancelBtn() {
     window.location.href = './index.html';
 }
 </script>

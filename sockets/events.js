@@ -12,8 +12,8 @@ module.exports = function (io) {
         socket.emit('connected', { msg: "--- CONNECTED" })
 
 //-- SOCKET EVENTS
-        socket.on('adduser', function (msg) {
-            freemit.user.add(socket, io, msg);
+        socket.on('mobilelogin', function (msg) {
+            freemit.user.smsCode(socket, io, msg);
         });
         
         socket.on('addbank', function (msg) {
