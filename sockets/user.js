@@ -14,6 +14,7 @@ exports.smsCode = function (socket, io, msg) {
     
     mongo.setSMS(phoneNumber, verificationCode)
         .then(function(data) {
+
        //     data.    //TODO: get some data or error back from mongo
                        //TODO: if error make a log
        });

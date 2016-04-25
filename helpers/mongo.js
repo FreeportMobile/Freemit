@@ -1,16 +1,26 @@
 'use strict';
 
 //-- SETUP MONGO
-var mongoose = require('mongoose');
-//mongoose.connect('mongodb://localhost/my_database');
+var MongoClient = require('mongodb').MongoClient
+    , format = require('util').format;
+
+var mongoConnect = 'mongodb://127.0.0.1:27017/Freemit';
 
 //-- CS: PLease only use set or get naming in here
 
 //--- SET SMS 
 exports.setSMS = function (phoneNumber, verificationCode) {
  return new Promise(function(resolve, reject) {
-	
-	// SAVE TO MONGO
+     MongoClient.connect(mongoConnect, function (err, db) {
+         var jsonToAdd = {};
+         jsonToAdd.phoneNumber = phoneNumber;
+         jsonToAdd.verificationCode = verificationCode;
+
+         db.collection('PhoneAuth').insertOne(jsonToAdd);
+
+     });
+
+         // SAVE TO MONGO
     console.log(phoneNumber);
     console.log(verificationCode);
     
