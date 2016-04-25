@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>Freemit - Sign Up</title>
+    <title>Freemit - Verify</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1,user-scalable=no">
     
@@ -70,43 +70,28 @@
         padding-bottom:20px;
     }
     
-    #country_code_container{
+    #verification_code_container{
         flex: 3;
         padding-right: 10px; 
         padding-left: 15px; 
     }
     
-    #phone_number_container{
-        flex: 9;
-        padding-left: 10px; 
-        padding-right: 15px;  
-    }
-    
-    .country_code{
-        width: 100%;
-        border: 1px solid #a1a0a1;
-        height: 70px;
-        border-radius: 4px;
-        font-size: 24px;
-        padding-left: 15px;
-        outline: none;
-        color: #545454;
-        background-color: white;
-    }
-    
-    .phone_number{
-        width: 100%;
-        border: 1px solid #a1a0a1;
-        height: 70px;
-        border-radius: 4px;
-        font-size: 24px;
-        padding-left: 15px;
-        outline: none;
-        color: #545454;
-        background-color: white;
-    }
 
-    #get_code{
+    
+    .verification_code{
+        width: 100%;
+        border: 1px solid #a1a0a1;
+        height: 70px;
+        border-radius: 4px;
+        font-size: 24px;
+        padding-left: 15px;
+        outline: none;
+        color: #545454;
+        background-color: white;
+    }
+    
+
+    #verify{
         margin-top: 15px;
         width: 100%;
         height: 50px;
@@ -135,70 +120,58 @@
 <body>
 
     <div id="top_container">
-       Sign Up
+       Verify
     </div>
     <button type="button" id="cancel_btn">Cancel</button>
     
-    <div class="text"> Confirm your country code and enter your mobile number. </div>
+    <div class="text">A verification code has been sent to your phone. </div>
     
   <div id="number_container">
-      <div id="country_code_container">
-          <input type="tel" name="tel" id="country_code" class="country_code" placeholder="+01" value="+">
+      <div id="verification_code_container">
+          <input type="tel" name="tel" id="verification_code" class="verification_code">
       </div>
-      <div id="phone_number_container">
-          <input type="tel" name="tel" id="phone_number" class="phone_number"  placeholder="">
-      </div>
+
   </div>
 
     
 
-      <button type="button" id="get_code">Sign Up</button>
-   <div class="text"> Clicking “Sign Up” means you agree to our tems and privacy policy </div>
+      <button type="button" id="verify">Verify</button>
+   <div class="text"> Your SMS should arrive within 60 seconds </div>
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
 
 //-- SET UP EVENT LISTENERS
-document.getElementById("get_code").addEventListener("click", getCode);
-document.getElementById("cancel_btn").addEventListener("click", cancelBtn);
+document.getElementById("verify").addEventListener("click", verify);
 
 //-- GET AND CHECK THE CODE AND NUMBER
-function getCode() {
-    var countryCode = document.getElementById("country_code").value;
-    var phoneNumber = document.getElementById("phone_number").value;
+function verify() {
+    var verificationCode = document.getElementById("verificationCode").value;
+
     
-    if(countryCode.length <= 1){
-        var countryCodeCheck = false;
-        document.getElementById("country_code").classList.add("error");
+    if(verificationCode.length <= 3){
+        var verificationCodeCheck = false;
+        document.getElementById("verification_code").classList.add("error");
     } else {
-        countryCodeCheck = true;
-        document.getElementById("country_code").classList.remove("error");
+        verificationCodeCheck = true;
+        document.getElementById("verification_code").classList.remove("error");
+        sendCode(countryCode, phoneNumber); // We need to have the number from the previous page, vave it in lcal storage or cookie
     };
     
-    if(phoneNumber.length <= 6){
-        var phoneNumberCheck = false;
-        document.getElementById("phone_number").classList.add("error");
-    } else{
-        phoneNumberCheck = true;
-        document.getElementById("phone_number").classList.remove("error");
-    };
     
-    if(phoneNumberCheck == true && countryCodeCheck == true ){
-        sendCode(countryCode, phoneNumber);
-    }
 }
 
-//-- IF THE CHECKS PASS THEN SEND THE NUMBER
+//-- IF THE CHECK PASSES THEN SEND THE NUMBER
 function sendCode(countryCode, phoneNumber){
         var socket = io.connect('http://localhost:9000');
         socket.emit('mobilelogin', { countryCode:countryCode, phoneNumber:phoneNumber });
         window.location.href = './verify.html';
-        
 }
 
 //-- GO BACK TO HOME
 function cancelBtn() {
     window.location.href = './index.html';
+    // TODO: We need to know if the user came from login or verify
 }
 </script>
 

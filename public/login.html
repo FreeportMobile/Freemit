@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>Freemit - Sign Up</title>
+    <title>Freemit - Log In</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1,user-scalable=no">
     
@@ -135,7 +135,7 @@
 <body>
 
     <div id="top_container">
-       Sign Up
+       Log In
     </div>
     <button type="button" id="cancel_btn">Cancel</button>
     
@@ -152,7 +152,7 @@
 
     
 
-      <button type="button" id="get_code">Sign Up</button>
+      <button type="button" id="get_code">Log In</button>
    <div class="text"> Clicking “Sign Up” means you agree to our tems and privacy policy </div>
 
 <script src="/socket.io/socket.io.js"></script>
@@ -192,8 +192,6 @@ function getCode() {
 function sendCode(countryCode, phoneNumber){
         var socket = io.connect('http://localhost:9000');
         socket.emit('mobilelogin', { countryCode:countryCode, phoneNumber:phoneNumber });
-        window.location.href = './verify.html';
-        
 }
 
 //-- GO BACK TO HOME
