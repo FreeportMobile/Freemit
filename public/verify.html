@@ -124,7 +124,8 @@
     </div>
     <button type="button" id="cancel_btn">Cancel</button>
     
-    <div class="text">A verification code has been sent to your phone. </div>
+    <div class="text">A verification code has been sent to:</div> 
+    <div id="showNumber" class="text"></div>
     
   <div id="number_container">
       <div id="verification_code_container">
@@ -143,6 +144,11 @@
 
 //-- SET UP EVENT LISTENERS
 document.getElementById("verify").addEventListener("click", verify);
+document.getElementById("cancel_btn").addEventListener("click", cancelBtn);
+
+//-- GET HE PHONE NUMBER
+var phoneNumber = localStorage.getItem("phoneNumber");
+document.getElementById("showNumber").innerHTML = phoneNumber;
 
 //-- GET AND CHECK THE CODE AND NUMBER
 function verify() {
@@ -170,8 +176,9 @@ function sendCode(countryCode, phoneNumber){
 
 //-- GO BACK TO HOME
 function cancelBtn() {
-    window.location.href = './index.html';
-    // TODO: We need to know if the user came from login or verify
+    // FIND THE PREVIOUS LOCATION FROM LOCAL SOTRAGE
+    var prevloc = localStorage.getItem("prevloc");
+    window.location.href = prevloc;
 }
 </script>
 

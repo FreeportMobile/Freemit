@@ -14,7 +14,10 @@ exports.smsCode = function (socket, io, msg) {
     var message = "Your Freemit code is: " + verificationCode
     
     mongo.setSMS(phoneNumber, verificationCode)
-        .then(function(data) {
+       .then(function(data) {
             twillio.sendSMS(phoneNumber, message);
+       })
+       .then(function(data) {
+           io.to(socket.id).emit('mobilelogin', {msg: 200});
        });
 };
