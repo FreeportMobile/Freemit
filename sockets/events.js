@@ -12,8 +12,12 @@ module.exports = function (io) {
         socket.emit('connected', { msg: "--- CONNECTED" })
 
 //-- SOCKET EVENTS
-        socket.on('mobilelogin', function (msg) {
-            freemit.user.smsCode(socket, io, msg);
+        socket.on('sendVerificationCode', function (msg) {
+            freemit.user.sendVerificationCode(socket, io, msg);
+        });
+        
+        socket.on('checkVerificationCode', function (msg) {
+            freemit.user.checkVerificationCode(socket, io, msg);
         });
         
         socket.on('addbank', function (msg) {

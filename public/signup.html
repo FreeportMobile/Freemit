@@ -191,13 +191,13 @@ function getCode() {
 //-- IF THE CHECKS PASS THEN SEND THE NUMBER
 function sendCode(countryCode, phoneNumber){
         var socket = io.connect('http://localhost:9000');
-        socket.emit('mobilelogin', { countryCode:countryCode, phoneNumber:phoneNumber });
+        socket.emit('sendVerificationCode', { countryCode:countryCode, phoneNumber:phoneNumber });
         // SAVE PHONE NUMBER AND LOC TO LOCAL STORAGE
         localStorage.setItem('phoneNumber', phoneNumber);
         localStorage.setItem('countryCode', countryCode);
         localStorage.setItem('prevloc', '/signup.html');     
         // WAIT FOR SERVER TO CONFIRM SMS HAS BEEN SENT THEN REDIRECT
-        socket.on('mobilelogin', function (msg) {
+        socket.on('sendVerificationCode', function (msg) {
            window.location.href = './verify.html';
         });        
 }

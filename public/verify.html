@@ -11,7 +11,6 @@
         font-family: Arial, Helvetica, sans-serif;
         padding-top: 55px;
         background: #fff; /* Old browsers */
-
     }
     
     .text{
@@ -188,7 +187,7 @@ function verify() {
 //-- IF THE CHECK PASSES THEN SEND THE VERIFICTION CODE
 function sendCode(verificationCode, countryCode, phoneNumber){    
         var socket = io.connect('http://localhost:9000');
-        socket.emit('verify', {verificationCode:verificationCode, countryCode:countryCode, phoneNumber:phoneNumber });
+        socket.emit('checkVerificationCode', {verificationCode:verificationCode, countryCode:countryCode, phoneNumber:phoneNumber });
 }
 
 //-- GO BACK TO HOME

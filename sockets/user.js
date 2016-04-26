@@ -5,12 +5,11 @@ var twillio = require('../helpers/twillio.js');
 //-- MAKE MONGO
 var mongo = require('../helpers/mongo.js');
 
-//--- SMS CODE
-exports.smsCode = function (socket, io, msg) {
+//--- SEND VERIFICATION CODE
+exports.sendVerificationCode = function (socket, io, msg) {
     
     var phoneNumber = msg.countryCode + msg.phoneNumber
     var verificationCode = Math.floor(1000 + Math.random() * 9000)
-    console.log(verificationCode);
     var message = "Your Freemit code is: " + verificationCode
     
     mongo.setSMS(phoneNumber, verificationCode)
@@ -18,6 +17,13 @@ exports.smsCode = function (socket, io, msg) {
             twillio.sendSMS(phoneNumber, message);
        })
        .then(function(data) {
-           io.to(socket.id).emit('mobilelogin', {msg: 200});
+           io.to(socket.id).emit('sendVerificationCode', {msg: 200});
        });
+};
+
+//--- CHECK VERIFICATION CODE
+exports.checkVerificationCode = function (socket, io, msg) {
+
+console.log('BINGO');
+    
 };
