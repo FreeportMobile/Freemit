@@ -3,38 +3,84 @@
 //-- SETUP MONGO
 var mongoClient = require('mongodb').MongoClient;
 
-//--- SET SMS 
+//----------------------- SET SMS ----------------------------------//
+
 exports.setSMS = function (phoneNumber, verificationCode) {
     return new Promise(function(resolve, reject) {
 
         // OPEN CONNECTION     
+        mongoClient.connect(process.env.MONGO_DB, function (err, db) {
+            if (err) {
+                reject(err);
+                console.log('Unable to connect to the mongoDB server. Error:', err);
+            } else {
+                console.log('Mongo connection open');
+            }
+
+            // PREPARE DATA
+            var collection = db.collection('users');
+            var doc = {
+                phoneNumber: phoneNumber,
+                verificationCode: verificationCode
+            };
+         
+         
+        // UPDATE         
+        collection.update({phoneNumber:phoneNumber}, 
+        {$set:{verificationCode:verificationCode}}, { upsert: true }, function(err, result) {
+        
+            if(err){
+                reject(err);
+            }else{
+                resolve(result);
+            }
+            db.close();
+            console.log('Mongo connection closed');
+            
+        });
+
+
+        }); //-- END CONNECT      
+    }); //-- END PROMISE
+}; //-- END FUNCTION
+
+//-------------------------- GET VERIFICATION -----------------------//
+
+exports.getVerification = function (phoneNumber, verificationCode) {
+    return new Promise(function(resolve, reject) {
+        
+                // OPEN CONNECTION     
         mongoClient.connect(process.env.MONGO_DB, function (err, db) {
         if (err) {
             reject(err);
             console.log('Unable to connect to the mongoDB server. Error:', err);
         } else {
             console.log('Mongo connection open');
-            resolve(db);
         }
 
-        // PREPARE DATA
+        // SELECT THE COLLECTION
         var collection = db.collection('users');
-        var doc = {
-            phoneNumber: phoneNumber,
-            verificationCode: verificationCode
-        };
-         
-        // UPDATE         
-        collection.update({phoneNumber:phoneNumber}, {$set:{verificationCode:verificationCode}}, function(err, result) {});
+    
+   
+        // GET        
+        collection.findOne({phoneNumber:phoneNumber}, function(err, item) {
+            if(err){
+                reject(err);
+            }else{
+                if(phoneNumber == item.phoneNumber && verificationCode == item.verificationCode){
+                    resolve(200);
+                }else{
+                    reject(404);
+                };
+            
+            };
+            db.close();
+            console.log('Mongo connection closed');
+        });
        
-        // CLOSE DB
-        db.close();
-
-        }); //-- END CONNECT      
+       
+        }); //-- END CONNECT   
     }); //-- END PROMISE
 }; //-- END FUNCTION
 
-
-
-
-
+//-------------------------- END -----------------------//
