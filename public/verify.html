@@ -25,7 +25,21 @@
         padding-right: 30px;
         padding-bottom: 15px;
         padding-top: 15px;
-
+    }
+    
+    
+      #show_number{
+        font-size: 15px;
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+        color: #656565;
+        width: calc(100% - 60px);
+        text-align: center;
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-bottom: 0px;
+        padding-top: 0px;
     }
 
     #top_container{
@@ -65,7 +79,7 @@
         width: 100%;
         display: flex;
         align-items: center;
-        justify-content: center; 
+        justify-content: center;
         padding-top:20px;
         padding-bottom:20px;
     }
@@ -84,7 +98,7 @@
         height: 70px;
         border-radius: 4px;
         font-size: 24px;
-        padding-left: 15px;
+        text-align: center; 
         outline: none;
         color: #545454;
         background-color: white;
@@ -125,7 +139,7 @@
     <button type="button" id="cancel_btn">Cancel</button>
     
     <div class="text">A verification code has been sent to:</div> 
-    <div id="showNumber" class="text"></div>
+    <div id="show_number"></div>
     
   <div id="number_container">
       <div id="verification_code_container">
@@ -133,14 +147,20 @@
       </div>
 
   </div>
-
-    
-
       <button type="button" id="verify">Verify</button>
-   <div class="text"> Your SMS should arrive within 60 seconds </div>
+   <div class="text" id="count"></div>
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
+    
+//-- 60 SECOND COUNTDOWN
+var count = 60, timer = setInterval(function() {
+    document.getElementById("count").innerHTML = 'Your SMS should arrive within '+(count--)+' seconds' ;
+    if(count == 0){
+        clearInterval(timer);
+         document.getElementById("count").innerHTML = "";
+    } 
+}, 1000);
 
 //-- SET UP EVENT LISTENERS
 document.getElementById("verify").addEventListener("click", verify);
@@ -148,7 +168,8 @@ document.getElementById("cancel_btn").addEventListener("click", cancelBtn);
 
 //-- GET HE PHONE NUMBER
 var phoneNumber = localStorage.getItem("phoneNumber");
-document.getElementById("showNumber").innerHTML = phoneNumber;
+var countryCode = localStorage.getItem("countryCode");
+document.getElementById("show_number").innerHTML = countryCode +'-'+phoneNumber;
 
 //-- GET AND CHECK THE CODE AND NUMBER
 function verify() {
