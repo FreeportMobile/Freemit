@@ -166,33 +166,29 @@ var count = 60, timer = setInterval(function() {
 document.getElementById("verify").addEventListener("click", verify);
 document.getElementById("cancel_btn").addEventListener("click", cancelBtn);
 
-//-- GET HE PHONE NUMBER
+//-- GET & SET THE PHONE NUMBER
 var phoneNumber = localStorage.getItem("phoneNumber");
 var countryCode = localStorage.getItem("countryCode");
 document.getElementById("show_number").innerHTML = countryCode +'-'+phoneNumber;
 
-//-- GET AND CHECK THE CODE AND NUMBER
+//-- GET AND CHECK THE VERIFICATION CODE
 function verify() {
-    var verificationCode = document.getElementById("verificationCode").value;
+    var verificationCode = document.getElementById("verification_code").value;
 
-    
     if(verificationCode.length <= 3){
         var verificationCodeCheck = false;
         document.getElementById("verification_code").classList.add("error");
     } else {
         verificationCodeCheck = true;
         document.getElementById("verification_code").classList.remove("error");
-        sendCode(countryCode, phoneNumber); // We need to have the number from the previous page, vave it in lcal storage or cookie
-    };
-    
-    
+        sendCode(verificationCode, countryCode, phoneNumber); // We need to have the number from the previous page, vave it in lcal storage or cookie
+    };   
 }
 
-//-- IF THE CHECK PASSES THEN SEND THE NUMBER
-function sendCode(countryCode, phoneNumber){
+//-- IF THE CHECK PASSES THEN SEND THE VERIFICTION CODE
+function sendCode(verificationCode, countryCode, phoneNumber){    
         var socket = io.connect('http://localhost:9000');
-        socket.emit('mobilelogin', { countryCode:countryCode, phoneNumber:phoneNumber });
-        window.location.href = './verify.html';
+        socket.emit('verify', {verificationCode:verificationCode, countryCode:countryCode, phoneNumber:phoneNumber });
 }
 
 //-- GO BACK TO HOME
