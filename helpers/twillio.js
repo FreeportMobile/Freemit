@@ -1,28 +1,28 @@
 'use strict';
 
-//--- SMS CODE
+var accountSid = process.env.ACCOUNT_SID; 
+var authToken = process.env.AUTH_TOKEN; 
+var smsFrom =  process.env.SMS_FROM; 
+var client = require('twilio')(accountSid, authToken); 
+
+//--- SEND SMS
 exports.sendSMS = function (phoneNumber, message) {
-
  return new Promise(function(resolve, reject) {
-	
-	// SEND SMS VIA TWILLIO
-    console.log(phoneNumber);
-    console.log(message);
+     
+    client.messages.create({ 
+        to: phoneNumber, 
+        from: smsFrom, 
+        body: message,   
+    }, function(err, message) { 
+        if(err){
+            console.log(err);
+            reject(err);
+        } else {
+            console.log(message.sid);
+            resolve(message);
+        }  
+    });
     
-      someTwillioFunction({
-          
-          // TODO: link this up to twillio
-
-
-        }, function (error, data) {
-            if (error){
-                reject(error);
-            } else {
-                resolve(data);
-            }
-        });
-
-
 }); //-- END PROMISE
 }; //-- END FUNCTION
 

@@ -1,40 +1,40 @@
 'use strict';
 
 //-- SETUP MONGO
-var MongoClient = require('mongodb').MongoClient
-    , format = require('util').format;
-
-var mongoConnect = 'mongodb://127.0.0.1:27017/Freemit';
-
-//-- CS: PLease only use set or get naming in here
+var mongoClient = require('mongodb').MongoClient;
 
 //--- SET SMS 
 exports.setSMS = function (phoneNumber, verificationCode) {
  return new Promise(function(resolve, reject) {
-     MongoClient.connect(mongoConnect, function (err, db) {
-         var jsonToAdd = {};
-         jsonToAdd.phoneNumber = phoneNumber;
-         jsonToAdd.verificationCode = verificationCode;
 
-         db.collection('PhoneAuth').insertOne(jsonToAdd);
+// OPEN CONNECTION     
+      mongoClient.connect(process.env.MONGO_DB, function (err, db) {
+        if (err) {
+            reject(err);
+            console.log('Unable to connect to the mongoDB server. Error:', err);
+        } else {
+            console.log('Mongo connection open');
+            resolve(db);
+        }
 
-     });
+// PREPARE DATA
 
-         // SAVE TO MONGO
-    console.log(phoneNumber);
-    console.log(verificationCode);
-    
-      someMongoFunction({   
-          // TODO: link this up to mongo
-        }, function (error, data) {
-            if (error){
-                reject(error);
-            } else {
-                resolve(data);
-            }
-        });
-}); //-- END PROMISE
+    var collection = db.collection('users');
+    var doc = {
+        phoneNumber: phoneNumber,
+        verificationCode: verificationCode
+    };
+         
+// UPDATE         
+   collection.update({phoneNumber:phoneNumber}, {$set:{verificationCode:verificationCode}}, function(err, result) {});
+       
+// CLOSE DB
+    db.close();
+
+      }); //-- END CONNECT      
+ }); //-- END PROMISE
 }; //-- END FUNCTION
+
 
 
 
