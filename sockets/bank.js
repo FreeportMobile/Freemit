@@ -2,6 +2,8 @@
 
 //-- MAKE STRIPE AVAILABLE
 var twillio = require('../helpers/stripe.js');
+//-- MAKE CRYPTO AVAILABLE
+var twillio = require('../helpers/crypto.js');
 //-- MAKE MONGO
 var mongo = require('../helpers/mongo.js');
 
