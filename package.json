@@ -15,6 +15,7 @@
     "log4js": "^0.6.35",
     "mongodb": "^2.1.16",
     "socket.io": "^1.4.5",
+    "stripe": "^4.5.0",
     "util": "^0.10.3"
   },
   "devDependencies": {
