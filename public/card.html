@@ -15,11 +15,8 @@
         background: -webkit-linear-gradient(top,  #2e3a39 0%,#232f2e 100%); /* Chrome10-25,Safari5.1-6 */
         background: linear-gradient(to bottom,  #2e3a39 0%,#232f2e 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
         filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2e3a39', endColorstr='#232f2e',GradientType=0 ); /* IE6-9 */
-
     }
     
-
-
     #top_container{
         color: white;
         font-size: 22px;
@@ -97,18 +94,18 @@
        cursor: pointer;
    }
    
-      .wallet_buttons:nth-child(1) {
-    border-right: 1px solid #2d6f72;
-}
+    .wallet_buttons:nth-child(1) {
+        border-right: 1px solid #2d6f72;
+    }
 
    .wallet_buttons:nth-child(2) {
-    border-right: 1px solid #2d6f72;
-    border-left: 1px solid #65a6aa;
-}
+        border-right: 1px solid #2d6f72;
+        border-left: 1px solid #65a6aa;
+    }
 
    .wallet_buttons:nth-child(3) {
-    border-left: 1px solid #65a6aa;
-}
+        border-left: 1px solid #65a6aa;
+    }
    
    .wallet_val{
        flex: 1;
@@ -205,14 +202,13 @@
         filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c4d6e5', endColorstr='#f7fafd',GradientType=0 ); /* IE6-9 */
     }
     
-    
     .card_drop_down{
-         text-align: center;
-         padding-left: 10px;
-       letter-spacing: 1px;;
-       color: #6d6d6d;
-       font-size: 14px;
-       font-weight: bold;
+        text-align: center;
+        padding-left: 10px;
+        letter-spacing: 1px;;
+        color: #6d6d6d;
+        font-size: 14px;
+        font-weight: bold;
         width: 100%;
         outline: none;
         height: 38px;
@@ -229,7 +225,6 @@
      
     }
     
-   
    #card_number_label{
        width: 100%;
        font-size: 11px;
@@ -247,12 +242,11 @@
    }
    
    #card_expiration{
-       flex: 9;
-       
+       flex: 9; 
    }
+   
    #card_CVC{
-       flex: 3;
-       
+       flex: 3;    
    }
    
    #card_expiration_month{
@@ -265,6 +259,7 @@
        padding-right: 10px;
        max-width: 74px;
    }
+   
    #card_CVC_code{
        width: 61px;
    }
@@ -349,6 +344,9 @@
                     <option value="2018">2018</option>
                     <option value="2019">2019</option>
                     <option value="2020">2020</option>
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                    <option value="2023">2023</option>
                 </select>
         </div>  
         
@@ -378,7 +376,7 @@ document.getElementById("cancel_btn").addEventListener("click", sendStripeToken)
 //-- SEND STRIPE TOKEN
 
 function sendStripeToken(){
-    cardVal();
+   
     var card_number = document.getElementById("cardval").value;
     var card_cvc = document.getElementById("cardcvc").value;
     var card_month = document.getElementById("cardmonth").value;
@@ -388,6 +386,10 @@ function sendStripeToken(){
     var validate1 = Stripe.card.validateCardNumber(card_number);
     var validate2 = Stripe.card.validateExpiry(card_month, card_year)
     var validate3 = Stripe.card.validateCVC(card_cvc);
+    
+    if(validate1 == true){
+         cardVal();
+    };
     
     if(validate1 == true && validate2 == true && validate3 == true){
     
@@ -444,9 +446,7 @@ function cardVal(){
 
 //-- GO BACK TO HOME
 function cancelBtn() {
-    // FIND THE PREVIOUS LOCATION FROM LOCAL SOTRAGE
-    var prevloc = localStorage.getItem("prevloc");
-    window.location.href = prevloc;
+        // DO SOMTHING?? OR REMOVE BUTTON!!
 }// END FUNCTION
 
 </script>
