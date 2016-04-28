@@ -37,14 +37,14 @@ exports.checkVerificationCode = function (socket, io, msg) {
     var verificationCode = msg.verificationCode;
     var phoneNumber = msg.countryCode + msg.phoneNumber;
     var encPhoneNumber =crypto.encrypt(phoneNumber);
+    var jwt = crypto.makeJWT(encPhoneNumber);
+    console.log(jwt);
     
     mongo.getVerification(encPhoneNumber, verificationCode)
         .then(function(data) {
-            io.to(socket.id).emit('checkVerificationCode', {msg: 200});
-            console.log('yes');
+            io.to(socket.id).emit('checkVerificationCode', {result: true, jwt:jwt});
         }).catch(function(err) {
-             console.log('no');
-	        io.to(socket.id).emit('checkVerificationCode', {msg: 404});
+	        io.to(socket.id).emit('checkVerificationCode', {result: false});
         });
           
 };// END FUNCTION

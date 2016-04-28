@@ -125,6 +125,25 @@
     .error{
         border: 1px solid #ed1c24;
     }
+    
+    #wallet_navigation{
+        display: flex;
+        width: 100%;
+        height: 200px;
+        position: fixed;
+        left: 0px;
+        top:50px;
+        background: #3c9095; /* Old browsers */
+        background: -webkit-linear-gradient(#3c9095 0%, #38898f 100%);
+        background: -o-linear-gradient(#3c9095 0%, #38898f 100%);
+        background: linear-gradient(#3c9095 0%, #38898f 100%); /* FF3.6-15 */ /* Chrome10-25,Safari5.1-6 */ /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3c9095', endColorstr='#38898f',GradientType=0 ); /* IE6-9 */     
+   }
+   
+   .wallet_buttons{
+       flex: 1;
+   }
+    
 </style>
 
 
@@ -133,12 +152,18 @@
 <body>
 
     <div id="top_container">
-       Verify
+       Card
     </div>
     <button type="button" id="cancel_btn">Cancel</button>
     
-    <div class="text">A verification code has been sent to:</div> 
-    <div id="show_number"></div>
+    <div id="wallet_navigation">
+        <div class="wallet_buttons" id="pay_btn">1</div>
+        <div class="wallet_buttons" id="balance_btn">2</div>
+        <div class="wallet_buttons" id="card_button">3</div>
+    </div>
+    
+    <div class="text">Add a new card:</div> 
+ 
     
   <div id="number_container">
       <div id="verification_code_container">
@@ -150,16 +175,21 @@
    <div class="text" id="count"></div>
 
 <script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 <script>
     
-//-- 60 SECOND COUNTDOWN
-var count = 60, timer = setInterval(function() {
-    document.getElementById("count").innerHTML = 'Your SMS should arrive within '+(count--)+' seconds' ;
-    if(count == 0){
-        clearInterval(timer);
-         document.getElementById("count").innerHTML = "";
-    } 
-}, 1000);
+//-- SETUP STRIPE
+function chargeCard(number, cvc, exp_month, exp_year){
+    Stripe.setPublishableKey('pk_test_93vwZDGqYOIfVlOslF2oHiF5');
+    Stripe.card.createToken({
+        number: $('.card-number').val(),
+        cvc: $('.card-cvc').val(),
+        exp_month: $('.card-expiry-month').val(),
+        exp_year: $('.card-expiry-year').val()
+    }, stripeResponseHandler);
+}
+
+
 
 //-- SET UP EVENT LISTENERS
 document.getElementById("verify").addEventListener("click", verify);
@@ -168,42 +198,11 @@ document.getElementById("cancel_btn").addEventListener("click", cancelBtn);
 //-- GET & SET THE PHONE NUMBER
 var phoneNumber = localStorage.getItem("phoneNumber");
 var countryCode = localStorage.getItem("countryCode");
-document.getElementById("show_number").innerHTML = countryCode +'-'+phoneNumber;
 
-//-- GET AND CHECK THE VERIFICATION CODE
-function verify() {
-    var verificationCode = document.getElementById("verification_code").value;
 
-    if(verificationCode.length <= 3){
-        var verificationCodeCheck = false;
-        document.getElementById("verification_code").classList.add("error");
-    } else {
-        verificationCodeCheck = true;
-        document.getElementById("verification_code").classList.remove("error");
-        sendCode(verificationCode, countryCode, phoneNumber); // We need to have the number from the previous page, vave it in lcal storage or cookie
-    };   
-}
 
-//-- IF THE CHECK PASSES THEN SEND THE VERIFICTION CODE
-function sendCode(verificationCode, countryCode, phoneNumber){   
-    console.log('send'); 
-        var socket = io.connect('http://localhost:9000');
-        socket.emit('checkVerificationCode', {verificationCode:verificationCode, countryCode:countryCode, phoneNumber:phoneNumber });
-        
-        socket.on('checkVerificationCode', function (msg) {
-         
-            if(msg.result == true){
-                localStorage.clear();
-                localStorage.setItem('jwt', msg.jwt);
-                window.location.href = './card.html';
 
-                // TODO: If the user has logged in before take them to home.html not card.html
-                // what if the user requests 2 tokens, the first arives and fails, user then requests 3rd and enters second!!!
-            } else {
-                // TODO: Handle this error! Tel them the verification code was wrong
-            }         
-        });    
-}
+
 
 
 //-- GO BACK TO HOME
