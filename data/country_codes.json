@@ -1,0 +1,63 @@
+{ 
+    "_id" : ObjectId("57217d98b03df4376abfcae2"), 
+    "country_name" : "Australia", 
+    "currency_symbol" : "$", 
+    "currency_abbreviation" : "AUD", 
+    "dialing_code" : "+61"
+}
+{ 
+    "_id" : ObjectId("57217e70454a37606a303aca"), 
+    "country_name" : "Canada", 
+    "currency_symbol" : "$", 
+    "currency_abbreviation" : "USD", 
+    "dialing_code" : "+1"
+}
+{ 
+    "_id" : ObjectId("57217ee12849ae9b6a010f44"), 
+    "country_name" : "Denmark", 
+    "currency_symbol" : "kr.", 
+    "currency_abbreviation" : "DKK", 
+    "dialing_code" : "+45"
+}
+{ 
+    "_id" : ObjectId("57217f7c1bd25ebf6a31bd0c"), 
+    "country_name" : "Finland", 
+    "currency_symbol" : "€", 
+    "currency_abbreviation" : "EUR", 
+    "dialing_code" : "+358"
+}
+{ 
+    "_id" : ObjectId("57217fd0ecc414d46ac732be"), 
+    "country_name" : "Ireland", 
+    "currency_symbol" : "€", 
+    "currency_abbreviation" : "EUR", 
+    "dialing_code" : "+353"
+}
+{ 
+    "_id" : ObjectId("572180698e1829076b61bbb4"), 
+    "country_name" : "Norway", 
+    "currency_symbol" : "kr.", 
+    "currency_abbreviation" : "NOK", 
+    "dialing_code" : "+47"
+}
+{ 
+    "_id" : ObjectId("572180c4fafce31a6b1d6c14"), 
+    "country_name" : "Sweden", 
+    "currency_symbol" : "kr.", 
+    "currency_abbreviation" : "SEK", 
+    "dialing_code" : "+46"
+}
+{ 
+    "_id" : ObjectId("572181356e83b43e6b923991"), 
+    "country_name" : "United Kingdom", 
+    "currency_symbol" : "£", 
+    "currency_abbreviation" : "GBP", 
+    "dialing_code" : "+44"
+}
+{ 
+    "_id" : ObjectId("57218163432902626b2727e1"), 
+    "country_name" : "United States", 
+    "currency_symbol" : "$", 
+    "currency_abbreviation" : "USD", 
+    "dialing_code" : "+1"
+}
