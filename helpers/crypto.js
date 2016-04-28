@@ -1,6 +1,6 @@
 'use strict';
 
-var CryptoJS = require("crypto-js");
+var aes = require('aes-cross');
 var uuid = require('uuid-js');
 
 //----------------------------- MAKE UUID
@@ -10,13 +10,16 @@ exports.makeID = function () {
 
 //----------------------------- ENCRYPT
 exports.encrypt = function (text) {
-    return CryptoJS.AES.encrypt(text, process.env.AUTH_SECRET);
+    var key = process.env.AUTH_SECRET;
+    var enc = aes.encText(text,key);
+    return enc
 };
 
 //----------------------------- DECRYPT
 exports.decrypt = function (text) {
-    var bytes  = CryptoJS.AES.decrypt(text.toString(), process.env.AUTH_SECRET);
-    return bytes.toString(CryptoJS.enc.Utf8);
+    var key = process.env.AUTH_SECRET;
+    var dec = aes.decText(text,key);
+    return dec
 };
 
 

@@ -47,7 +47,7 @@ exports.setCountryCode = function (country_name, currency_symbol, currency_abbre
 
 //----------------------- SET SMS ----------------------------------//
 
-exports.setSMS = function (phoneNumber, verificationCode) {
+exports.setSMS = function (encPhoneNumber, verificationCode) {
     return new Promise(function(resolve, reject) {
 
         // OPEN CONNECTION     
@@ -60,13 +60,13 @@ exports.setSMS = function (phoneNumber, verificationCode) {
             // PREPARE DATA
             var collection = db.collection('users');
             var doc = {
-                phoneNumber: phoneNumber,
+                phoneNumber: encPhoneNumber,
                 verificationCode: verificationCode
             };
          
          
         // UPDATE         
-        collection.update({phoneNumber:phoneNumber}, 
+        collection.update({phoneNumber:encPhoneNumber}, 
         {$set:{verificationCode:verificationCode}}, { upsert: true }, function(err, result) {
         
             if(err){
