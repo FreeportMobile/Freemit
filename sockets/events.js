@@ -20,8 +20,8 @@ module.exports = function (io) {
             freemit.user.checkVerificationCode(socket, io, msg);
         });
         
-        socket.on('addbank', function (msg) {
-            freemit.bank.add(socket, io, msg);
+        socket.on('saveCard', function (msg) {
+            freemit.bank.saveCard(socket, io, msg);
         });
         
         socket.on('addexchange', function (msg) {

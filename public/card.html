@@ -172,10 +172,11 @@
    #card_icon{
         width: 53px;
         background-image: url("../img/credit_cards.png");
-        background-size: 106px 67px;
+        background-size: 402px 42px;
         background-repeat: no-repeat;
         background-repeat: no-repeat;
-        background-position-y: -40px;
+        background-position: 0px -40px;
+      
    }
    
    #card_number_container{
@@ -254,22 +255,18 @@
        
    }
    
-   #card_expiration_day{
-       flex:2;
-       padding-right: 10px;
-   }
-   
-      #card_expiration_month{
+   #card_expiration_month{
        flex:4;
        padding-right: 10px;
    }
    
-         #card_expiration_year{
+   #card_expiration_year{
        flex:4;
        padding-right: 10px;
+       max-width: 74px;
    }
    #card_CVC_code{
-       width: 85px;
+       width: 61px;
    }
     
 </style>
@@ -301,11 +298,9 @@
         <div id="card">
             <div id="details_container">
                  <div id="card_title">
-                Payment details
+                Card details
             </div>
-            <div id="card_icon">
-             
-            </div>
+            <div id="card_icon" style="background-position-y: -40px, background-position-z: 0px;"></div>
             </div>
             
         <div id="card_number_label">
@@ -313,54 +308,52 @@
         </div>    
             
         <div id="card_number_container">
-           <input type="tel" name="tel" class="long_number">
+           <input type="tel" name="tel" class="long_number" id="cardval">
         </div>
         
         <div id="card_number_label">
             <div id="card_expiration">
            EXPIRATION
         </div>  
-         <div id="card_CVC">
+         <div id="cardCVC">
            CVC CODE
         </div>  
         </div>  
         
         <div id="extra_labels"> 
-       
-        <div id="card_expiration_day">
-           <input type="tel" name="tel" class="long_number">
-        </div>  
-        
+              
                 <div id="card_expiration_month">
             
-                  <select class="card_drop_down">
-                    <option value="16">JAN</option>
-                    <option value="17">FEB</option>
-                    <option value="18">MAR</option>
-                    <option value="19">APR</option>
-                    <option value="20">MAY</option>
-                    <option value="16">JUN</option>
-                    <option value="17">JUL</option>
-                    <option value="18">AUG</option>
-                    <option value="19">SEP</option>
-                    <option value="20">OCT</option>
-                    <option value="19">NOV</option>
-                    <option value="20">DEC</option>
+                  <select class="card_drop_down" id="cardmonth">
+                    <option value=""></option>
+                    <option value="01">01-JAN</option>
+                    <option value="02">02-FEB</option>
+                    <option value="03">03-MAR</option>
+                    <option value="04">04-APR</option>
+                    <option value="05">05-MAY</option>
+                    <option value="06">06-JUN</option>
+                    <option value="07">07-JUL</option>
+                    <option value="08">08-AUG</option>
+                    <option value="09">09-SEP</option>
+                    <option value="10">10-OCT</option>
+                    <option value="11">11-NOV</option>
+                    <option value="12">12-DEC</option>
                 </select>
         </div>  
         
                 <div id="card_expiration_year">
-                   <select class="card_drop_down">
-                    <option value="16">2016</option>
-                    <option value="17">2017</option>
-                    <option value="18">2018</option>
-                    <option value="19">2019</option>
-                    <option value="20">2020</option>
+                   <select class="card_drop_down" id="cardyear">
+                    <option value=""></option>
+                    <option value="2016">2016</option>
+                    <option value="2017">2017</option>
+                    <option value="2018">2018</option>
+                    <option value="2019">2019</option>
+                    <option value="2020">2020</option>
                 </select>
         </div>  
         
            <div id="card_CVC_code">
-           <input type="tel" name="tel" class="long_number">
+           <input type="tel" name="tel" class="long_number" id="cardcvc">
         </div>  
        
         </div>
@@ -375,34 +368,88 @@
 
 <script>
     
-//-- SETUP STRIPE
-function chargeCard(number, cvc, exp_month, exp_year){
-    Stripe.setPublishableKey('pk_test_93vwZDGqYOIfVlOslF2oHiF5');
-    Stripe.card.createToken({
-        number: $('.card-number').val(),
-        cvc: $('.card-cvc').val(),
-        exp_month: $('.card-expiry-month').val(),
-        exp_year: $('.card-expiry-year').val()
-    }, stripeResponseHandler);
-}
-
 //-- SET UP EVENT LISTENERS
-document.getElementById("verify").addEventListener("click", verify);
-document.getElementById("cancel_btn").addEventListener("click", cancelBtn);
+document.getElementById("cardval").addEventListener("keydown", sendStripeToken);
+document.getElementById("cardmonth").addEventListener("change", sendStripeToken);
+document.getElementById("cardyear").addEventListener("change", sendStripeToken);
+document.getElementById("cardcvc").addEventListener("keydown", sendStripeToken);
+document.getElementById("cancel_btn").addEventListener("click", sendStripeToken);
 
-//-- GET & SET THE PHONE NUMBER
-var phoneNumber = localStorage.getItem("phoneNumber");
-var countryCode = localStorage.getItem("countryCode");
+//-- SEND STRIPE TOKEN
+
+function sendStripeToken(){
+    cardVal();
+    var card_number = document.getElementById("cardval").value;
+    var card_cvc = document.getElementById("cardcvc").value;
+    var card_month = document.getElementById("cardmonth").value;
+    var card_year = document.getElementById("cardyear").value;
+    var card_expiry = card_month +' '+card_year;
+    
+    var validate1 = Stripe.card.validateCardNumber(card_number);
+    var validate2 = Stripe.card.validateExpiry(card_month, card_year)
+    var validate3 = Stripe.card.validateCVC(card_cvc);
+    
+    if(validate1 == true && validate2 == true && validate3 == true){
+    
+    Stripe.setPublishableKey('pk_test_93vwZDGqYOIfVlOslF2oHiF5');  
+      
+    var stripe_token = Stripe.card.createToken({
+        number: card_number,
+        cvc: card_cvc,
+        exp: card_expiry 
+    });
+    
+        var jwt = localStorage.getItem("jwt");
+        var socket = io.connect('http://localhost:9000');
+        
+        socket.emit('saveCard', { stripeToken:stripe_token, jwt:});
+  
+        socket.on('saveCard', function (msg) {
+            window.location.href = './balance.html';
+        });    
+    
+    // TODO: Show saving spinner! 
+    }  
+}// END FUNCTION
+
+function cardVal(){
+     var cardVal = document.getElementById("cardval").value;
+     var cardType = Stripe.card.cardType(cardVal);
+
+                    
+     switch(cardType) {
+        case 'Visa':
+            document.getElementById("card_icon").style.backgroundPosition = "-4px -6px";
+            break;
+        case 'MasterCard':
+            document.getElementById("card_icon").style.backgroundPosition = "-70px -6px";
+            break;
+        case 'American Express':
+            document.getElementById("card_icon").style.backgroundPosition = "-141px -6px";
+            break;
+        case 'Discover':
+            document.getElementById("card_icon").style.backgroundPosition = "-204px -6px";
+            break;
+        case 'Diners Club':
+            document.getElementById("card_icon").style.backgroundPosition = "-271px -6px";
+            break;
+        case 'JCB':
+            document.getElementById("card_icon").style.backgroundPosition = "-333px -6px";
+            break;
+       default: 
+            document.getElementById("card_icon").style.backgroundPosition = "-999px -999px";
+    } // END SWITCH
+} // END FUNCTION
+
 
 //-- GO BACK TO HOME
 function cancelBtn() {
     // FIND THE PREVIOUS LOCATION FROM LOCAL SOTRAGE
     var prevloc = localStorage.getItem("prevloc");
     window.location.href = prevloc;
-}
+}// END FUNCTION
+
 </script>
 
-
 </body>
-
 </html>
