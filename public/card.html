@@ -365,6 +365,7 @@
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 
 <script>
+    var socket = io.connect('http://localhost:9000');
     
 //-- SET UP EVENT LISTENERS
 document.getElementById("cardval").addEventListener("keydown", sendStripeToken);
@@ -401,10 +402,19 @@ function sendStripeToken(){
         exp: card_expiry 
     });
     
+    console.log('sending');
+    
         var jwt = localStorage.getItem("jwt");
-        var socket = io.connect('http://localhost:9000');
         
-        socket.emit('saveCard', { stripeToken:stripe_token, jwt:});
+        socket.emit('saveCard', { 
+            jwt:jwt,
+            stripeToken:stripe_token, 
+            card_number:card_number,
+            card_cvc:card_cvc,
+            card_month:card_month,
+            card_year:card_year,
+            card_expiry:card_expiry,
+        });
   
         socket.on('saveCard', function (msg) {
             window.location.href = './balance.html';

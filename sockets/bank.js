@@ -1,11 +1,24 @@
 'use strict';
 
 //-- MAKE STRIPE AVAILABLE
-var twillio = require('../helpers/stripe.js');
+var stripe = require('../helpers/stripe.js');
 //-- MAKE CRYPTO AVAILABLE
-var twillio = require('../helpers/crypto.js');
+var crypto = require('../helpers/crypto.js');
 //-- MAKE MONGO
 var mongo = require('../helpers/mongo.js');
+
+
+
+//--- ADD CARD
+exports.saveCard = function (socket, io, msg) {
+    var stripeToken = msg.stripeToken;
+    var description = 'TEST FIRST STRIPE ACCOUNT';
+    var metaData = {jwt:msg.jwt};
+    stripe.createCustomer(stripeToken, description, metaData)
+          
+};// END FUNCTION
+
+
 
 
 
@@ -26,11 +39,6 @@ exports.withdraw = function (socket, io, msg) {
 
 
 
-//--- WITHDRAW
-exports.addCard = function (socket, io, msg) {
-    
-    // USER CAN ADD A BANK CARD FOR FUTURE USE
-          
-};// END FUNCTION
+
 
 
