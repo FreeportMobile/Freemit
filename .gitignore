@@ -8,3 +8,4 @@ rethinkdb_data
 coverage
 apidoc
 mocha.log
+.idea

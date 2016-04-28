@@ -3,7 +3,7 @@
 var CryptoJS = require("crypto-js");
 var uuid = require('uuid-js');
 
-//----------------------------- MAKE ID
+//----------------------------- MAKE UUID
 exports.makeID = function () {
     return uuid.create().toString();
 };

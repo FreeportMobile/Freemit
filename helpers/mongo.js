@@ -13,9 +13,7 @@ exports.setSMS = function (phoneNumber, verificationCode) {
             if (err) {
                 reject(err);
                 console.log('Unable to connect to the mongoDB server. Error:', err);
-            } else {
-                console.log('Mongo connection open');
-            }
+            } 
 
             // PREPARE DATA
             var collection = db.collection('users');
@@ -35,7 +33,6 @@ exports.setSMS = function (phoneNumber, verificationCode) {
                 resolve(result);
             }
             db.close();
-            console.log('Mongo connection closed');
             
         });
 
@@ -54,9 +51,7 @@ exports.getVerification = function (phoneNumber, verificationCode) {
         if (err) {
             reject(err);
             console.log('Unable to connect to the mongoDB server. Error:', err);
-        } else {
-            console.log('Mongo connection open');
-        }
+        } 
 
         // SELECT THE COLLECTION
         var collection = db.collection('users');
@@ -75,7 +70,6 @@ exports.getVerification = function (phoneNumber, verificationCode) {
             
             };
             db.close();
-            console.log('Mongo connection closed');
         });
        
        
