@@ -70,6 +70,28 @@
         padding-bottom:20px;
     }
     
+    #country_select_container{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        text-align: center; 
+    }
+    
+    #country_select{
+        flex: 1;
+        width: 100%;
+        height: 60px;
+        border: 1px solid #a1a0a1;
+        outline: none;
+        font-size: 24px;
+        padding-left: 10px;
+        color: #545454;
+        background-color: white;
+        margin-left: 15px; 
+        margin-right: 15px; 
+    }
+    
     #country_code_container{
         flex: 3;
         padding-right: 10px; 
@@ -139,14 +161,30 @@
     </div>
     <button type="button" id="cancel_btn">Cancel</button>
     
-    <div class="text"> Confirm your country code and enter your mobile number. </div>
+    <div class="text"> Select your country and enter your mobile number. </div>
+    
+  <div id="country_select_container">  
+        <select id="country_select">
+            <option value="+1">&nbsp United States</option>
+            <option value="+61">&nbsp  Australia</option>
+            <option value="+1">&nbsp  Canada</option>
+            <option value="+45">&nbsp  Denamrk</option>
+            <option value="+358">&nbsp Finland</option>
+            <option value="+353">&nbsp Ireland</option>
+            <option value="+47">&nbsp Norway</option>
+            <option value="+46">&nbsp Sweden</option>
+            <option value="+44">&nbsp United Kingdom</option>
+        </select>
+  </div>
+
     
   <div id="number_container">
+            
       <div id="country_code_container">
-          <input type="tel" name="tel" id="country_code" class="country_code" placeholder="+01" value="+">
+          <input type="tel" name="tel" id="country_code" class="country_code" value="+1" readonly>
       </div>
       <div id="phone_number_container">
-          <input type="tel" name="tel" id="phone_number" class="phone_number"  placeholder="">
+          <input type="tel" name="tel" id="phone_number" class="phone_number">
       </div>
   </div>
 
@@ -161,6 +199,8 @@
 //-- SET UP EVENT LISTENERS
 document.getElementById("get_code").addEventListener("click", getCode);
 document.getElementById("cancel_btn").addEventListener("click", cancelBtn);
+document.getElementById("country_select").addEventListener("change", countrySelect);
+
 
 //-- GET AND CHECK THE CODE AND NUMBER
 function getCode() {
@@ -200,6 +240,13 @@ function sendCode(countryCode, phoneNumber){
         socket.on('sendVerificationCode', function (msg) {
            window.location.href = './verify.html';
         });        
+}
+
+//-- CHANGE THE COUNTRY CODE
+function countrySelect(){
+    var countrySelect = document.getElementById("country_select");
+    var CountryCode = countrySelect.options[countrySelect.selectedIndex].value;
+    document.getElementById("country_code").value = CountryCode;
 }
 
 //-- GO BACK TO HOME
