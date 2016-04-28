@@ -365,48 +365,54 @@
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 
 <script>
+//-- PREPARE TO CONNECT THE SOCKET
     var socket = io.connect('http://localhost:9000');
     
 //-- SET UP EVENT LISTENERS
-document.getElementById("cardval").addEventListener("keydown", sendStripeToken);
-document.getElementById("cardmonth").addEventListener("change", sendStripeToken);
-document.getElementById("cardyear").addEventListener("change", sendStripeToken);
-document.getElementById("cardcvc").addEventListener("keydown", sendStripeToken);
-document.getElementById("cancel_btn").addEventListener("click", sendStripeToken);
+    document.getElementById("cardval").addEventListener("keydown", sendStripeToken);
+    document.getElementById("cardmonth").addEventListener("change", sendStripeToken);
+    document.getElementById("cardyear").addEventListener("change", sendStripeToken);
+    document.getElementById("cardcvc").addEventListener("keydown", sendStripeToken);
+    document.getElementById("cancel_btn").addEventListener("click", sendStripeToken);
 
-//-- SEND STRIPE TOKEN
-
+//-- PREPARE AND SEND STRIPE TOKEN AND CARD DETAILS
 function sendStripeToken(){
    
+    //-- COLLECT THE INFORMATION WE NEED
     var card_number = document.getElementById("cardval").value;
     var card_cvc = document.getElementById("cardcvc").value;
     var card_month = document.getElementById("cardmonth").value;
     var card_year = document.getElementById("cardyear").value;
     var card_expiry = card_month +' '+card_year;
     
+    //-- VALIDATE THE DATA WE COLLECTED
     var validate1 = Stripe.card.validateCardNumber(card_number);
     var validate2 = Stripe.card.validateExpiry(card_month, card_year)
     var validate3 = Stripe.card.validateCVC(card_cvc);
     
+    //-- IF THE CARD NUMBR IS GOOD CHANGE THE ICON
     if(validate1 == true){
          cardVal();
     };
     
+    //-- IF ALL VALIDATIONS PASS 
     if(validate1 == true && validate2 == true && validate3 == true){
     
+    //-- STRIPES PUBLIC KEY
     Stripe.setPublishableKey('pk_test_93vwZDGqYOIfVlOslF2oHiF5');  
       
+    //-- MAKE THE STRIPE TOKEN
     var stripe_token = Stripe.card.createToken({
         number: card_number,
         cvc: card_cvc,
         exp: card_expiry 
     });
     
-    console.log('sending');
-    
-        var jwt = localStorage.getItem("jwt");
+    //-- GET THE JWT
+    var jwt = localStorage.getItem("jwt");
         
-        socket.emit('saveCard', { 
+    //-- FIRE THE SOCKET
+    socket.emit('saveCard', { 
             jwt:jwt,
             stripeToken:stripe_token, 
             card_number:card_number,
@@ -414,8 +420,9 @@ function sendStripeToken(){
             card_month:card_month,
             card_year:card_year,
             card_expiry:card_expiry,
-        });
+    });
   
+    //-- WAIT FOR REPLY AND REDIRECT
         socket.on('saveCard', function (msg) {
             window.location.href = './balance.html';
         });    
@@ -424,11 +431,14 @@ function sendStripeToken(){
     }  
 }// END FUNCTION
 
+
+//--FIGURE OUT WHICH TYPE OF CARD WAS ENTERED
 function cardVal(){
+    
      var cardVal = document.getElementById("cardval").value;
      var cardType = Stripe.card.cardType(cardVal);
 
-                    
+     //-- MOVE THE SPRITE DEPENDING ON THE CARD TYPE                
      switch(cardType) {
         case 'Visa':
             document.getElementById("card_icon").style.backgroundPosition = "-4px -6px";
