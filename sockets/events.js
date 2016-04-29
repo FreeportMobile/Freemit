@@ -24,8 +24,8 @@ module.exports = function (io) {
             freemit.user.saveCard(socket, io, msg);
         });
         
-        socket.on('addexchange', function (msg) {
-            freemit.exchange.add(socket, io, msg);
+        socket.on('getBalance', function (msg) {
+            freemit.user.getBalance(socket, io, msg);
         });
         
 //-- DISCONNECT

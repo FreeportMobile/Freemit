@@ -9,11 +9,31 @@ var mongo = require('../helpers/mongo.js');
 
 
 //----------------------------------------- ADD CARD
+exports.getBalance = function (socket, io, msg) {
+    
+    // GET ENCRYPTED POHONE NUMBER FROM JWT
+    var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
+    // GET BALANCE FROM MONGO
+    mongo.getBalance(encPhoneNumber)
+        .then(function(data) {
+            if(!data.balance){
+                io.to(socket.id).emit('getBalance', {balance:0, currencySymbol:data.currency_symbol});
+            }else{
+                io.to(socket.id).emit('getBalance', {balance: data.balance, currencySymbol:data.currency_symbol});
+            }
+            
+        })
+        .catch(function(err) {
+           console.log(err) //TODO: Do somthing more meaningfull!
+        });
+
+};// END FUNCTION
+
+//----------------------------------------- ADD CARD
 exports.saveCard = function (socket, io, msg) {
     
     // GET ENCRYPTED POHONE NUMBER FROM JWT
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
-    console.log(encPhoneNumber);
     // GET LAST 4 DIGITS OF CARD
     var cardNumber = msg.card_number;
     var lastFour = cardNumber.substr(cardNumber.length - 4);
@@ -23,13 +43,14 @@ exports.saveCard = function (socket, io, msg) {
     var encCardMonth = crypto.encrypt(msg.card_month);
     var encCardYear = crypto.encrypt(msg.card_year);
     var encCardType = crypto.encrypt(msg.card_type);
+    
     // SAVE TO MONGO
     mongo.setCard(encPhoneNumber, encCardNumber, encCardCVC, encCardMonth, encCardYear, lastFour, encCardType)
         .then(function(data) {
           io.to(socket.id).emit('saveCard', {msg: 200});
         })
         .catch(function(err) {
-           console.log(err)
+           console.log(err) //TODO: Do somthing more meaningfull!
         });
               
 };// END FUNCTION
