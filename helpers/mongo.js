@@ -45,9 +45,11 @@ exports.setCountryCode = function (country_name, currency_symbol, currency_abbre
     }); //-- END PROMISE
 }; //-- END FUNCTION
 
-//----------------------- SET SMS ----------------------------------//
 
-exports.setSMS = function (encPhoneNumber, verificationCode) {
+
+//----------------------- SET CARD ----------------------------------//
+
+exports.setCard = function (encPhoneNumber, encCardNumber, encCardCVC, encCardMonth, encCardYear, lastFour, encCardType) {
     return new Promise(function(resolve, reject) {
 
         // OPEN CONNECTION     
@@ -60,14 +62,19 @@ exports.setSMS = function (encPhoneNumber, verificationCode) {
             // PREPARE DATA
             var collection = db.collection('users');
             var doc = {
-                phoneNumber: encPhoneNumber,
-                verificationCode: verificationCode
+                card_type: encCardType,
+                phone_number: encPhoneNumber,
+                card_number: encCardNumber,
+                card_CVC: encCardCVC,
+                card_month: encCardMonth,
+                card_year: encCardYear,
+                last_four: lastFour,
             };
          
          
         // UPDATE         
-        collection.update({phoneNumber:encPhoneNumber}, 
-        {$set:{verificationCode:verificationCode}}, { upsert: true }, function(err, result) {
+        collection.update({phone_number:encPhoneNumber}, 
+        {$set:doc}, { upsert: true }, function(err, result) {
         
             if(err){
                 reject(err);
@@ -82,6 +89,80 @@ exports.setSMS = function (encPhoneNumber, verificationCode) {
         }); //-- END CONNECT      
     }); //-- END PROMISE
 }; //-- END FUNCTION
+
+
+//----------------------- SET SMS ----------------------------------//
+
+exports.setSMS = function (encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country) {
+    return new Promise(function(resolve, reject) {
+
+        // OPEN CONNECTION     
+        mongoClient.connect(process.env.MONGO_DB, function (err, db) {
+            if (err) {
+                reject(err);
+                console.log('Unable to connect to the mongoDB server. Error:', err);
+            } 
+
+            // PREPARE DATA
+            var collection = db.collection('users');
+            var doc = {
+                country: country,
+                currency_abbreviation: currencyAbbreviation,
+                currency_symbol: currencySymbol,
+                verification_code: verificationCode,
+            };
+         
+         
+        // UPDATE         
+        collection.update({phone_number:encPhoneNumber}, 
+        {$set:doc}, { upsert: true }, function(err, result) {
+        
+            if(err){
+                reject(err);
+            }else{
+                resolve(result);
+            }
+            db.close();
+            
+        });
+
+
+        }); //-- END CONNECT      
+    }); //-- END PROMISE
+}; //-- END FUNCTION
+
+
+//-------------------------- GET CURRENCY FROM PHONE NUMBER -----------------------//
+
+exports.getCurrency = function (countryCode) {
+    return new Promise(function(resolve, reject) {
+        
+                // OPEN CONNECTION     
+        mongoClient.connect(process.env.MONGO_DB, function (err, db) {
+        if (err) {
+            reject(err);
+            console.log('Unable to connect to the mongoDB server. Error:', err);
+        } 
+
+        // SELECT THE COLLECTION
+        var collection = db.collection('country_codes');
+    
+   
+        // GET        
+        collection.findOne({dialing_code:countryCode}, function(err, item) {
+            if(err){
+                reject(err);
+            }else{
+               resolve(item);     
+            };
+            db.close();
+        });
+       
+       
+        }); //-- END CONNECT   
+    }); //-- END PROMISE
+}; //-- END FUNCTION
+
 
 //-------------------------- GET VERIFICATION -----------------------//
 
@@ -100,11 +181,11 @@ exports.getVerification = function (phoneNumber, verificationCode) {
     
    
         // GET        
-        collection.findOne({phoneNumber:phoneNumber}, function(err, item) {
+        collection.findOne({phone_number:phoneNumber}, function(err, item) {
             if(err){
                 reject(err);
             }else{
-                if(phoneNumber == item.phoneNumber && verificationCode == item.verificationCode){
+                if(phoneNumber == item.phone_number && verificationCode == item.verification_code){
                     resolve(200);
                 }else{
                     reject(404);

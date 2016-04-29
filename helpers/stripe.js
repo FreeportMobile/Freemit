@@ -2,31 +2,9 @@
 
 var stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
-//----------------------------- CTREATE CUSTOMER
-exports.createCustomer = function(stripeToken, description, metaData){
-    return new Promise(function(resolve, reject) {
-    
-        stripe.customers.create({
-            description: description,
-            metadata: metaData,
-            source: stripeToken // obtained with Stripe.js from the front end.
-        }, function(err, customer) {
-               if (err){
-                    console.log(err)
-                    reject(err);
-                } else {
-                    console.log(customer)
-                    resolve(customer);
-                }
-        });
-        
-    }); //-- END PROMISE
-}; //-- END FUNCTION
-
-
 
 //----------------------------- CREATE CHARGE
-exports.createCharge = function (amount, currency, source, description, metadata, idempotency_key) {
+exports.createCharge = function (amount, currency, source, description, metadata, idempotencyKey) {
     return new Promise(function(resolve, reject) {
       
         stripe.charges.create({
@@ -36,7 +14,7 @@ exports.createCharge = function (amount, currency, source, description, metadata
             description: description, // string 
             metadata: metadata // JSON FORMATED
         }, {
-            idempotency_key: idempotency_key // unique key for each charge gnerate on client
+            idempotency_key: idempotencyKey // unique key for each charge gnerate on client
             }, function(err, charge) {
                 if (err){
                     reject(err);

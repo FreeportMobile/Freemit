@@ -29,9 +29,9 @@ exports.makeJWT = function (phoneNumber) {
     };
 
 //----------------------------- READ TOKEN
-exports.readJWT = function (authToken) {
+exports.readJWT = function (token) {
         try {
-            var token = jwt.verify(authToken, process.env.AUTH_SECRET);
+            var token = jwt.verify(token, process.env.AUTH_SECRET);
             return { phone_number: token.phone_number};
         } catch (error) {
             // TODO: Deactivate account and flag for investigation

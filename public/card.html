@@ -378,12 +378,14 @@
 //-- PREPARE AND SEND STRIPE TOKEN AND CARD DETAILS
 function sendStripeToken(){
    
+   console.log('checking');
     //-- COLLECT THE INFORMATION WE NEED
     var card_number = document.getElementById("cardval").value;
     var card_cvc = document.getElementById("cardcvc").value;
     var card_month = document.getElementById("cardmonth").value;
     var card_year = document.getElementById("cardyear").value;
     var card_expiry = card_month +' '+card_year;
+    var card_type = Stripe.card.cardType(card_number);
     
     //-- VALIDATE THE DATA WE COLLECTED
     var validate1 = Stripe.card.validateCardNumber(card_number);
@@ -397,7 +399,7 @@ function sendStripeToken(){
     
     //-- IF ALL VALIDATIONS PASS 
     if(validate1 == true && validate2 == true && validate3 == true){
-    
+     console.log('sending');
     //-- STRIPES PUBLIC KEY
     Stripe.setPublishableKey('pk_test_93vwZDGqYOIfVlOslF2oHiF5');  
       
@@ -408,12 +410,15 @@ function sendStripeToken(){
         exp: card_expiry 
     });
     
+   
+    
     //-- GET THE JWT
     var jwt = localStorage.getItem("jwt");
         
     //-- FIRE THE SOCKET
     socket.emit('saveCard', { 
             jwt:jwt,
+            card_type:card_type,
             stripeToken:stripe_token, 
             card_number:card_number,
             card_cvc:card_cvc,
@@ -424,7 +429,8 @@ function sendStripeToken(){
   
     //-- WAIT FOR REPLY AND REDIRECT
         socket.on('saveCard', function (msg) {
-            window.location.href = './balance.html';
+            console.log('Saved');
+            // TODO: Tell the user it has been saved
         });    
     
     // TODO: Show saving spinner! 

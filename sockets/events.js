@@ -21,7 +21,7 @@ module.exports = function (io) {
         });
         
         socket.on('saveCard', function (msg) {
-            freemit.bank.saveCard(socket, io, msg);
+            freemit.user.saveCard(socket, io, msg);
         });
         
         socket.on('addexchange', function (msg) {

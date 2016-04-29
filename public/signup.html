@@ -206,6 +206,9 @@ document.getElementById("country_select").addEventListener("change", countrySele
 function getCode() {
     var countryCode = document.getElementById("country_code").value;
     var phoneNumber = document.getElementById("phone_number").value;
+    var countrySelect = document.getElementById("country_select").text;
+    var countrySelected = document.getElementById("country_select");
+    var country = countrySelected.options[countrySelected.selectedIndex].text;
     
     if(countryCode.length <= 1){
         var countryCodeCheck = false;
@@ -224,14 +227,14 @@ function getCode() {
     };
     
     if(phoneNumberCheck == true && countryCodeCheck == true ){
-        sendCode(countryCode, phoneNumber);
+        sendCode(countryCode, phoneNumber, country);
     }
 }
 
 //-- IF THE CHECKS PASS THEN SEND THE NUMBER
-function sendCode(countryCode, phoneNumber){
+function sendCode(countryCode, phoneNumber, country){
         var socket = io.connect('http://localhost:9000');
-        socket.emit('sendVerificationCode', { countryCode:countryCode, phoneNumber:phoneNumber });
+        socket.emit('sendVerificationCode', {country:country, countryCode:countryCode, phoneNumber:phoneNumber });
         // SAVE PHONE NUMBER AND LOC TO LOCAL STORAGE
         localStorage.setItem('phoneNumber', phoneNumber);
         localStorage.setItem('countryCode', countryCode);
