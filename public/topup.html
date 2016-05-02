@@ -114,7 +114,7 @@
 
     
  <div id="cancel_topup_container">   
-    <button type="button" class="cancel_topup_btn" id="top_up_btn">Top Up</button>
+    <button type="button" class="cancel_topup_btn" id="top_up_btn">Top Up: 10 USD</button>
     <button type="button" class="cancel_topup_btn" id="cancel_btn">Cancel</button>
 </div>  
 
@@ -129,11 +129,15 @@
     //-- GET THE JWT
     var jwt = localStorage.getItem("jwt");
         
- 
-
-    
     socket.on('topup', function (msg) {
-            console.log(msg);
+        if(msg.error){
+            // IF THERES A CARD ERROR GO TO CARD  
+            window.location.href = './card.html';
+            localStorage.setItem('cardError', msg.error);  
+        } else {
+            // IF THERES NOT AN ERROR GO TO BALANCE
+            window.location.href = './balance.html';
+        }      
     });     
     
 //-- NAVIGATION

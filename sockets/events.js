@@ -36,7 +36,6 @@ module.exports = function (io) {
         });
         
         socket.on('topup', function (msg) {
-            console.log('FIRE');
             rateLimiter(socket);
             freemit.user.topUp(socket, io, msg);
         });
@@ -51,7 +50,7 @@ module.exports = function (io) {
 }; //-- END EXPORT
 
    function rateTracker(socket){
-      // MAKE AN ARRAY IF WE DONT HAVE ONE ALREADY
+      // MAKE AN ARRAY FOR THIS USER IF WE DONT HAVE ONE ALREADY
             if (socket.lastActivity == undefined) {
                 socket.lastActivity = [];
             }

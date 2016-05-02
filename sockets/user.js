@@ -9,39 +9,44 @@ var mongo = require('../helpers/mongo.js');
 //-- MAKE STRIPE
 var stripe = require('../helpers/stripe.js');
 
+var bank =  require('./bank.js');
+
+
 
 
 //----------------------------------------- TOP UP
 exports.topUp = function (socket, io, msg) {
+    // READ THE JWT
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
-    var value = msg.value;
     // GET CARD DETAILS FROM MONGO
     mongo.getCard(encPhoneNumber)
         .then(function(data) {
+            var value = msg.value;
             // DECRYPT THE CARD DTAILS AND PREPARE DATA FOR STRIPE
             var cardNumber = crypto.decrypt(data.card_number);
             var cardCVC = crypto.decrypt(data.card_CVC);
             var cardMonth = crypto.decrypt(data.card_month);
             var cardYear = crypto.decrypt(data.card_year);
             var currency = data.currency_abbreviation;
+            // CREATE THE SOURCE FOR STRIPE
             var source = {exp_month:cardMonth, exp_year:cardYear, number:cardNumber,object:'card',cvc:cardCVC};
-            var description = 'Top Up';
+            var description = 'Top Up: '+ value + ' ' + currency;
             var userID = data._id.toString()
             var timeNow = Date.now().toString()
-            var metadata = {id:userID, time:timeNow};
+            // CREATE META DATA FOR STRIPE
+            var metadata = {id:userID, time:timeNow, value:value, currency:currency};
+            // DONT ALLOW USER TO DOUBLE CHARGE ACCIDENTLY 
             var idempotencyKey = msg.idempotencyKey;
             // SEND REQUEST TO STRIPE
             stripe.createCharge(value, currency, source, description, metadata, idempotencyKey)
                     .then(function(data) {
-                        // IF THERES NO ERRORS
-                        console.log(data)
+                        console.log(data);
+                     //   bank.add(data);
                     })
                     .catch(function(err) {
-                        // IF THERE IS AN ERROR
-                        console.log(err) //TODO: Do somthing more meaningfull!
-                    });
-        
-        
+                      //  bank.error(data);
+                         io.to(socket.id).emit('topup', {error: err.raw.message});
+                    });      
         })
         .catch(function(err) {
            console.log(err) //TODO: Do somthing more meaningfull!
