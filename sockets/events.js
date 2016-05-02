@@ -14,8 +14,6 @@ module.exports = function (io) {
 //-- SEND CONNECTED MESSAGE
         socket.emit('connected', { msg: "--- CONNECTED" })
         
-  
-
 //-- SOCKET EVENTS
         socket.on('sendVerificationCode', function (msg) {
             rateLimiter(socket);
@@ -62,7 +60,7 @@ module.exports = function (io) {
         function rateLimiter(socket){
             // CALL RATE TRACKER
             rateTracker(socket);
-            // IF THE SOCKET IS NOT FULL STOP HERE
+            // IF THE ARRAY IS NOT FULL, STOP HERE
             if (socket.lastActivity.length < 5){
                return;
             }

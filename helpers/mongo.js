@@ -63,6 +63,7 @@ exports.setCard = function (encPhoneNumber, encCardNumber, encCardCVC, encCardMo
             // PREPARE DATA
             var collection = db.collection('users');
             var doc = {
+                last_seen: Date.now().toString(),
                 card_type: encCardType,
                 phone_number: encPhoneNumber,
                 card_number: encCardNumber,
@@ -108,6 +109,7 @@ exports.setSMS = function (encPhoneNumber, verificationCode, currencySymbol, cur
             // PREPARE DATA
             var collection = db.collection('users');
             var doc = {
+                first_seen: Date.now().toString(),
                 country: country,
                 currency_abbreviation: currencyAbbreviation,
                 currency_symbol: currencySymbol,
