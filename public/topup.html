@@ -61,7 +61,7 @@
    }
    
    
-    .withdraw_topup_btn{
+    .cancel_topup_btn{
         width: 100%;
         height: 50px;
         margin-top: 10px;
@@ -87,7 +87,7 @@
         filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#33a058', endColorstr='#1f713b',GradientType=0 ); /* IE6-9 */
     }
     
-    #withdraw_topup_container{
+    #cancel_topup_container{
         position: fixed;
         bottom: 20px;
         left: 0px;
@@ -96,43 +96,10 @@
         margin: 0px 10px 0px 10px;
     }
     
-    #balance{
-        font-size: 170px;
-        width: 100%;
-        text-align: center;
-        color: #4079b5;
-        height: 180px;
-        letter-spacing: -0.06em;
-        font-weight: lighter;
-        color: white;
-        -webkit-text-fill-color: #4079b5; /* Will override color (regardless of order) */
-        -webkit-text-stroke-width: 2px;
-        -webkit-text-stroke-color: white;
-        text-shadow: 0px 3px 9px  rgba(0,0,0,0.25);
-    }
+
     
-    #balance_strap{
-        font-size: 16px;
-         width: 100%;
-        text-align: center;
-        color: #4079b5;
-    }
-    
-    #currency_symbol{
-        border-radius: 50%;
-        background-color: #4079b5;
-        width: 35px;
-        height: 35px;
-        text-align: center;
-        color: white;  
-        position: relative;
-        top: -200px;
-        left: 50px; 
-         border: 2px solid white;
-                -webkit-box-shadow: 0px 3px 9px 0px rgba(0,0,0,0.25);
-        -moz-box-shadow: 0px 3px 9px 0px rgba(0,0,0,0.25);
-        box-shadow: 0px 3px 9px 0px rgba(0,0,0,0.25);  
-    }
+
+
     
 </style>
 
@@ -148,29 +115,16 @@
         <div class="wallet_buttons" id="card_button"><img src="../img/card_btn.png" class="wallet_icon"></br>Card</div>
     </div>
     
-    <div id="balance">
-        0
-    </div>
+
     
-        <div id="currency_symbol">
-       $
-    </div>
-    
-    <div id="balance_strap">
-        My balance is
-    </div>
-    
-    
-    
- <div id="withdraw_topup_container">   
-    <button type="button" class="withdraw_topup_btn" id="top_up_btn">Top Up</button>
-    <button type="button" class="withdraw_topup_btn" id="withdraw_btn">Withdraw</button>
+ <div id="cancel_topup_container">   
+    <button type="button" class="cancel_topup_btn" id="top_up_btn">Top Up</button>
+    <button type="button" class="cancel_topup_btn" id="cancel_btn">Cancel</button>
 </div>  
 
     
     
 <script src="/socket.io/socket.io.js"></script>
-
 
 <script>
 //-- PREPARE TO CONNECT THE SOCKET
@@ -180,15 +134,18 @@
     var jwt = localStorage.getItem("jwt");
         
     //-- FIRE THE SOCKET
-    socket.emit('topup', {jwt:jwt, value:10.00});
+    socket.emit('getBalance', {jwt:jwt});
     
-    socket.on('topup', function (msg) {
-            console.log(msg);
+    socket.on('getBalance', function (msg) {
+           var balance = msg.balance;
+           var currencySymbol = msg.currencySymbol;
+           document.getElementById("balance").innerHTML = balance;
+           document.getElementById("currency_symbol").innerHTML = currencySymbol;
     });     
     
 //-- NAVIGATION
     document.getElementById("top_up_btn").addEventListener("keydown", topUp);
-    document.getElementById("withdraw_btn").addEventListener("change", withdraw);
+    document.getElementById("cancel_btn").addEventListener("change", cancel);
     document.getElementById("pay_btn").addEventListener("click", payBtn);
     document.getElementById("balance_btn").addEventListener("click", balanceBtn);
     document.getElementById("card_button").addEventListener("click", cardBtn);
@@ -197,7 +154,7 @@
     function balanceBtn(){window.location.href = './balance.html';}
     function cardBtn(){window.location.href = './card.html';}
     function topUp(){window.location.href = './topup.html';}
-    function withdraw(){window.location.href = './withdraw.html';}
+    function cancel(){window.location.href = './balance.html';}
 
 </script>
 
