@@ -15,25 +15,29 @@ var stripe = require('../helpers/stripe.js');
 exports.topUp = function (socket, io, msg) {
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     var value = msg.value;
+    // GET CARD DETAILS FROM MONGO
     mongo.getCard(encPhoneNumber)
         .then(function(data) {
+            // DECRYPT THE CARD DTAILS AND PREPARE DATA FOR STRIPE
             var cardNumber = crypto.decrypt(data.card_number);
             var cardCVC = crypto.decrypt(data.card_CVC);
             var cardMonth = crypto.decrypt(data.card_month);
             var cardYear = crypto.decrypt(data.card_year);
             var currency = data.currency_abbreviation;
             var source = {exp_month:cardMonth, exp_year:cardYear, number:cardNumber,object:'card',cvc:cardCVC};
-            var description = 'test';
+            var description = 'Top Up';
             var userID = data._id.toString()
             var timeNow = Date.now().toString()
             var metadata = {id:userID, time:timeNow};
-            var idempotencyKey = '21';
-            
+            var idempotencyKey = msg.idempotencyKey;
+            // SEND REQUEST TO STRIPE
             stripe.createCharge(value, currency, source, description, metadata, idempotencyKey)
                     .then(function(data) {
+                        // IF THERES NO ERRORS
                         console.log(data)
                     })
                     .catch(function(err) {
+                        // IF THERE IS AN ERROR
                         console.log(err) //TODO: Do somthing more meaningfull!
                     });
         

@@ -125,7 +125,7 @@
 <script>
 //-- PREPARE TO CONNECT THE SOCKET
     var socket = io.connect('http://localhost:9000');
-    
+    var idempotencyKey = Date.now().toString();
     //-- GET THE JWT
     var jwt = localStorage.getItem("jwt");
         
@@ -149,7 +149,7 @@
     function cancel(){window.location.href = './balance.html';}
     
       function topUp(){
-             socket.emit('topup', {jwt:jwt, value:10.000});
+             socket.emit('topup', {jwt:jwt, value:10.000, idempotencyKey:idempotencyKey});
         }
 
 </script>
