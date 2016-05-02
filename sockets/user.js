@@ -30,9 +30,9 @@ exports.topUp = function (socket, io, msg) {
             var currency = data.currency_abbreviation;
             // CREATE THE SOURCE FOR STRIPE
             var source = {exp_month:cardMonth, exp_year:cardYear, number:cardNumber,object:'card',cvc:cardCVC};
-            var description = 'Top Up: '+ value + ' ' + currency;
             var userID = data._id.toString()
             var timeNow = Date.now().toString()
+            var description = 'Top Up: '+ value + ' ' + currency + ' - ' + userID;
             // CREATE META DATA FOR STRIPE
             var metadata = {id:userID, time:timeNow, value:value, currency:currency};
             // DONT ALLOW USER TO DOUBLE CHARGE ACCIDENTLY 
@@ -40,8 +40,7 @@ exports.topUp = function (socket, io, msg) {
             // SEND REQUEST TO STRIPE
             stripe.createCharge(value, currency, source, description, metadata, idempotencyKey)
                     .then(function(data) {
-                        console.log(data);
-                     //   bank.add(data);
+                        bank.add(data);
                     })
                     .catch(function(err) {
                       //  bank.error(data);

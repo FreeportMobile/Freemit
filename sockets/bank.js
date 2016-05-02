@@ -2,27 +2,37 @@
 
 //-- MAKE STRIPE AVAILABLE
 var stripe = require('../helpers/stripe.js');
-//-- MAKE CRYPTO AVAILABLE
-var crypto = require('../helpers/crypto.js');
 //-- MAKE MONGO
 var mongo = require('../helpers/mongo.js');
 
 
 
-
-
-
-
 //--- TOP UP
-exports.topUp = function (socket, io, msg) {
-    
-    // ADD FUNDS TO USERS ACCOUNT
+exports.add = function (data) {
+    console.log('FIRED1');
+  var transactionID = data.id;
+  var status = data.status;
+  var value = data.amount / 100;
+  var currency = data.currency;
+  var userID = data.metadata.id;
+  var cardID = data.source.id;
+  var fingerprint = data.source.fingerprint;
+  var created = data.created
+
+  if(status == 'succeeded'){
+      console.log('FIRED2');
+       mongo.setBankIn(transactionID, status, value, currency, userID, cardID, fingerprint, created);
+  };
+
+
+
+
           
 };// END FUNCTION
 
 
 //--- WITHDRAW
-exports.withdraw = function (socket, io, msg) {
+exports.remove = function (data) {
     
     // WITHDRAW FUNDS TO USRS BANK 
           

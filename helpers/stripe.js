@@ -7,7 +7,7 @@ var stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 exports.createCharge = function (value, currency, source, description, metadata, idempotencyKey) {
     return new Promise(function(resolve, reject) { 
         stripe.charges.create({
-            amount: value * 100, 
+            amount: value * 100, // STRIPE WANTS THE AMOUNT IN CENTS 
             currency: currency, 
             source: source, 
             description: description, 
