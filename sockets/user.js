@@ -6,6 +6,8 @@ var twillio = require('../helpers/twillio.js');
 var crypto = require('../helpers/crypto.js');
 //-- MAKE MONGO
 var mongo = require('../helpers/mongo.js');
+//-- MAKE STRIPE
+var stripe = require('../helpers/stripe.js');
 
 
 
@@ -20,11 +22,22 @@ exports.topUp = function (socket, io, msg) {
             var cardMonth = crypto.decrypt(data.card_month);
             var cardYear = crypto.decrypt(data.card_year);
             var currency = data.currency_abbreviation;
-            var source = {};
+            var source = {exp_month:cardMonth, exp_year:cardYear, number:cardNumber,object:'card',cvc:cardCVC};
             var description = 'test';
-            var metadata = {test:test};
-            var idempotencyKey = '1'
-            stripe.createCharge(value, currency, source, description, metadata, idempotencyKey);
+            var userID = data._id.toString()
+            var timeNow = Date.now().toString()
+            var metadata = {id:userID, time:timeNow};
+            var idempotencyKey = '21';
+            
+            stripe.createCharge(value, currency, source, description, metadata, idempotencyKey)
+                    .then(function(data) {
+                        console.log(data)
+                    })
+                    .catch(function(err) {
+                        console.log(err) //TODO: Do somthing more meaningfull!
+                    });
+        
+        
         })
         .catch(function(err) {
            console.log(err) //TODO: Do somthing more meaningfull!
