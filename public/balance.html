@@ -180,10 +180,13 @@
     var jwt = localStorage.getItem("jwt");
         
     //-- FIRE THE SOCKET
-    socket.emit('topup', {jwt:jwt, value:10.00});
+    socket.emit('getBalance', {jwt:jwt});
     
-    socket.on('topup', function (msg) {
-            console.log(msg);
+    socket.on('getBalance', function (msg) {
+           var balance = msg.balance;
+           var currencySymbol = msg.currencySymbol;
+           document.getElementById("balance").innerHTML = balance;
+           document.getElementById("currency_symbol").innerHTML = currencySymbol;
     });     
     
 //-- NAVIGATION

@@ -97,10 +97,6 @@
     }
     
 
-    
-
-
-    
 </style>
 
 </head>
@@ -133,14 +129,11 @@
     //-- GET THE JWT
     var jwt = localStorage.getItem("jwt");
         
-    //-- FIRE THE SOCKET
-    socket.emit('getBalance', {jwt:jwt});
+ 
+
     
-    socket.on('getBalance', function (msg) {
-           var balance = msg.balance;
-           var currencySymbol = msg.currencySymbol;
-           document.getElementById("balance").innerHTML = balance;
-           document.getElementById("currency_symbol").innerHTML = currencySymbol;
+    socket.on('topup', function (msg) {
+            console.log(msg);
     });     
     
 //-- NAVIGATION
@@ -153,8 +146,11 @@
     function payBtn(){window.location.href = './pay.html';}
     function balanceBtn(){window.location.href = './balance.html';}
     function cardBtn(){window.location.href = './card.html';}
-    function topUp(){window.location.href = './topup.html';}
     function cancel(){window.location.href = './balance.html';}
+    
+      function topUp(){
+             socket.emit('topup', {jwt:jwt, value:10.000});
+        }
 
 </script>
 
