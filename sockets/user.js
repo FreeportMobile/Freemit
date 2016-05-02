@@ -8,7 +8,30 @@ var crypto = require('../helpers/crypto.js');
 var mongo = require('../helpers/mongo.js');
 
 
-//----------------------------------------- ADD CARD
+
+//----------------------------------------- TOP UP
+exports.topUp = function (socket, io, msg) {
+    var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
+    var value = msg.value;
+    mongo.getCard(encPhoneNumber)
+        .then(function(data) {
+            var cardNumber = crypto.decrypt(data.card_number);
+            var cardCVC = crypto.decrypt(data.card_CVC);
+            var cardMonth = crypto.decrypt(data.card_month);
+            var cardYear = crypto.decrypt(data.card_year);
+            var currency = data.currency_abbreviation;
+            var source = {};
+            var description = 'test';
+            var metadata = {test:test};
+            var idempotencyKey = '1'
+            stripe.createCharge(value, currency, source, description, metadata, idempotencyKey);
+        })
+        .catch(function(err) {
+           console.log(err) //TODO: Do somthing more meaningfull!
+        });
+
+};// END FUNCTION
+//----------------------------------------- GET BALANCE
 exports.getBalance = function (socket, io, msg) {
     
     // GET ENCRYPTED POHONE NUMBER FROM JWT

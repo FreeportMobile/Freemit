@@ -4,11 +4,11 @@ var stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 
 //----------------------------- CREATE CHARGE
-exports.createCharge = function (amount, currency, source, description, metadata, idempotencyKey) {
+exports.createCharge = function (value, currency, source, description, metadata, idempotencyKey) {
     return new Promise(function(resolve, reject) {
       
         stripe.charges.create({
-            amount: amount, // value or amount 400 = 400 CHECK decimal position!
+            amount: value, // value or amount 400 = 400 CHECK decimal position!
             currency: currency, // usd, gbp
             source: source, // obtained with Stripe.js ?????
             description: description, // string 

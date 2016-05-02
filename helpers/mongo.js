@@ -137,6 +137,39 @@ exports.setSMS = function (encPhoneNumber, verificationCode, currencySymbol, cur
 
 
 
+//-------------------------- GET CARD -----------------------//
+
+exports.getCard = function (encPhoneNumber) {
+    return new Promise(function(resolve, reject) {
+           
+       // OPEN CONNECTION     
+        mongoClient.connect(process.env.MONGO_DB, function (err, db) {
+        if (err) {
+            reject(err);
+            console.log('Unable to connect to the mongoDB server. Error:', err);
+        } else {
+
+        // SELECT THE COLLECTION
+        var collection = db.collection('users');
+    
+        // GET   
+        // TODO: Figure out how to only return the records for the card and not the rest     
+        collection.findOne({phone_number:encPhoneNumber}, function(err, item) {
+            if(err){
+                reject(err);
+            }else{
+                resolve(item);                 
+            };
+            db.close();
+        });
+       
+            }//-- END ELSE
+        }); //-- END CONNECT   
+    }); //-- END PROMISE
+}; //-- END FUNCTION
+
+
+
 //-------------------------- GET BALANCE -----------------------//
 
 exports.getBalance = function (encPhoneNumber) {

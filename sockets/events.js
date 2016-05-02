@@ -34,6 +34,12 @@ module.exports = function (io) {
             rateLimiter(socket);
             freemit.user.getBalance(socket, io, msg);
         });
+        
+        socket.on('topup', function (msg) {
+            console.log('FIRE');
+            rateLimiter(socket);
+            freemit.user.topUp(socket, io, msg);
+        });
              
 //-- DISCONNECT
         socket.on('disconnect', function(socket) {
