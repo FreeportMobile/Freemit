@@ -4,7 +4,7 @@ module.exports = function (io) {
 
 //-- CONNECT 
     io.on('connect', function (socket, msg) {
-       
+        
 //-- SET LAST ACTIVITY FOR RATE LIMITING        
        socket.lastAcivity = new Array(Date.now().toString());
 
@@ -13,6 +13,8 @@ module.exports = function (io) {
 
 //-- SEND CONNECTED MESSAGE
         socket.emit('connected', { msg: "--- CONNECTED" })
+        
+  
 
 //-- SOCKET EVENTS
         socket.on('sendVerificationCode', function (msg) {
@@ -34,9 +36,7 @@ module.exports = function (io) {
             rateLimiter(socket);
             freemit.user.getBalance(socket, io, msg);
         });
-        
-
-        
+             
 //-- DISCONNECT
         socket.on('disconnect', function(socket) {
             console.log('--- DISCONECTED');
@@ -47,7 +47,7 @@ module.exports = function (io) {
 }; //-- END EXPORT
 
    function rateTracker(socket){
-      // MAKE AN ARRAY THAT IS NOT UNDEFINED
+      // MAKE AN ARRAY IF WE DONT HAVE ONE ALREADY
             if (socket.lastActivity == undefined) {
                 socket.lastActivity = [];
             }
@@ -55,22 +55,22 @@ module.exports = function (io) {
             if (socket.lastActivity.length > 5) {
                 socket.lastActivity.shift();
             }
-     // PUSH IN THE DATE TIME NOW
+     // PUSH IN THE DATE TIME NOW AS A STRING
             socket.lastActivity.push(Date.now().toString());
         }
 
         function rateLimiter(socket){
             // CALL RATE TRACKER
             rateTracker(socket);
-            // MAKE SURE THE ARRAY IS FULL
+            // IF THE SOCKET IS NOT FULL STOP HERE
             if (socket.lastActivity.length < 5){
                return;
             }
-            // OF THE TIME NOW MINUS FIRST ITEM IN ARRAY IS LESS THAN 200ms DISCONNECT
-            if(parseInt(Date.now()) -parseInt(socket.lastAcivity[0]) < 200){
-            // DISCONNECT JUST THE SOCKET THAT IS FLOODED
+            // IF THE TIME NOW MINUS FIRST ITEM IN ARRAY IS LESS THAN 200ms DISCONNECT
+            if(parseInt(Date.now()) - parseInt(socket.lastAcivity[0]) < 200){
+            // DISCONNECT JUST THE ONE SOCKET THAT IS FLOODED
                socket.disconnect();
-               console.log('--- DISCONNECTD - SOCKET FLOODED');
+               console.log('--- SOCKET FLOODED');
                return;
             }
         }
