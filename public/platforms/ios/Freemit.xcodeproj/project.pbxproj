@@ -19,6 +19,8 @@
 		367C3C11656242C9B2E18BFB /* CDVContact.m in Sources */ = {isa = PBXBuildFile; fileRef = F2A9F4CA72FB4208AEA496C5 /* CDVContact.m */; };
 		82242D0AE8E44057A5D959A0 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FD704A2CBC34D358AABC4EB /* AddressBook.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		FCF4FC494A1A4536A8ADE4D8 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D2E9FBF7E1B43FC9D101F40 /* AddressBookUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		47841C5D82CC4BF9BDAEF643 /* CDVSplashScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = CC6B67435F774EE1AF78329E /* CDVSplashScreen.m */; };
+		AEAC80683FAF440A941187BE /* CDVViewController+SplashScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = D6B5EAF1F0FA47E2A323E2AC /* CDVViewController+SplashScreen.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +66,10 @@
 		69647A9F2F89420CAD33551A /* CDVContact.h */ = {isa = PBXFileReference; name = "CDVContact.h"; path = "cordova-plugin-contacts/CDVContact.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 		8FD704A2CBC34D358AABC4EB /* AddressBook.framework */ = {isa = PBXFileReference; name = "AddressBook.framework"; path = "System/Library/Frameworks/AddressBook.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
 		6D2E9FBF7E1B43FC9D101F40 /* AddressBookUI.framework */ = {isa = PBXFileReference; name = "AddressBookUI.framework"; path = "System/Library/Frameworks/AddressBookUI.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
+		CC6B67435F774EE1AF78329E /* CDVSplashScreen.m */ = {isa = PBXFileReference; name = "CDVSplashScreen.m"; path = "cordova-plugin-splashscreen/CDVSplashScreen.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		D6B5EAF1F0FA47E2A323E2AC /* CDVViewController+SplashScreen.m */ = {isa = PBXFileReference; name = "CDVViewController+SplashScreen.m"; path = "cordova-plugin-splashscreen/CDVViewController+SplashScreen.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		2F27D574EF9C4C4C9BB3BBDB /* CDVSplashScreen.h */ = {isa = PBXFileReference; name = "CDVSplashScreen.h"; path = "cordova-plugin-splashscreen/CDVSplashScreen.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
+		DD87EC2A629748918DA87B1C /* CDVViewController+SplashScreen.h */ = {isa = PBXFileReference; name = "CDVViewController+SplashScreen.h"; path = "cordova-plugin-splashscreen/CDVViewController+SplashScreen.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,6 +180,10 @@
 				F2A9F4CA72FB4208AEA496C5 /* CDVContact.m */,
 				44161BBB38CC4443BF1C6AE8 /* CDVContacts.h */,
 				69647A9F2F89420CAD33551A /* CDVContact.h */,
+				CC6B67435F774EE1AF78329E /* CDVSplashScreen.m */,
+				D6B5EAF1F0FA47E2A323E2AC /* CDVViewController+SplashScreen.m */,
+				2F27D574EF9C4C4C9BB3BBDB /* CDVSplashScreen.h */,
+				DD87EC2A629748918DA87B1C /* CDVViewController+SplashScreen.h */,
 			);
 			name = Plugins;
 			path = "Freemit/Plugins";
@@ -290,6 +300,8 @@
 				302D95F114D2391D003F00A1 /* MainViewController.m in Sources */,
 				C52DCADA45A34725916BA2E4 /* CDVContacts.m in Sources */,
 				367C3C11656242C9B2E18BFB /* CDVContact.m in Sources */,
+				47841C5D82CC4BF9BDAEF643 /* CDVSplashScreen.m in Sources */,
+				AEAC80683FAF440A941187BE /* CDVViewController+SplashScreen.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

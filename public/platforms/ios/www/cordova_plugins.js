@@ -92,6 +92,14 @@ module.exports = [
         "merges": [
             "Contact"
         ]
+    },
+    {
+        "file": "plugins/cordova-plugin-splashscreen/www/splashscreen.js",
+        "id": "cordova-plugin-splashscreen.SplashScreen",
+        "pluginId": "cordova-plugin-splashscreen",
+        "clobbers": [
+            "navigator.splashscreen"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -99,7 +107,8 @@ module.exports.metadata =
 {
     "cordova-plugin-whitelist": "1.2.2",
     "cordova-plugin-compat": "1.0.0",
-    "cordova-plugin-contacts": "2.1.0"
+    "cordova-plugin-contacts": "2.1.0",
+    "cordova-plugin-splashscreen": "3.2.2"
 }
 // BOTTOM OF METADATA
 });
