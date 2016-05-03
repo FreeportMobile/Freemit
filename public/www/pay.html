@@ -96,7 +96,28 @@
         
         
 document.addEventListener("deviceready", function(){
-      alert(JSON.stringify(navigator.contacts));
+    
+    
+    
+ function onSuccess(contacts) {
+    alert('Found ' + JSON.stringify(contacts);    + ' contacts.');
+};
+
+function onError(contactError) {
+    alert('onError!');
+};
+
+// find all contacts 
+var options      = new ContactFindOptions();
+options.filter   = "";
+options.multiple = true;
+options.desiredFields = [navigator.contacts.fieldType.id];
+options.hasPhoneNumber = true;
+var fields       = [navigator.contacts.fieldType.displayName, navigator.contacts.fieldType.name];
+navigator.contacts.find(fields, onSuccess, onError, options);   
+    
+    
+    
  },true);
  
         

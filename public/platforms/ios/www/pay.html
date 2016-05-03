@@ -95,16 +95,32 @@
     var jwt = localStorage.getItem("jwt");
         
         
-                 document.addEventListener("deviceready", function(){
-      alert(JSON.stringify(navigator.contacts));
+document.addEventListener("deviceready", function(){
+    
+    
+    
+ function onSuccess(contacts) {
+    alert('Found ' + JSON.stringify(contacts);    + ' contacts.');
+};
+
+function onError(contactError) {
+    alert('onError!');
+};
+
+// find all contacts 
+var options      = new ContactFindOptions();
+options.filter   = "";
+options.multiple = true;
+options.desiredFields = [navigator.contacts.fieldType.id];
+options.hasPhoneNumber = true;
+var fields       = [navigator.contacts.fieldType.displayName, navigator.contacts.fieldType.name];
+navigator.contacts.find(fields, onSuccess, onError, options);   
+    
+    
+    
  },true);
  
         
-document.addEventListener("deviceready", onDeviceReady, false);
-function onDeviceReady() {
-    alert("123");
-   alert(JSON.stringify(navigator.contacts));
-}
 
 //-- NAVIGATION
     document.getElementById("top_up_btn").addEventListener("click", topUp);
