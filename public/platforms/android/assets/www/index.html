@@ -1,49 +1,116 @@
-<!DOCTYPE html>
-<!--
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-     KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
--->
 <html>
-    <head>
-        <!--
-        Customize this policy to fit your own app's needs. For more guidance, see:
-            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
-        Some notes:
-            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
-            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
-            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
-                * Enable inline JS: add 'unsafe-inline' to default-src
-        -->
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
-        <meta name="format-detection" content="telephone=no">
-        <meta name="msapplication-tap-highlight" content="no">
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
-        <link rel="stylesheet" type="text/css" href="css/index.css">
-        <title>Hello World</title>
-    </head>
-    <body>
-        <div class="app">
-            <h1>Apache Cordova</h1>
-            <div id="deviceready" class="blink">
-                <p class="event listening">Connecting to Device</p>
-                <p class="event received">Device is Ready</p>
-            </div>
-        </div>
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
-    </body>
+
+<head>
+    <title>Freemit</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no">
+    
+    
+<style>
+    body{
+        background: #3d9398; /* Old browsers */
+        background: -moz-linear-gradient(top,  #3d9398 0%, #286568 50%, #000000 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(top,  #3d9398 0%,#286568 50%,#000000 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom,  #3d9398 0%,#286568 50%,#000000 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3d9398', endColorstr='#000000',GradientType=0 ); /* IE6-9 */
+    }
+
+    #main_container{
+        height: calc(100% - 55px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #home_logo{
+        width: 50%;
+        max-width: 200px;
+    }
+
+    #home_buttons_container{
+        height: 50px;
+        display: flex;
+        width: 100%;
+    }
+
+    #log_in{ 
+        flex: 1;
+        padding-right: 5px;
+        text-align: right;
+    }
+
+    #sign_up{
+        flex: 1;
+        padding-left: 5px;
+    }
+
+    .login_signup_btn{
+        width: 100%;
+        height: 50px;
+        max-width: 300px;
+        font-size: 18px;
+        border-radius: 4px;
+        outline: none;
+        border: 1px solid black;
+        background: #ffffff; /* Old browsers */
+        background: -moz-linear-gradient(top,  #ffffff 0%, #a1a0a1 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(top,  #ffffff 0%,#a1a0a1 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom,  #ffffff 0%,#a1a0a1 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#a1a0a1',GradientType=0 ); /* IE6-9 */
+        cursor: pointer;
+        cursor: hand;
+    }
+
+    #green_btn{
+        color: #fff;
+        background: #33a058; /* Old browsers */
+        background: -moz-linear-gradient(top,  #33a058 0%, #1f713b 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(top,  #33a058 0%,#1f713b 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom,  #33a058 0%,#1f713b 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#33a058', endColorstr='#1f713b',GradientType=0 ); /* IE6-9 */
+    }
+</style>
+
+
+</head>
+
+<body>
+
+    <div id="main_container">
+        <img src="./img/white_logo.png" id="home_logo" alt="Freemit Logo">
+    </div>
+    
+    <div id="home_buttons_container">
+        <div id="log_in"><button type="button" class="login_signup_btn">Log In</button></div>
+        <div id="sign_up"><button type="button" class="login_signup_btn" id="green_btn">Sign Up</button></div>
+    </div>
+
+
+
+<script type="text/javascript" src="./js/socketio.js"></script>
+<script>
+    
+//-- IF THERE IS A JWT GO DIRECTLY TO BALANCE
+    var jwt = localStorage.getItem("jwt");
+    if(jwt){
+         window.location.href = './balance.html';
+    };
+ 
+//-- EVENT LISTENERS FOR NAVIGATION     
+document.getElementById("log_in").addEventListener("click", logIn);
+document.getElementById("sign_up").addEventListener("click", signUp);
+
+function logIn() {
+   window.location.href = './login.html';
+}
+
+function signUp() {
+    window.location.href = './signup.html';
+}
+</script>
+
+
+
+</body>
+
 </html>
