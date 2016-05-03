@@ -94,29 +94,40 @@
     //-- GET THE JWT
     var jwt = localStorage.getItem("jwt");
         
-        
+ 
+//-- CHECK THE PAGE HAS LOADED        
 document.addEventListener("deviceready", function(){
     
-    
-    
- function onSuccess(contacts) {
-    alert('Found ' + JSON.stringify(contacts);    + ' contacts.');
+//-- PREPARE THE DATA
+var options = new ContactFindOptions();
+options.filter = "";
+options.multiple = true;
+filter = ["displayName", "name"];
+//-- REQUEST THE DATA
+navigator.contacts.find(filter, onSuccess, onError, options);
+
+
+function onSuccess(contacts) {
+    //-- MAKE AN EMPTY ARRAY
+    var myContacts = [];
+    //-- LOOP OVER THE CONTACTS
+    for (var i = 0; i < contacts.length; i++) {
+        //-- LOOP OVER THE PHONE NUMBERS WITHIN CONACTS        
+        for (var j=0; j<contacts[i].phoneNumbers.length; j++) {  
+            // PUSH INTO THE ARRAY THE PHONE NUMBER AND NAME AND STRIP ALL NO NUMBERS
+            myContacts.push({name:contacts[i].name.formatted, number:contacts[i].phoneNumbers[j].value.replace(/\D/g,'')});
+        }
+    }
+   //-- CONVERT ARRAY TO JSON
+   allContacts = JSON.stringify(myContacts); 
+   //-- PREPARE TO EMIT TO A SOCKET
+   alert(allContacts);
 };
 
+//-- DO SOMTHING IF 
 function onError(contactError) {
     alert('onError!');
 };
-
-// find all contacts 
-var options      = new ContactFindOptions();
-options.filter   = "";
-options.multiple = true;
-options.desiredFields = [navigator.contacts.fieldType.id];
-options.hasPhoneNumber = true;
-var fields       = [navigator.contacts.fieldType.displayName, navigator.contacts.fieldType.name];
-navigator.contacts.find(fields, onSuccess, onError, options);   
-    
-    
     
  },true);
  

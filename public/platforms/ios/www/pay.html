@@ -94,29 +94,34 @@
     //-- GET THE JWT
     var jwt = localStorage.getItem("jwt");
         
-        
+ 
+//-- CHECK THE PAGE HAS LOADED        
 document.addEventListener("deviceready", function(){
     
     
-    
- function onSuccess(contacts) {
-    alert('Found ' + JSON.stringify(contacts);    + ' contacts.');
+
+
+var options = new ContactFindOptions();
+options.filter = "";
+options.multiple = true;
+filter = ["displayName", "name"];
+navigator.contacts.find(filter, onSuccess, onError, options);
+
+
+function onSuccess(contacts) {
+    var myContacts = [];
+    for (var i = 0; i < contacts.length; i++) {        
+        for (var j=0; j<contacts[i].phoneNumbers.length; j++) {  
+            myContacts.push({name:contacts[i].name.formatted, number:contacts[i].phoneNumbers[j].value.replace(/\D/g,'')});
+        }
+    }
+   allContacts = JSON.stringify(myContacts); 
+   alert(allContacts);
 };
 
 function onError(contactError) {
     alert('onError!');
 };
-
-// find all contacts 
-var options      = new ContactFindOptions();
-options.filter   = "";
-options.multiple = true;
-options.desiredFields = [navigator.contacts.fieldType.id];
-options.hasPhoneNumber = true;
-var fields       = [navigator.contacts.fieldType.displayName, navigator.contacts.fieldType.name];
-navigator.contacts.find(fields, onSuccess, onError, options);   
-    
-    
     
  },true);
  
