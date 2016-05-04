@@ -103,7 +103,7 @@ function onSuccess(contacts) {
    //-- CONVERT ARRAY TO JSON
    allContacts = JSON.stringify(myContacts); 
    //-- SEND CONTACTS
-    socket.emit('setContacts', {jwt:jwt, contacts:allContacts});
+    socket.emit('saveContacts', {jwt:jwt, contacts:allContacts});
 };
 
 //-- DO SOMTHING IF 

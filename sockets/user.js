@@ -11,8 +11,19 @@ var stripe = require('../helpers/stripe.js');
 
 var bank =  require('./bank.js');
 
-
-
+//----------------------------------------- SAVE CONTACTS
+exports.saveContacts = function (socket, io, msg) {
+    
+    // READ JWT
+    var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
+    // FIND COUNTRY THE USER IS IN
+    // FIND DIALING CODE FOR THE USER
+    // CHECK IF THE NUMBER HAS THE DIALING CODE ADDED ALREADY
+    // IF IT DOESNT ADD IT
+    // ENCRYPT NUMBER
+    // SAVE NUMBERS AND NAME TO USER LIST
+    
+};// END FUNCTION
 
 //----------------------------------------- TOP UP
 exports.topUp = function (socket, io, msg) {
@@ -109,13 +120,14 @@ exports.sendVerificationCode = function (socket, io, msg) {
     var message = "Your Freemit code is: " + verificationCode;
     var countryCode = msg.countryCode;
     var country = msg.country;
+    var countryCode = msg.countryCode;
     console.log(country);
     
      mongo.getCurrency(countryCode)
        .then(function(data) {
             var currencySymbol = data.currency_symbol;
             var currencyAbbreviation = data.currency_abbreviation;
-            mongo.setSMS(encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country)
+            mongo.setSMS(encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode)
        })
        .then(function(data) {
            twillio.sendSMS(phoneNumber, message);

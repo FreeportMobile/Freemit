@@ -142,7 +142,7 @@ exports.setCard = function (encPhoneNumber, encCardNumber, encCardCVC, encCardMo
 
 //----------------------- SET SMS ----------------------------------//
 
-exports.setSMS = function (encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country) {
+exports.setSMS = function (encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode) {
     return new Promise(function(resolve, reject) {
 
         // OPEN CONNECTION     
@@ -160,6 +160,7 @@ exports.setSMS = function (encPhoneNumber, verificationCode, currencySymbol, cur
                 currency_abbreviation: currencyAbbreviation,
                 currency_symbol: currencySymbol,
                 verification_code: verificationCode,
+                countryCode: countryCode,
             };
          
          
