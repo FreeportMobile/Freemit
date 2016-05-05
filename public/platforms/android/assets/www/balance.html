@@ -1,6 +1,7 @@
 <html>
 
 <head>
+    <script src="cordova.js"></script>
     <title>Freemit - Balance</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1,user-scalable=no">
@@ -167,12 +168,10 @@
     <button type="button" class="withdraw_topup_btn" id="withdraw_btn">Withdraw</button>
 </div>  
 
-    
-    
 <script type="text/javascript" src="./js/socketio.js"></script>
 
-
 <script>
+   
 //-- PREPARE TO CONNECT THE SOCKET
     var socket = io.connect('http://localhost:9000');
     

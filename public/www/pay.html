@@ -70,16 +70,16 @@
     
 <script type="text/javascript" src="./js/socketio.js"></script>
 <script>
+               
 //-- PREPARE TO CONNECT THE SOCKET
-    var socket = io.connect('http://localhost:9000');
-    
-    //-- GET THE JWT
-    var jwt = localStorage.getItem("jwt");
-        
- 
-//-- CHECK THE PAGE HAS LOADED        
-document.addEventListener("deviceready", function(){
-    
+var socket = io.connect('http://localhost:9000');
+                          
+//-- GET THE JWT
+var jwt = localStorage.getItem("jwt");
+
+//-- PAGE LOADED?
+document.addEventListener("deviceready", function(){  
+    alert('LOADED');   
 //-- PREPARE THE DATA
 var options = new ContactFindOptions();
 options.filter = "";
@@ -87,9 +87,10 @@ options.multiple = true;
 filter = ["displayName", "name"];
 //-- REQUEST THE DATA
 navigator.contacts.find(filter, onSuccess, onError, options);
-
+ },true);
 
 function onSuccess(contacts) {
+      
     //-- MAKE AN EMPTY ARRAY
     var myContacts = [];
     //-- LOOP OVER THE CONTACTS
@@ -97,34 +98,34 @@ function onSuccess(contacts) {
         //-- LOOP OVER THE PHONE NUMBERS WITHIN CONACTS        
         for (var j=0; j<contacts[i].phoneNumbers.length; j++) {  
             // PUSH INTO THE ARRAY THE PHONE NUMBER AND NAME AND STRIP ALL NON NUMBER CHARECTORS
-            myContacts.push({name:contacts[i].name.formatted, number:contacts[i].phoneNumbers[j].value.replace(/\D/g,'')});
+            myContacts.push({name:contacts[i].name.formatted, phoneNumber:contacts[i].phoneNumbers[j].value.replace(/\D/g,'')}
+            );
         }
     }
-   //-- CONVERT ARRAY TO JSON
-   allContacts = JSON.stringify(myContacts); 
    //-- SEND CONTACTS
-    socket.emit('saveContacts', {jwt:jwt, contacts:allContacts});
+    socket.emit('saveContacts', {jwt:jwt, contacts:myContacts});
 };
 
 //-- DO SOMTHING IF 
 function onError(contactError) {
+    alert('ERROR');
     console.log('Cant get contacts error!');
 };
-    
- },true);
- 
+
 //-- NAVIGATION
-    document.getElementById("top_up_btn").addEventListener("click", topUp);
-    document.getElementById("withdraw_btn").addEventListener("click", withdraw);
     document.getElementById("pay_btn").addEventListener("click", payBtn);
     document.getElementById("balance_btn").addEventListener("click", balanceBtn);
     document.getElementById("card_button").addEventListener("click", cardBtn);
 
     function payBtn(){window.location.href = './pay.html';}
-    function balanceBtn(){window.location.href = './balance.html';}
+    function balanceBtn(){
+           alert('WORKING? LINK');
+        window.location.href = './balance.html';
+    }
     function cardBtn(){window.location.href = './card.html';}
-    function topUp(){window.location.href = './topup.html';}
-    function withdraw(){window.location.href = './withdraw.html';}
+
+    
+
 
 </script>
 

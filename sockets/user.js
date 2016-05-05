@@ -13,15 +13,28 @@ var bank =  require('./bank.js');
 
 //----------------------------------------- SAVE CONTACTS
 exports.saveContacts = function (socket, io, msg) {
-    
-    // READ JWT
+    console.log('FIRE2');
+    // READ JWT  
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     // FIND COUNTRY THE USER IS IN
-    // FIND DIALING CODE FOR THE USER
-    // CHECK IF THE NUMBER HAS THE DIALING CODE ADDED ALREADY
-    // IF IT DOESNT ADD IT
-    // ENCRYPT NUMBER
-    // SAVE NUMBERS AND NAME TO USER LIST
+    mongo.getCountryCode(encPhoneNumber)
+    .then(function(data) {        
+        var countryCode = data.country_code;   
+        var allContacts = msg.contacts;
+        //LOOP OVER CONTACTS
+        for (var i = 0; i < allContacts.length; i++) {
+            // ENCRYPT EACH NUMBER WITH THE COUNTRY CODE       
+            var phoneNumber = countryCode + allContacts[i].phoneNumber;
+            // TODO: CHECK THE NUMBER DOESNT ALREADY HAVE A COUNTRY CODE (IMPORTANT)
+            // TODO: MOVE THIS INTO MONGO (JUST OPEN 1 CONNECTION)           
+            var encPhoneNumber =crypto.encrypt(phoneNumber);
+            // SEND EACH CONTACT TO MONGO
+            mongo.setContacts(allContacts[i].name, encPhoneNumber, countryCode);  
+        }
+    })
+    .catch(function(err) {
+     // some error
+    })
     
 };// END FUNCTION
 
@@ -111,6 +124,25 @@ exports.saveCard = function (socket, io, msg) {
 };// END FUNCTION
 
 
+//------------------------------------------ CHECK VERIFICATION CODE
+exports.checkVerificationCode = function (socket, io, msg) {
+    
+    var verificationCode = msg.verificationCode;
+    var phoneNumber = msg.countryCode + msg.phoneNumber;
+    var encPhoneNumber =crypto.encrypt(phoneNumber);
+    var jwt = crypto.makeJWT(encPhoneNumber);
+    console.log(jwt);
+    
+    mongo.getVerification(encPhoneNumber, verificationCode)
+        .then(function(data) {
+            io.to(socket.id).emit('checkVerificationCode', {result: true, jwt:jwt});
+        }).catch(function(err) {
+	        io.to(socket.id).emit('checkVerificationCode', {result: false});
+        });
+          
+};// END FUNCTION
+
+
 //---------------------------------------- SEND VERIFICATION CODE
 exports.sendVerificationCode = function (socket, io, msg) {
     
@@ -140,24 +172,3 @@ exports.sendVerificationCode = function (socket, io, msg) {
 	       // TODO: Handle this error!
         });
 }; // END FUNCTION
-
-
-
-
-//------------------------------------------ CHECK VERIFICATION CODE
-exports.checkVerificationCode = function (socket, io, msg) {
-    
-    var verificationCode = msg.verificationCode;
-    var phoneNumber = msg.countryCode + msg.phoneNumber;
-    var encPhoneNumber =crypto.encrypt(phoneNumber);
-    var jwt = crypto.makeJWT(encPhoneNumber);
-    console.log(jwt);
-    
-    mongo.getVerification(encPhoneNumber, verificationCode)
-        .then(function(data) {
-            io.to(socket.id).emit('checkVerificationCode', {result: true, jwt:jwt});
-        }).catch(function(err) {
-	        io.to(socket.id).emit('checkVerificationCode', {result: false});
-        });
-          
-};// END FUNCTION

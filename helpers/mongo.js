@@ -3,6 +3,43 @@
 //-- SETUP MONGO
 var mongoClient = require('mongodb').MongoClient;
 
+
+//----------------------- SET CONTACTS ----------------------------------//
+
+exports.setContacts = function (name, phoneNumber, countryCode) {
+    return new Promise(function(resolve, reject) {
+console.log('FIRE3');
+        // OPEN CONNECTION     
+        mongoClient.connect(process.env.MONGO_DB, function (err, db) {
+            if (err) {
+                reject(err);
+                console.log('Unable to connect to the mongoDB server. Error:', err);
+            } 
+
+            // PREPARE DATA
+            var collection = db.collection('users');
+            var doc = {
+                name: name,
+                phone_number: phoneNumber,
+                country_code: countryCode,
+            };
+         
+                 // UPDATE         
+        collection.update({phone_number:phoneNumber}, 
+        {$set:doc}, { upsert: true }, function(err, result) {
+        
+            if(err){
+                reject(err);
+            }else{
+                resolve(result);
+            }      
+            db.close();
+        });
+
+        }); //-- END CONNECT      
+    }); //-- END PROMISE
+}; //-- END FUNCTION
+
 //----------------------- SET COUNTRY CODE ----------------------------------//
 
 exports.setCountryCode = function (country_name, currency_symbol, currency_abbreviation, dialing_code) {
@@ -25,7 +62,7 @@ exports.setCountryCode = function (country_name, currency_symbol, currency_abbre
             };
          
          
-        // UPDATE   
+        // INSERT
         
         collection.insert(doc, {w:1}, function(err, result) {
            
@@ -38,9 +75,6 @@ exports.setCountryCode = function (country_name, currency_symbol, currency_abbre
             
         });
         
-   
-
-
         }); //-- END CONNECT      
     }); //-- END PROMISE
 }; //-- END FUNCTION
@@ -160,7 +194,7 @@ exports.setSMS = function (encPhoneNumber, verificationCode, currencySymbol, cur
                 currency_abbreviation: currencyAbbreviation,
                 currency_symbol: currencySymbol,
                 verification_code: verificationCode,
-                countryCode: countryCode,
+                country_code: countryCode,
             };
          
          
@@ -182,6 +216,37 @@ exports.setSMS = function (encPhoneNumber, verificationCode, currencySymbol, cur
     }); //-- END PROMISE
 }; //-- END FUNCTION
 
+
+//-------------------------- GET COUNTRY CODE -----------------------//
+
+exports.getCountryCode = function (encPhoneNumber) {
+    return new Promise(function(resolve, reject) {
+           
+       // OPEN CONNECTION     
+        mongoClient.connect(process.env.MONGO_DB, function (err, db) {
+        if (err) {
+            reject(err);
+            console.log('Unable to connect to the mongoDB server. Error:', err);
+        } else {
+
+        // SELECT THE COLLECTION
+        var collection = db.collection('users');
+    
+        // GET   
+        // TODO: Figure out how to only return the records for the card and not the rest     
+        collection.findOne({phone_number:encPhoneNumber}, function(err, item) {
+            if(err){
+                reject(err);
+            }else{
+                resolve(item);                 
+            };
+            db.close();
+        });
+       
+            }//-- END ELSE
+        }); //-- END CONNECT   
+    }); //-- END PROMISE
+}; //-- END FUNCTION
 
 
 //-------------------------- GET CARD -----------------------//
