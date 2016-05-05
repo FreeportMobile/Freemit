@@ -1,0 +1,207 @@
+<html>
+
+<head>
+    <script src="cordova.js"></script>
+    <title>Freemit - Balance</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no">
+    
+    
+<style>
+    body{
+        font-family: Arial, Helvetica, sans-serif;
+        padding-top: 155px;
+        background: white; /* Old browsers */
+   }
+    
+    #wallet_navigation{
+        align-items: center;
+        display: flex;
+        width: 100%;
+        height: 75px;
+        position: fixed;
+        left: 0px;
+        top:0px;
+        background: #3c9095; /* Old browsers */
+        background: -webkit-linear-gradient(#3c9095 0%, #38898f 100%);
+        background: -o-linear-gradient(#3c9095 0%, #38898f 100%);
+        background: linear-gradient(#3c9095 0%, #38898f 100%); /* FF3.6-15 */ /* Chrome10-25,Safari5.1-6 */ /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3c9095', endColorstr='#38898f',GradientType=0 ); /* IE6-9 */     
+   }
+  
+   .wallet_buttons{
+       flex: 1;
+       text-align: center;
+       color: white;
+       font-size: 12px;
+       text-shadow: -1px 1px 2px rgba(0, 0, 0, 0.7);
+       height: 70%;
+       cursor: hand;
+       cursor: pointer;
+   }
+   
+    .wallet_buttons:nth-child(1) {
+        border-right: 1px solid #2d6f72;
+    }
+
+   .wallet_buttons:nth-child(2) {
+        border-right: 1px solid #2d6f72;
+        border-left: 1px solid #65a6aa;
+    }
+
+   .wallet_buttons:nth-child(3) {
+        border-left: 1px solid #65a6aa;
+    }
+   
+   .wallet_icon{
+        height: auto; 
+        width: auto; 
+        max-width: 40px; 
+        max-height: 40px;
+        padding-bottom: 10px;
+   }
+   
+   
+    .withdraw_topup_btn{
+        width: 100%;
+        height: 50px;
+        margin-top: 10px;
+        font-size: 18px;
+        border-radius: 4px;
+        outline: none;
+        border: 1px solid black;
+        background: #ffffff; /* Old browsers */
+        background: -moz-linear-gradient(top,  #ffffff 0%, #a1a0a1 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(top,  #ffffff 0%,#a1a0a1 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom,  #ffffff 0%,#a1a0a1 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#a1a0a1',GradientType=0 ); /* IE6-9 */
+        cursor: pointer;
+        cursor: hand;
+    }
+    
+     #top_up_btn{
+        color: #fff;
+        background: #33a058; /* Old browsers */
+        background: -moz-linear-gradient(top,  #33a058 0%, #1f713b 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(top,  #33a058 0%,#1f713b 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom,  #33a058 0%,#1f713b 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#33a058', endColorstr='#1f713b',GradientType=0 ); /* IE6-9 */
+    }
+    
+    #withdraw_topup_container{
+        position: fixed;
+        bottom: 20px;
+        left: 0px;
+        width: calc(100% - 20px);
+        height: 120px;
+        margin: 0px 10px 0px 10px;
+    }
+    
+    #balance{
+        font-size: 170px;
+        width: 100%;
+        text-align: center;
+        color: #4079b5;
+        height: 180px;
+        letter-spacing: -0.06em;
+        font-weight: lighter;
+        color: white;
+        -webkit-text-fill-color: #4079b5; /* Will override color (regardless of order) */
+        -webkit-text-stroke-width: 2px;
+        -webkit-text-stroke-color: white;
+        text-shadow: 0px 3px 9px  rgba(0,0,0,0.25);
+    }
+    
+    #balance_strap{
+        font-size: 16px;
+         width: 100%;
+        text-align: center;
+        color: #4079b5;
+    }
+    
+    #currency_symbol{
+        border-radius: 50%;
+        background-color: #4079b5;
+        width: 35px;
+        height: 35px;
+        text-align: center;
+        color: white;  
+        position: relative;
+        top: -200px;
+        left: 50px; 
+         border: 2px solid white;
+                -webkit-box-shadow: 0px 3px 9px 0px rgba(0,0,0,0.25);
+        -moz-box-shadow: 0px 3px 9px 0px rgba(0,0,0,0.25);
+        box-shadow: 0px 3px 9px 0px rgba(0,0,0,0.25);  
+    }
+    
+</style>
+
+</head>
+
+<body>
+
+
+    
+    <div id="wallet_navigation">
+        <div class="wallet_buttons" id="pay_btn" ><img src="./img/pay_btn.png" class="wallet_icon"></br>Pay</div>
+        <div class="wallet_buttons" id="balance_btn"><img src="./img/balance_btn.png" class="wallet_icon"></br>Balance</div>
+        <div class="wallet_buttons" id="card_button"><img src="./img/card_btn.png" class="wallet_icon"></br>Card</div>
+    </div>
+    
+    <div id="balance">
+        0
+    </div>
+    
+        <div id="currency_symbol">
+       $
+    </div>
+    
+    <div id="balance_strap">
+        My balance is
+    </div>
+    
+    
+    
+ <div id="withdraw_topup_container">   
+    <button type="button" class="withdraw_topup_btn" id="top_up_btn">Top Up</button>
+    <button type="button" class="withdraw_topup_btn" id="withdraw_btn">Withdraw</button>
+</div>  
+
+<script type="text/javascript" src="./js/socketio.js"></script>
+
+<script>
+   
+//-- PREPARE TO CONNECT THE SOCKET
+    var socket = io.connect('http://localhost:9000');
+    
+    //-- GET THE JWT
+    var jwt = localStorage.getItem("jwt");
+        
+    //-- FIRE THE SOCKET
+    socket.emit('getBalance', {jwt:jwt});
+    
+    socket.on('getBalance', function (msg) {
+           var balance = msg.balance;
+           var currencySymbol = msg.currencySymbol;
+           document.getElementById("balance").innerHTML = balance;
+           document.getElementById("currency_symbol").innerHTML = currencySymbol;
+    });     
+    
+//-- NAVIGATION
+    document.getElementById("top_up_btn").addEventListener("click", topUp);
+    document.getElementById("withdraw_btn").addEventListener("click", withdraw);
+    document.getElementById("pay_btn").addEventListener("click", payBtn);
+    document.getElementById("balance_btn").addEventListener("click", balanceBtn);
+    document.getElementById("card_button").addEventListener("click", cardBtn);
+
+    function payBtn(){window.location.href = './pay.html';}
+    function balanceBtn(){window.location.href = './balance.html';}
+    function cardBtn(){window.location.href = './card.html';}
+    function topUp(){window.location.href = './topup.html';}
+    function withdraw(){window.location.href = './withdraw.html';}
+
+</script>
+
+</body>
+</html>

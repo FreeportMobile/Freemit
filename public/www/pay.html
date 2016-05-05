@@ -1,0 +1,132 @@
+<html>
+<head>
+    <script src="cordova.js"></script>
+    <title>Freemit - Balance</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no">  
+<style>
+    body{
+        font-family: Arial, Helvetica, sans-serif;
+        padding-top: 155px;
+        background: white; /* Old browsers */
+   }
+    
+    #wallet_navigation{
+        align-items: center;
+        display: flex;
+        width: 100%;
+        height: 75px;
+        position: fixed;
+        left: 0px;
+        top:0px;
+        background: #3c9095; /* Old browsers */
+        background: -webkit-linear-gradient(#3c9095 0%, #38898f 100%);
+        background: -o-linear-gradient(#3c9095 0%, #38898f 100%);
+        background: linear-gradient(#3c9095 0%, #38898f 100%); /* FF3.6-15 */ /* Chrome10-25,Safari5.1-6 */ /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3c9095', endColorstr='#38898f',GradientType=0 ); /* IE6-9 */     
+   }
+  
+   .wallet_buttons{
+       flex: 1;
+       text-align: center;
+       color: white;
+       font-size: 12px;
+       text-shadow: -1px 1px 2px rgba(0, 0, 0, 0.7);
+       height: 70%;
+       cursor: hand;
+       cursor: pointer;
+   }
+   
+    .wallet_buttons:nth-child(1) {
+        border-right: 1px solid #2d6f72;
+    }
+
+   .wallet_buttons:nth-child(2) {
+        border-right: 1px solid #2d6f72;
+        border-left: 1px solid #65a6aa;
+    }
+
+   .wallet_buttons:nth-child(3) {
+        border-left: 1px solid #65a6aa;
+    }
+   
+   .wallet_icon{
+        height: auto; 
+        width: auto; 
+        max-width: 40px; 
+        max-height: 40px;
+        padding-bottom: 10px;
+   }
+   
+</style>
+</head>
+
+<body>
+    <div id="wallet_navigation">
+        <div class="wallet_buttons" id="pay_btn" ><img src="./img/pay_btn.png" class="wallet_icon"></br>Pay</div>
+        <div class="wallet_buttons" id="balance_btn"><img src="./img/balance_btn.png" class="wallet_icon"></br>Balance</div>
+        <div class="wallet_buttons" id="card_button"><img src="./img/card_btn.png" class="wallet_icon"></br>Card</div>
+    </div>
+    
+<script type="text/javascript" src="./js/socketio.js"></script>
+<script>
+//-- PREPARE TO CONNECT THE SOCKET
+    var socket = io.connect('http://localhost:9000');
+    
+    //-- GET THE JWT
+    var jwt = localStorage.getItem("jwt");
+        
+ 
+//-- CHECK THE PAGE HAS LOADED        
+document.addEventListener("deviceready", function(){
+    
+//-- PREPARE THE DATA
+var options = new ContactFindOptions();
+options.filter = "";
+options.multiple = true;
+filter = ["displayName", "name"];
+//-- REQUEST THE DATA
+navigator.contacts.find(filter, onSuccess, onError, options);
+
+
+function onSuccess(contacts) {
+    //-- MAKE AN EMPTY ARRAY
+    var myContacts = [];
+    //-- LOOP OVER THE CONTACTS
+    for (var i = 0; i < contacts.length; i++) {
+        //-- LOOP OVER THE PHONE NUMBERS WITHIN CONACTS        
+        for (var j=0; j<contacts[i].phoneNumbers.length; j++) {  
+            // PUSH INTO THE ARRAY THE PHONE NUMBER AND NAME AND STRIP ALL NON NUMBER CHARECTORS
+            myContacts.push({name:contacts[i].name.formatted, number:contacts[i].phoneNumbers[j].value.replace(/\D/g,'')});
+        }
+    }
+   //-- CONVERT ARRAY TO JSON
+   allContacts = JSON.stringify(myContacts); 
+   //-- SEND CONTACTS
+    socket.emit('saveContacts', {jwt:jwt, contacts:allContacts});
+};
+
+//-- DO SOMTHING IF 
+function onError(contactError) {
+    console.log('Cant get contacts error!');
+};
+    
+ },true);
+ 
+//-- NAVIGATION
+    document.getElementById("top_up_btn").addEventListener("click", topUp);
+    document.getElementById("withdraw_btn").addEventListener("click", withdraw);
+    document.getElementById("pay_btn").addEventListener("click", payBtn);
+    document.getElementById("balance_btn").addEventListener("click", balanceBtn);
+    document.getElementById("card_button").addEventListener("click", cardBtn);
+
+    function payBtn(){window.location.href = './pay.html';}
+    function balanceBtn(){window.location.href = './balance.html';}
+    function cardBtn(){window.location.href = './card.html';}
+    function topUp(){window.location.href = './topup.html';}
+    function withdraw(){window.location.href = './withdraw.html';}
+
+</script>
+
+</body>
+</html>
