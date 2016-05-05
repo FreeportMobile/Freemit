@@ -13,7 +13,6 @@ var bank =  require('./bank.js');
 
 //----------------------------------------- SAVE CONTACTS
 exports.saveContacts = function (socket, io, msg) {
-    console.log('FIRE2');
     // READ JWT  
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     // FIND COUNTRY THE USER IS IN

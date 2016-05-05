@@ -7,47 +7,67 @@
 <style>
     body{
         font-family: Arial, Helvetica, sans-serif;
-        padding-top: 55px;
-        background: white; /* Old browsers */
+        padding-top: 112px;
+        background: #f8faff; 
+        padding-left:0px;
+        padding-right: 0px; 
+        margin-left: 0px;
+        margin-right: 0px; 
    }
+   
+     #top_container{
+        color: #46484d;
+        font-size: 22px;
+        font-weight: bold;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        padding-top:20px; 
+        height: 55px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f1f3f8;
+        border-bottom: 1px solid #afb1b6;
+    }
     
     #wallet_navigation{
         align-items: center;
         display: flex;
         width: 100%;
-        height: 75px;
+        height: 45px;
         position: fixed;
         left: 0px;
-        top:0px;
-        background: #3c9095; /* Old browsers */
-        background: -webkit-linear-gradient(#3c9095 0%, #38898f 100%);
-        background: -o-linear-gradient(#3c9095 0%, #38898f 100%);
-        background: linear-gradient(#3c9095 0%, #38898f 100%); /* FF3.6-15 */ /* Chrome10-25,Safari5.1-6 */ /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3c9095', endColorstr='#38898f',GradientType=0 ); /* IE6-9 */     
+        top:76px; 
    }
   
    .wallet_buttons{
        flex: 1;
        text-align: center;
-       color: white;
+       color: #afb1b6;
        font-size: 12px;
-       text-shadow: -1px 1px 2px rgba(0, 0, 0, 0.7);
        height: 70%;
        cursor: hand;
        cursor: pointer;
+       padding-top: 15px;
    }
    
     .wallet_buttons:nth-child(1) {
-        border-right: 1px solid #2d6f72;
+            border-right: 1px solid #afb1b6;
+            background-color: white;
+     
     }
 
    .wallet_buttons:nth-child(2) {
-        border-right: 1px solid #2d6f72;
-        border-left: 1px solid #65a6aa;
+       border-right: 1px solid #afb1b6;
+        border-bottom: 1px solid #afb1b6;
+        background-color: #f8faff;
     }
 
    .wallet_buttons:nth-child(3) {
-        border-left: 1px solid #65a6aa;
+          background-color: #f8faff;
+        border-bottom: 1px solid #afb1b6;
     }
    
    .wallet_icon{
@@ -61,28 +81,44 @@
    
    .row{
        display: flex;
-       border-bottom: 1px solid gray;;
+       border-bottom: 1px solid #d8dadf;
+       background-color: white;
        width: 100%;
-       padding: 20px 0px 15px 0px;
+       padding: 24px 0px 19px 0px;
 
    }
    
       .name{
+          font-size: 20px;
+          padding-left: 25px;
+          color: #46484d;
           flex: 10;
+          
    }
    
    .inviteBtn{
-       flex: 1;
+        margin-right: 25;
+        background-color: white;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        border: 1px solid #46484d;
+        background-image: url('./img/tick_btn.png');
+        background-size: 35px 35px;
+        background-repeat: no-repeat;
    }
    
 </style>
 </head>
 
 <body>
+        <div id="top_container">
+       Pay
+    </div>
     <div id="wallet_navigation">
-        <div class="wallet_buttons" id="pay_btn" ><img src="./img/pay_btn.png" class="wallet_icon"></br>Pay</div>
-        <div class="wallet_buttons" id="balance_btn"><img src="./img/balance_btn.png" class="wallet_icon"></br>Balance</div>
-        <div class="wallet_buttons" id="card_button"><img src="./img/card_btn.png" class="wallet_icon"></br>Card</div>
+        <div class="wallet_buttons" id="pay_btn">Pay</div>
+        <div class="wallet_buttons" id="balance_btn">Balance</div>
+        <div class="wallet_buttons" id="card_button">Card</div>
     </div>
 
 <div id="myList"></div>
@@ -132,8 +168,8 @@ function onSuccess(contacts) {
     }
    //-- SEND CONTACTS
     socket.emit('saveContacts', {jwt:jwt, contacts:myContacts});
-    // Add the contents of options[0] to #foo:
-    document.getElementById('myList').appendChild(makeUL(myContacts));
+    // Add the contents of options[0] to #MYLIST
+    document.getElementById('myList').appendChild(makeDIV(myContacts));
 };
 
 //-- DO SOMTHING IF ERROR
@@ -142,26 +178,26 @@ function onError(contactError) {
 };
 
 //-- MAKE LIST FROM ARRAY
-function makeUL(array) {
+function makeDIV(array) {
     // MAKE CONTAINER
     var list = document.createElement('div');
         list.setAttribute("class", "container");
     // START LOOP
     for(var i = 0; i < array.length; i++) {
 
+        // MAKE A ROW
         var item0 = document.createElement('div');
             item0.setAttribute("class", "row");       
-       
+       // MAKE NAME 
         var item1 = document.createElement('div');
             item1.setAttribute("class", "name");
             item1.appendChild(document.createTextNode(array[i].name));
-            
+        // MAKE BUTTON    
         var item2 = document.createElement('button');
             item2.setAttribute("class", "inviteBtn");
-            item2.appendChild(document.createTextNode('invite'));
+            // item2.appendChild(document.createTextNode(''));
         
-
-        // ADD ITEM TO LIST
+        // ADD ITEMS TO EACH OTHER
         list.appendChild(item0);
         item0.appendChild(item1);
         item0.appendChild(item2);
