@@ -7,7 +7,7 @@
 <style>
     body{
         font-family: Arial, Helvetica, sans-serif;
-        padding-top: 155px;
+        padding-top: 55px;
         background: white; /* Old browsers */
    }
     
@@ -58,6 +58,23 @@
         padding-bottom: 10px;
    }
    
+   
+   .row{
+       display: flex;
+       border-bottom: 1px solid gray;;
+       width: 100%;
+       padding: 20px 0px 15px 0px;
+
+   }
+   
+      .name{
+          flex: 10;
+   }
+   
+   .inviteBtn{
+       flex: 1;
+   }
+   
 </style>
 </head>
 
@@ -67,14 +84,22 @@
         <div class="wallet_buttons" id="balance_btn"><img src="./img/balance_btn.png" class="wallet_icon"></br>Balance</div>
         <div class="wallet_buttons" id="card_button"><img src="./img/card_btn.png" class="wallet_icon"></br>Card</div>
     </div>
+
+<div id="myList"></div>
     
 <script type="text/javascript" src="./js/socketio.js"></script>
 <script>
- 
+//-- NAVIGATION
+    document.getElementById("pay_btn").addEventListener("click", payBtn);
+    document.getElementById("balance_btn").addEventListener("click", balanceBtn);
+    document.getElementById("card_button").addEventListener("click", cardBtn);
 
-    
-
-                          
+    function payBtn(){window.location.href = './pay.html';}
+    function balanceBtn(){
+        window.location.href = './balance.html';
+    }
+    function cardBtn(){window.location.href = './card.html';}
+            
 //-- PREPARE TO CONNECT THE SOCKET
 var socket = io.connect('http://localhost:9000');
                           
@@ -83,7 +108,6 @@ var jwt = localStorage.getItem("jwt");
 
 //-- PAGE LOADED?
 document.addEventListener("deviceready", function(){  
-    alert('LOADED');   
 //-- PREPARE THE DATA
 var options = new ContactFindOptions();
 options.filter = "";
@@ -108,25 +132,44 @@ function onSuccess(contacts) {
     }
    //-- SEND CONTACTS
     socket.emit('saveContacts', {jwt:jwt, contacts:myContacts});
+    // Add the contents of options[0] to #foo:
+    document.getElementById('myList').appendChild(makeUL(myContacts));
 };
 
-//-- DO SOMTHING IF 
+//-- DO SOMTHING IF ERROR
 function onError(contactError) {
-    alert('ERROR');
     console.log('Cant get contacts error!');
 };
 
-//-- NAVIGATION
-    document.getElementById("pay_btn").addEventListener("click", payBtn);
-    document.getElementById("balance_btn").addEventListener("click", balanceBtn);
-    document.getElementById("card_button").addEventListener("click", cardBtn);
+//-- MAKE LIST FROM ARRAY
+function makeUL(array) {
+    // MAKE CONTAINER
+    var list = document.createElement('div');
+        list.setAttribute("class", "container");
+    // START LOOP
+    for(var i = 0; i < array.length; i++) {
 
-    function payBtn(){window.location.href = './pay.html';}
-    function balanceBtn(){
-           alert('WORKING? LINK');
-        window.location.href = './balance.html';
+        var item0 = document.createElement('div');
+            item0.setAttribute("class", "row");       
+       
+        var item1 = document.createElement('div');
+            item1.setAttribute("class", "name");
+            item1.appendChild(document.createTextNode(array[i].name));
+            
+        var item2 = document.createElement('button');
+            item2.setAttribute("class", "inviteBtn");
+            item2.appendChild(document.createTextNode('invite'));
+        
+
+        // ADD ITEM TO LIST
+        list.appendChild(item0);
+        item0.appendChild(item1);
+        item0.appendChild(item2);
     }
-    function cardBtn(){window.location.href = './card.html';}
+    return list;
+}
+
+
 
     
 
