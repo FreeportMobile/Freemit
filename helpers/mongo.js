@@ -176,15 +176,15 @@ exports.setCard = function (encPhoneNumber, encCardNumber, encCardCVC, encCardMo
 
 //----------------------- SET SMS ----------------------------------//
 
-exports.setSMS = function (encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode) {
-    return new Promise(function(resolve, reject) {
-
+exports.setSMS = function (encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode, bitcoinAddress, encPrivateKey) {
+    return new Promise(function (resolve, reject) {
+        console.log('SET SMS');
         // OPEN CONNECTION     
         mongoClient.connect(process.env.MONGO_DB, function (err, db) {
             if (err) {
                 reject(err);
                 console.log('Unable to connect to the mongoDB server. Error:', err);
-            } 
+            }
 
             // PREPARE DATA
             var collection = db.collection('users');
@@ -194,22 +194,23 @@ exports.setSMS = function (encPhoneNumber, verificationCode, currencySymbol, cur
                 currency_abbreviation: currencyAbbreviation,
                 currency_symbol: currencySymbol,
                 verification_code: verificationCode,
-                country_code: countryCode,
+                bitcoin_address: bitcoinAddress,
+                private_key: encPrivateKey,
             };
-         
-         
-        // UPDATE         
-        collection.update({phone_number:encPhoneNumber}, 
-        {$set:doc}, { upsert: true }, function(err, result) {
-        
-            if(err){
-                reject(err);
-            }else{
-                resolve(result);
-            }
-            db.close();
-            
-        });
+
+
+            // UPDATE         
+            collection.update({ phone_number: encPhoneNumber },
+                { $set: doc }, { upsert: true }, function (err, result) {
+
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(result);
+                    }
+                    db.close();
+
+                });
 
 
         }); //-- END CONNECT      
