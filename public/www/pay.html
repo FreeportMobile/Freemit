@@ -175,6 +175,7 @@ function onSuccess(contacts) {
         //-- LOOP OVER THE PHONE NUMBERS WITHIN CONACTS        
         for (var j=0; j<contacts[i].phoneNumbers.length; j++) {  
             // PUSH INTO THE ARRAY THE PHONE NUMBER AND NAME AND STRIP ALL NON NUMBER CHARECTORS
+            // TODO: We should also send what type of number ie mobile, home, main etc
             myContacts.push({name:contacts[i].name.formatted, phoneNumber:contacts[i].phoneNumbers[j].value.replace(/\D/g,'')}
             );
         }
@@ -182,6 +183,7 @@ function onSuccess(contacts) {
    //-- SEND CONTACTS
     socket.emit('saveContacts', {jwt:jwt, contacts:myContacts});
     // Add the contents of options[0] to #MYLIST
+    // TODO: Maybe myContacts should come from the server??? with bitcoin address and phone numbers with dialing codes!
     document.getElementById('myList').appendChild(makeDIV(myContacts));
     
     
@@ -194,15 +196,18 @@ function onSuccess(contacts) {
 
     function findClickedContact() {
         var id = this.getAttribute("id");
-        var selectedContact = JSON.stringify(myContacts[id]);
-        alert(selectedContact);
+        var selectedContact = myContacts[id];
+        window.location.href = './chat.html?name='+selectedContact.name
+        // TODO: Send the number too!
+        // TODO: We need to make sure this number is SMS capable! Somehow!
     };
     
 }; //- END SUCCESS
 
 //-- DO SOMTHING IF ERROR
 function onError(contactError) {
-    console.log('Cant get contacts error!');
+    // TODO: We need to show the user how to re-enable this incase they selected dont allow by mistake
+    console.log('Cant get contacts because you denied access!');
 };
 
 //-- MAKE LIST FROM ARRAY
@@ -242,16 +247,6 @@ function makeDIV(array) {
     }
     return list;
 }
-
-
-
-
-
-
-
-
-    
-
 
 </script>
 

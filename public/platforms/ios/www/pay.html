@@ -194,8 +194,10 @@ function onSuccess(contacts) {
 
     function findClickedContact() {
         var id = this.getAttribute("id");
-        var selectedContact = JSON.stringify(myContacts[id]);
-        alert(selectedContact);
+        var selectedContact = myContacts[id];
+        window.location.href = './chat.html?name='+selectedContact.name
+        // TODO: Send the number too!
+        // TODO: We need to make sure this number is SMS capable! Somehow!
     };
     
 }; //- END SUCCESS
