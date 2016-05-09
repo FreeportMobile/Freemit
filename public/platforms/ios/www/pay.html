@@ -1,7 +1,8 @@
 <html>
 <head>
     <script src="cordova.js"></script>
-    <title>Freemit - Balance</title>
+    <title>Freemit - Pay</title>
+     <meta name="format-detection" content="telephone=no">
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1,user-scalable=no">  
 <style>
@@ -85,7 +86,8 @@
        border-bottom: 1px solid #d8dadf;
        background-color: white;
        width: 100%;
-       padding: 24px 0px 19px 0px;
+       padding: 24px 0px 15px 0px;
+       
 
    }
    
@@ -93,8 +95,18 @@
           font-size: 20px;
           padding-left: 25px;
           color: #46484d;
-          flex: 10;
-          
+          width: 100%;
+   }
+   
+   .number{
+          font-size: 11px;
+          padding-left: 25px;
+          color: #46484d;
+          width: 100%;
+   }
+   
+   .name_container{
+         flex: 10;
    }
    
    .inviteBtn{
@@ -171,7 +183,22 @@ function onSuccess(contacts) {
     socket.emit('saveContacts', {jwt:jwt, contacts:myContacts});
     // Add the contents of options[0] to #MYLIST
     document.getElementById('myList').appendChild(makeDIV(myContacts));
-};
+    
+    
+    //-- LISTEN FOR A CLICK
+    var classname = document.getElementsByClassName("row");
+
+    for (var i = 0; i < classname.length; i++) {
+        classname[i].addEventListener('click', findClickedContact, false);
+    }
+
+    function findClickedContact() {
+        var id = this.getAttribute("id");
+        var selectedContact = JSON.stringify(myContacts[id]);
+        alert(selectedContact);
+    };
+    
+}; //- END SUCCESS
 
 //-- DO SOMTHING IF ERROR
 function onError(contactError) {
@@ -188,7 +215,8 @@ function makeDIV(array) {
 
         // MAKE A ROW
         var item0 = document.createElement('div');
-            item0.setAttribute("class", "row");       
+            item0.setAttribute("class", "row");   
+             item0.setAttribute("id", i);                   
        // MAKE NAME 
         var item1 = document.createElement('div');
             item1.setAttribute("class", "name");
@@ -196,15 +224,29 @@ function makeDIV(array) {
         // MAKE BUTTON    
         var item2 = document.createElement('button');
             item2.setAttribute("class", "inviteBtn");
-            // item2.appendChild(document.createTextNode(''));
+        // MAKE NAME CONTAINER
+        var item3 = document.createElement('div');
+            item3.setAttribute("class", "name_container");
+        // MAKE NUMBER
+        var item4 = document.createElement('div');
+            item4.setAttribute("class", "number");
+            item4.appendChild(document.createTextNode(array[i].phoneNumber));
+             
         
         // ADD ITEMS TO EACH OTHER
         list.appendChild(item0);
-        item0.appendChild(item1);
+        item0.appendChild(item3);
         item0.appendChild(item2);
+        item3.appendChild(item1);
+        item3.appendChild(item4);
     }
     return list;
 }
+
+
+
+
+
 
 
 
