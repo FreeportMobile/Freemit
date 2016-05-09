@@ -156,6 +156,20 @@
     var user = getQueryString('name');
     document.getElementById("top_container").innerHTML = user;
     
+    //-- NAVIGATION
+    document.getElementById("send_btn").addEventListener("click", topUp);
+    document.getElementById("request_btn").addEventListener("click", withdraw);
+    document.getElementById("pay_btn").addEventListener("click", payBtn);
+    document.getElementById("balance_btn").addEventListener("click", balanceBtn);
+    document.getElementById("card_button").addEventListener("click", cardBtn);
+
+    function payBtn(){window.location.href = './pay.html';}
+    function balanceBtn(){
+        window.location.href = './balance.html';
+    }
+    function cardBtn(){window.location.href = './card.html';}
+    function topUp(){window.location.href = './topup.html';}
+    function withdraw(){window.location.href = './withdraw.html';}
     
     //-- GET QUERY STRING
     function getQueryString(name, url) {
@@ -167,20 +181,6 @@
         if (!results[2]) return '';
         return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
-        
-
-//-- NAVIGATION
-    document.getElementById("sendbtn").addEventListener("click", topUp);
-    document.getElementById("request_btn").addEventListener("click", withdraw);
-    document.getElementById("pay_btn").addEventListener("click", payBtn);
-    document.getElementById("balance_btn").addEventListener("click", balanceBtn);
-    document.getElementById("card_button").addEventListener("click", cardBtn);
-
-    function payBtn(){window.location.href = './pay.html';}
-    function balanceBtn(){window.location.href = './balance.html';}
-    function cardBtn(){window.location.href = './card.html';}
-    function topUp(){window.location.href = './topup.html';}
-    function withdraw(){window.location.href = './withdraw.html';}
 
 </script>
 
