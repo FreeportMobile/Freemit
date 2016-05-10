@@ -231,7 +231,7 @@ function getCode() {
 
 //-- IF THE CHECKS PASS THEN SEND THE NUMBER
 function sendCode(countryCode, phoneNumber, country){
-        var socket = io.connect('http://localhost:9000');
+        var socket = io.connect('https://dev.freemit.tech');
         socket.emit('sendVerificationCode', {country:country, countryCode:countryCode, phoneNumber:phoneNumber });
         // SAVE PHONE NUMBER AND LOC TO LOCAL STORAGE
         localStorage.setItem('phoneNumber', phoneNumber);  

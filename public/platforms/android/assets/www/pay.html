@@ -1,53 +1,75 @@
 <html>
 <head>
     <script src="cordova.js"></script>
-    <title>Freemit - Balance</title>
+    <title>Freemit - Pay</title>
+     <meta name="format-detection" content="telephone=no">
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1,user-scalable=no">  
 <style>
     body{
         font-family: Arial, Helvetica, sans-serif;
-        padding-top: 155px;
-        background: white; /* Old browsers */
+        padding-top: 112px;
+        background: #f8faff; 
+        padding-left:0px;
+        padding-right: 0px; 
+        margin-left: 0px;
+        margin-right: 0px; 
    }
+   
+     #top_container{
+        color: #46484d;
+        font-size: 22px;
+        font-weight: bold;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        padding-top:20px; 
+        height: 55px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f1f3f8;
+        border-bottom: 1px solid #afb1b6;
+    }
     
     #wallet_navigation{
         align-items: center;
         display: flex;
         width: 100%;
-        height: 75px;
+        height: 45px;
         position: fixed;
         left: 0px;
-        top:0px;
-        background: #3c9095; /* Old browsers */
-        background: -webkit-linear-gradient(#3c9095 0%, #38898f 100%);
-        background: -o-linear-gradient(#3c9095 0%, #38898f 100%);
-        background: linear-gradient(#3c9095 0%, #38898f 100%); /* FF3.6-15 */ /* Chrome10-25,Safari5.1-6 */ /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3c9095', endColorstr='#38898f',GradientType=0 ); /* IE6-9 */     
+        top:77px;
+        border-top: 1px solid #afb1b6;
    }
   
    .wallet_buttons{
        flex: 1;
        text-align: center;
-       color: white;
+       color: #afb1b6;
        font-size: 12px;
-       text-shadow: -1px 1px 2px rgba(0, 0, 0, 0.7);
        height: 70%;
-       cursor: hand;
-       cursor: pointer;
+       padding-top: 15px;
+       position: relative;
+       top:-1px;
    }
    
     .wallet_buttons:nth-child(1) {
-        border-right: 1px solid #2d6f72;
+            border-right: 1px solid #afb1b6;
+            background-color: white;
+     
     }
 
    .wallet_buttons:nth-child(2) {
-        border-right: 1px solid #2d6f72;
-        border-left: 1px solid #65a6aa;
+       border-right: 1px solid #afb1b6;
+        border-bottom: 1px solid #afb1b6;
+        background-color: #f8faff;
     }
 
    .wallet_buttons:nth-child(3) {
-        border-left: 1px solid #65a6aa;
+          background-color: #f8faff;
+        border-bottom: 1px solid #afb1b6;
     }
    
    .wallet_icon{
@@ -58,28 +80,83 @@
         padding-bottom: 10px;
    }
    
+   
+   .row{
+       display: flex;
+       border-bottom: 1px solid #d8dadf;
+       background-color: white;
+       width: 100%;
+       padding: 24px 0px 15px 0px;
+       
+
+   }
+   
+      .name{
+          font-size: 20px;
+          padding-left: 25px;
+          color: #46484d;
+          width: 100%;
+   }
+   
+   .number{
+          font-size: 11px;
+          padding-left: 25px;
+          color: #46484d;
+          width: 100%;
+   }
+   
+   .name_container{
+         flex: 10;
+   }
+   
+   .inviteBtn{
+        margin-right: 25;
+        background-color: white;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        border: 1px solid #3a7ff5;
+        background-image: url('./img/tick_btn.png');
+        background-size: 35px 35px;
+        background-repeat: no-repeat;
+   }
+   
 </style>
 </head>
 
 <body>
-    <div id="wallet_navigation">
-        <div class="wallet_buttons" id="pay_btn" ><img src="./img/pay_btn.png" class="wallet_icon"></br>Pay</div>
-        <div class="wallet_buttons" id="balance_btn"><img src="./img/balance_btn.png" class="wallet_icon"></br>Balance</div>
-        <div class="wallet_buttons" id="card_button"><img src="./img/card_btn.png" class="wallet_icon"></br>Card</div>
+        <div id="top_container">
+       Pay
     </div>
+    <div id="wallet_navigation">
+        <div class="wallet_buttons" id="pay_btn">Pay</div>
+        <div class="wallet_buttons" id="balance_btn">Balance</div>
+        <div class="wallet_buttons" id="card_button">Card</div>
+    </div>
+
+<div id="myList"></div>
     
 <script type="text/javascript" src="./js/socketio.js"></script>
 <script>
+//-- NAVIGATION
+    document.getElementById("pay_btn").addEventListener("click", payBtn);
+    document.getElementById("balance_btn").addEventListener("click", balanceBtn);
+    document.getElementById("card_button").addEventListener("click", cardBtn);
+
+    function payBtn(){window.location.href = './pay.html';}
+    function balanceBtn(){
+        window.location.href = './balance.html';
+    }
+    function cardBtn(){window.location.href = './card.html';}
+            
 //-- PREPARE TO CONNECT THE SOCKET
-    var socket = io.connect('http://localhost:9000');
-    
-    //-- GET THE JWT
-    var jwt = localStorage.getItem("jwt");
-        
- 
-//-- CHECK THE PAGE HAS LOADED        
-document.addEventListener("deviceready", function(){
-    
+var socket = io.connect('https://dev.freemit.tech');
+                          
+//-- GET THE JWT
+var jwt = localStorage.getItem("jwt");
+
+//-- PAGE LOADED?
+document.addEventListener("deviceready", function(){  
 //-- PREPARE THE DATA
 var options = new ContactFindOptions();
 options.filter = "";
@@ -87,9 +164,10 @@ options.multiple = true;
 filter = ["displayName", "name"];
 //-- REQUEST THE DATA
 navigator.contacts.find(filter, onSuccess, onError, options);
-
+ },true);
 
 function onSuccess(contacts) {
+      
     //-- MAKE AN EMPTY ARRAY
     var myContacts = [];
     //-- LOOP OVER THE CONTACTS
@@ -97,32 +175,78 @@ function onSuccess(contacts) {
         //-- LOOP OVER THE PHONE NUMBERS WITHIN CONACTS        
         for (var j=0; j<contacts[i].phoneNumbers.length; j++) {  
             // PUSH INTO THE ARRAY THE PHONE NUMBER AND NAME AND STRIP ALL NON NUMBER CHARECTORS
-            myContacts.push({name:contacts[i].name.formatted, phoneNumber:contacts[i].phoneNumbers[j].value.replace(/\D/g,'')});
+            // TODO: We should also send what type of number ie mobile, home, main etc
+            myContacts.push({name:contacts[i].name.formatted, phoneNumber:contacts[i].phoneNumbers[j].value.replace(/\D/g,'')}
+            );
         }
     }
    //-- SEND CONTACTS
     socket.emit('saveContacts', {jwt:jwt, contacts:myContacts});
-};
-
-//-- DO SOMTHING IF 
-function onError(contactError) {
-    console.log('Cant get contacts error!');
-};
+    // Add the contents of options[0] to #MYLIST
+    // TODO: Maybe myContacts should come from the server??? with bitcoin address and phone numbers with dialing codes!
+    document.getElementById('myList').appendChild(makeDIV(myContacts));
     
- },true);
- 
-//-- NAVIGATION
-    document.getElementById("top_up_btn").addEventListener("click", topUp);
-    document.getElementById("withdraw_btn").addEventListener("click", withdraw);
-    document.getElementById("pay_btn").addEventListener("click", payBtn);
-    document.getElementById("balance_btn").addEventListener("click", balanceBtn);
-    document.getElementById("card_button").addEventListener("click", cardBtn);
+    
+    //-- LISTEN FOR A CLICK
+    var classname = document.getElementsByClassName("row");
 
-    function payBtn(){window.location.href = './pay.html';}
-    function balanceBtn(){window.location.href = './balance.html';}
-    function cardBtn(){window.location.href = './card.html';}
-    function topUp(){window.location.href = './topup.html';}
-    function withdraw(){window.location.href = './withdraw.html';}
+    for (var i = 0; i < classname.length; i++) {
+        classname[i].addEventListener('click', findClickedContact, false);
+    }
+
+    function findClickedContact() {
+        var id = this.getAttribute("id");
+        var selectedContact = myContacts[id];
+        window.location.href = './chat.html?name='+selectedContact.name
+        // TODO: Send the number too!
+        // TODO: We need to make sure this number is SMS capable! Somehow!
+    };
+    
+}; //- END SUCCESS
+
+//-- DO SOMTHING IF ERROR
+function onError(contactError) {
+    // TODO: We need to show the user how to re-enable this incase they selected dont allow by mistake
+    console.log('Cant get contacts because you denied access!');
+};
+
+//-- MAKE LIST FROM ARRAY
+function makeDIV(array) {
+    // MAKE CONTAINER
+    var list = document.createElement('div');
+        list.setAttribute("class", "container");
+    // START LOOP
+    for(var i = 0; i < array.length; i++) {
+
+        // MAKE A ROW
+        var item0 = document.createElement('div');
+            item0.setAttribute("class", "row");   
+             item0.setAttribute("id", i);                   
+       // MAKE NAME 
+        var item1 = document.createElement('div');
+            item1.setAttribute("class", "name");
+            item1.appendChild(document.createTextNode(array[i].name));
+        // MAKE BUTTON    
+        var item2 = document.createElement('button');
+            item2.setAttribute("class", "inviteBtn");
+        // MAKE NAME CONTAINER
+        var item3 = document.createElement('div');
+            item3.setAttribute("class", "name_container");
+        // MAKE NUMBER
+        var item4 = document.createElement('div');
+            item4.setAttribute("class", "number");
+            item4.appendChild(document.createTextNode(array[i].phoneNumber));
+             
+        
+        // ADD ITEMS TO EACH OTHER
+        list.appendChild(item0);
+        item0.appendChild(item3);
+        item0.appendChild(item2);
+        item3.appendChild(item1);
+        item3.appendChild(item4);
+    }
+    return list;
+}
 
 </script>
 

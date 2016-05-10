@@ -190,7 +190,7 @@ function verify() {
 //-- IF THE CHECK PASSES THEN SEND THE VERIFICTION CODE
 function sendCode(verificationCode, countryCode, phoneNumber){   
     console.log('send'); 
-        var socket = io.connect('http://localhost:9000');
+        var socket = io.connect('https://dev.freemit.tech');
         socket.emit('checkVerificationCode', {verificationCode:verificationCode, countryCode:countryCode, phoneNumber:phoneNumber });
         
         socket.on('checkVerificationCode', function (msg) {

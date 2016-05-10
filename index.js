@@ -8,7 +8,7 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
 //-- MAKE STATIC FILES AVAILABLE
-app.use(express.static('public'));
+app.use(express.static('/public/www'));
 
 //-- SERVE INDEX FILE
 app.get('/', function (req, res) {

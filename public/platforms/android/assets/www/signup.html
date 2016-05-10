@@ -1,6 +1,7 @@
 <html>
 
 <head>
+    <script src="cordova.js"></script>
     <title>Freemit - Sign Up</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1,user-scalable=no">
@@ -9,8 +10,8 @@
 <style>
     body{
         font-family: Arial, Helvetica, sans-serif;
-        padding-top: 55px;
-        background: #fff; /* Old browsers */
+        padding-top: 65px;
+        background: #f8faff;
 
     }
     
@@ -18,33 +19,36 @@
         font-size: 15px;
         display: flex;
         justify-content: center;
-        color: #656565;
+        color: #aeb0b5;
         width: calc(100% - 60px);
         text-align: center;
         padding-left: 30px;
         padding-right: 30px;
         padding-bottom: 15px;
         padding-top: 15px;
-
     }
 
     #top_container{
-        color: white;
+        color: #46484d;
         font-size: 22px;
         font-weight: bold;
         position: fixed;
         top: 0px;
         left: 0px;
+        padding-top:20px; 
         height: 55px;
         width: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: black;
+        background-color: #f1f3f8;
+        border-bottom: 1px solid #afb1b6;
     }
     
     #Cancel_btn{
-        color: white;
+        color: #46484d;
+        padding-top:20px; 
+        margin-top: 10px;
         font-size: 14px;
         position: fixed;
         top: 0px;
@@ -54,11 +58,11 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: black;
+        background-color: #f1f3f8;
         border: none;
         outline: none;
-        cursor: hand;
-        cursor: pointer;    
+         -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+
     }
     
     #number_container{
@@ -128,23 +132,18 @@
         background-color: white;
     }
 
-    #get_code{
-        margin-top: 15px;
-        width: 100%;
-        height: 50px;
-        font-size: 18px;
+    #sign_up{
+        margin-top: 0px;
+        margin-left: 15px;
+        width: calc(100% - 30px);
+        height: 60px;
+        font-size: 20px;
         border-radius: 4px;
         outline: none;
-        border: 1px solid black;
-        cursor: pointer;
-        cursor: hand;
-        color: #fff;
-        background: #33a058; /* Old browsers */
-        background: -moz-linear-gradient(top,  #33a058 0%, #1f713b 100%); /* FF3.6-15 */
-        background: -webkit-linear-gradient(top,  #33a058 0%,#1f713b 100%); /* Chrome10-25,Safari5.1-6 */
-        background: linear-gradient(to bottom,  #33a058 0%,#1f713b 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#33a058', endColorstr='#1f713b',GradientType=0 ); /* IE6-9 */
-    }
+         background-color: #3a7ff5;
+       color: #f8faff; 
+       border: none;
+       }
     
     .error{
         border: 1px solid #ed1c24;
@@ -165,15 +164,15 @@
     
   <div id="country_select_container">  
         <select id="country_select">
-            <option value="+1">&nbsp United States</option>
-            <option value="+61">&nbsp  Australia</option>
-            <option value="+1">&nbsp  Canada</option>
-            <option value="+45">&nbsp  Denamrk</option>
-            <option value="+358">&nbsp Finland</option>
-            <option value="+353">&nbsp Ireland</option>
-            <option value="+47">&nbsp Norway</option>
-            <option value="+46">&nbsp Sweden</option>
-            <option value="+44">&nbsp United Kingdom</option>
+            <option value="+1">United States</option>
+            <option value="+61">Australia</option>
+            <option value="+1">Canada</option>
+            <option value="+45">Denamrk</option>
+            <option value="+358">Finland</option>
+            <option value="+353">Ireland</option>
+            <option value="+47">Norway</option>
+            <option value="+46">Sweden</option>
+            <option value="+44">United Kingdom</option>
         </select>
   </div>
 
@@ -190,15 +189,15 @@
 
     
 
-      <button type="button" id="get_code">Sign Up</button>
+      <button type="button" id="sign_up">Sign Up</button>
    <div class="text"> Clicking “Sign Up” means you agree to our tems and privacy policy </div>
 
 <script type="text/javascript" src="./js/socketio.js"></script>
 <script>
 
-    var socket = io.connect('http://localhost:9000');
+    var socket = io.connect('https://dev.freemit.tech');
 //-- SET UP EVENT LISTENERS
-document.getElementById("get_code").addEventListener("click", getCode);
+document.getElementById("sign_up").addEventListener("click", getCode);
 document.getElementById("cancel_btn").addEventListener("click", cancelBtn);
 document.getElementById("country_select").addEventListener("change", countrySelect);
 
@@ -255,7 +254,7 @@ function countrySelect(){
 
 //-- GO BACK TO HOME
 function cancelBtn() {
-    window.location.href = './index.html';
+     history.go(-1);
 }
 
 
