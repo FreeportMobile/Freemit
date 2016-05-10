@@ -1,0 +1,188 @@
+<html>
+
+<head>
+    <script src="cordova.js"></script>
+    <title>Freemit - Balance</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no">
+    
+    
+<style>
+    body{
+        font-family: Arial, Helvetica, sans-serif;
+        padding-top: 112px;
+        background: white; 
+        padding-left:0px;
+        padding-right: 0px; 
+        margin-left: 0px;
+        margin-right: 0px; 
+   }
+   
+       #top_container{
+        color: #46484d;
+        font-size: 22px;
+        font-weight: bold;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        padding-top:20px; 
+        height: 55px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f1f3f8;
+        border-bottom: 1px solid #afb1b6;
+    }
+    
+    
+    #wallet_navigation{
+        align-items: center;
+        display: flex;
+        width: 100%;
+        height: 45px;
+        position: fixed;
+        left: 0px;
+        top:77px;
+        border-top: 1px solid #afb1b6;
+          }
+  
+   .wallet_buttons{
+       flex: 1;
+       text-align: center;
+       color: #afb1b6;
+       font-size: 12px;
+       height: 70%;
+       padding-top: 15px;
+       position: relative;
+       top:-1px;
+   }
+   
+    .wallet_buttons:nth-child(1) {
+            border-right: 1px solid #afb1b6;
+            background-color: white;
+     
+    }
+
+   .wallet_buttons:nth-child(2) {
+       border-right: 1px solid #afb1b6;
+        border-bottom: 1px solid #afb1b6;
+        background-color: #f8faff;
+    }
+
+   .wallet_buttons:nth-child(3) {
+          background-color: #f8faff;
+        border-bottom: 1px solid #afb1b6;
+    }
+   
+   .wallet_icon{
+        height: auto; 
+        width: auto; 
+        max-width: 40px; 
+        max-height: 40px;
+        padding-bottom: 10px;
+   }
+   
+   
+    .pay_user_btn{
+        color: #3a7ff5;
+        margin-left: 15px;
+        width: 100%;
+        height: 60px;
+        font-size: 20px;
+        border-radius: 4px;
+        outline: none;
+        border: 1px solid #3a7ff5;
+        background: #f8faff; 
+        margin-bottom: 15px;
+    }
+    
+     #request_btn{
+        margin-top: 0px;
+        margin-left: 15px;
+        width: calc(100%);
+        height: 60px;
+        font-size: 20px;
+        border-radius: 4px;
+        outline: none;
+         background-color: #3a7ff5;
+       color: #f8faff; 
+       border: none;
+    }
+    
+    #withdraw_topup_container{
+           height: 155px;
+        width: calc(100% - 30px);
+        position: fixed;
+        bottom: 0px;
+        left: 0px;
+    }
+    
+   
+</style>
+
+</head>
+
+<body>
+    <div id="top_container">
+    
+    </div>
+
+
+    
+    <div id="wallet_navigation">
+        <div class="wallet_buttons" id="pay_btn" >Pay</div>
+        <div class="wallet_buttons" id="balance_btn">Balance</div>
+        <div class="wallet_buttons" id="card_button">Card</div>
+    </div>
+    
+    
+ <div id="withdraw_topup_container">  
+    <button type="button" class="pay_user_btn" id="request_btn">Request</button> 
+    <button type="button" class="pay_user_btn" id="send_btn">Send</button>
+    
+</div>  
+
+<script type="text/javascript" src="./js/socketio.js"></script>
+
+<script>
+
+//-- PREPARE TO CONNECT THE SOCKET
+    var socket = io.connect('https://dev.freemit.tech');
+    
+    //-- GET THE JWT
+    var jwt = localStorage.getItem("jwt");
+    //-- GET THE NAME AND SET TITLE
+    var user = getQueryString('name');
+    document.getElementById("top_container").innerHTML = user;
+    
+    //-- NAVIGATION
+    document.getElementById("send_btn").addEventListener("click", topUp);
+    document.getElementById("request_btn").addEventListener("click", withdraw);
+    document.getElementById("pay_btn").addEventListener("click", payBtn);
+    document.getElementById("balance_btn").addEventListener("click", balanceBtn);
+    document.getElementById("card_button").addEventListener("click", cardBtn);
+
+    function payBtn(){window.location.href = './pay.html';}
+    function balanceBtn(){
+        window.location.href = './balance.html';
+    }
+    function cardBtn(){window.location.href = './card.html';}
+    function topUp(){window.location.href = './topup.html';}
+    function withdraw(){window.location.href = './withdraw.html';}
+    
+    //-- GET QUERY STRING
+    function getQueryString(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
+</script>
+
+</body>
+</html>

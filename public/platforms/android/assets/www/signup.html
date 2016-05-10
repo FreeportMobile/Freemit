@@ -1,0 +1,266 @@
+<html>
+
+<head>
+    <script src="cordova.js"></script>
+    <title>Freemit - Sign Up</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no">
+    
+    
+<style>
+    body{
+        font-family: Arial, Helvetica, sans-serif;
+        padding-top: 65px;
+        background: #f8faff;
+
+    }
+    
+    .text{
+        font-size: 15px;
+        display: flex;
+        justify-content: center;
+        color: #aeb0b5;
+        width: calc(100% - 60px);
+        text-align: center;
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-bottom: 15px;
+        padding-top: 15px;
+    }
+
+    #top_container{
+        color: #46484d;
+        font-size: 22px;
+        font-weight: bold;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        padding-top:20px; 
+        height: 55px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f1f3f8;
+        border-bottom: 1px solid #afb1b6;
+    }
+    
+    #Cancel_btn{
+        color: #46484d;
+        padding-top:20px; 
+        margin-top: 10px;
+        font-size: 14px;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        height: 55px;
+        width: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f1f3f8;
+        border: none;
+        outline: none;
+         -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+
+    }
+    
+    #number_container{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center; 
+        padding-top:20px;
+        padding-bottom:20px;
+    }
+    
+    #country_select_container{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        text-align: center; 
+    }
+    
+    #country_select{
+        flex: 1;
+        width: 100%;
+        height: 60px;
+        border: 1px solid #a1a0a1;
+        outline: none;
+        font-size: 24px;
+        padding-left: 10px;
+        color: #545454;
+        background-color: white;
+        margin-left: 15px; 
+        margin-right: 15px; 
+    }
+    
+    #country_code_container{
+        flex: 3;
+        padding-right: 10px; 
+        padding-left: 15px; 
+    }
+    
+    #phone_number_container{
+        flex: 9;
+        padding-left: 10px; 
+        padding-right: 15px;  
+    }
+    
+    .country_code{
+        width: 100%;
+        border: 1px solid #a1a0a1;
+        height: 70px;
+        border-radius: 4px;
+        font-size: 24px;
+        padding-left: 15px;
+        outline: none;
+        color: #545454;
+        background-color: white;
+    }
+    
+    .phone_number{
+        width: 100%;
+        border: 1px solid #a1a0a1;
+        height: 70px;
+        border-radius: 4px;
+        font-size: 24px;
+        padding-left: 15px;
+        outline: none;
+        color: #545454;
+        background-color: white;
+    }
+
+    #sign_up{
+        margin-top: 0px;
+        margin-left: 15px;
+        width: calc(100% - 30px);
+        height: 60px;
+        font-size: 20px;
+        border-radius: 4px;
+        outline: none;
+         background-color: #3a7ff5;
+       color: #f8faff; 
+       border: none;
+       }
+    
+    .error{
+        border: 1px solid #ed1c24;
+    }
+</style>
+
+
+</head>
+
+<body>
+
+    <div id="top_container">
+       Sign Up
+    </div>
+    <button type="button" id="cancel_btn">Cancel</button>
+    
+    <div class="text"> Select your country and enter your mobile number. </div>
+    
+  <div id="country_select_container">  
+        <select id="country_select">
+            <option value="+1">United States</option>
+            <option value="+61">Australia</option>
+            <option value="+1">Canada</option>
+            <option value="+45">Denamrk</option>
+            <option value="+358">Finland</option>
+            <option value="+353">Ireland</option>
+            <option value="+47">Norway</option>
+            <option value="+46">Sweden</option>
+            <option value="+44">United Kingdom</option>
+        </select>
+  </div>
+
+    
+  <div id="number_container">
+            
+      <div id="country_code_container">
+          <input type="tel" name="tel" id="country_code" class="country_code" value="+1" readonly>
+      </div>
+      <div id="phone_number_container">
+          <input type="tel" name="tel" id="phone_number" class="phone_number">
+      </div>
+  </div>
+
+    
+
+      <button type="button" id="sign_up">Sign Up</button>
+   <div class="text"> Clicking “Sign Up” means you agree to our tems and privacy policy </div>
+
+<script type="text/javascript" src="./js/socketio.js"></script>
+<script>
+
+    var socket = io.connect('https://dev.freemit.tech');
+//-- SET UP EVENT LISTENERS
+document.getElementById("sign_up").addEventListener("click", getCode);
+document.getElementById("cancel_btn").addEventListener("click", cancelBtn);
+document.getElementById("country_select").addEventListener("change", countrySelect);
+
+
+//-- GET AND CHECK THE CODE AND NUMBER
+function getCode() {
+    var countryCode = document.getElementById("country_code").value;
+    var phoneNumber = document.getElementById("phone_number").value;
+    var countrySelect = document.getElementById("country_select").text;
+    var countrySelected = document.getElementById("country_select");
+    var country = countrySelected.options[countrySelected.selectedIndex].text;
+    
+    if(countryCode.length <= 1){
+        var countryCodeCheck = false;
+        document.getElementById("country_code").classList.add("error");
+    } else {
+        countryCodeCheck = true;
+        document.getElementById("country_code").classList.remove("error");
+    };
+    
+    if(phoneNumber.length <= 6){
+        var phoneNumberCheck = false;
+        document.getElementById("phone_number").classList.add("error");
+    } else{
+        phoneNumberCheck = true;
+        document.getElementById("phone_number").classList.remove("error");
+    };
+    
+    if(phoneNumberCheck == true && countryCodeCheck == true ){
+        sendCode(countryCode, phoneNumber, country);
+    }
+}
+
+//-- IF THE CHECKS PASS THEN SEND THE NUMBER
+function sendCode(countryCode, phoneNumber, country){
+        
+        socket.emit('sendVerificationCode', {country:country, countryCode:countryCode, phoneNumber:phoneNumber });
+        // SAVE PHONE NUMBER AND LOC TO LOCAL STORAGE
+        localStorage.setItem('phoneNumber', phoneNumber);
+        localStorage.setItem('countryCode', countryCode);
+        localStorage.setItem('prevloc', '/signup.html');     
+        // WAIT FOR SERVER TO CONFIRM SMS HAS BEEN SENT THEN REDIRECT
+        socket.on('sendVerificationCode', function (msg) {
+           window.location.href = './verify.html';
+        });        
+}
+
+//-- CHANGE THE COUNTRY CODE
+function countrySelect(){
+    var countrySelect = document.getElementById("country_select");
+    var CountryCode = countrySelect.options[countrySelect.selectedIndex].value;
+    document.getElementById("country_code").value = CountryCode;
+}
+
+//-- GO BACK TO HOME
+function cancelBtn() {
+     history.go(-1);
+}
+
+
+</script>
+
+
+</body>
+
+</html>

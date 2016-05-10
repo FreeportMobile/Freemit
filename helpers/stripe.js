@@ -4,15 +4,14 @@ var stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 
 //----------------------------- CREATE CHARGE
-exports.createCharge = function (amount, currency, source, description, metadata, idempotencyKey) {
-    return new Promise(function(resolve, reject) {
-      
+exports.createCharge = function (value, currency, source, description, metadata, idempotencyKey) {
+    return new Promise(function(resolve, reject) { 
         stripe.charges.create({
-            amount: amount, // value or amount 400 = 400 CHECK decimal position!
-            currency: currency, // usd, gbp
-            source: source, // obtained with Stripe.js ?????
-            description: description, // string 
-            metadata: metadata // JSON FORMATED
+            amount: value * 100, // STRIPE WANTS THE AMOUNT IN CENTS 
+            currency: currency, 
+            source: source, 
+            description: description, 
+            metadata: metadata,
         }, {
             idempotency_key: idempotencyKey // unique key for each charge gnerate on client
             }, function(err, charge) {
@@ -27,8 +26,8 @@ exports.createCharge = function (amount, currency, source, description, metadata
 }; //-- END FUNCTION
 
 
-//----------------------------- CREATE CHARGE
-exports.paymentOut = function (phoneNumber, verificationCode) {
+//----------------------------- TRANSFER
+exports.transfer = function (phoneNumber, verificationCode) {
     return new Promise(function(resolve, reject) {
  
          

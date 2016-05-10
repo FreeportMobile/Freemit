@@ -1,0 +1,226 @@
+<html>
+
+<head>
+    <script src="cordova.js"></script>
+    <title>Freemit - Balance</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no">
+    
+    
+<style>
+    
+  *, *:before, *:after {
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+     }
+     
+     input, input:before, input:after {
+      -webkit-user-select: initial;
+      -khtml-user-select: initial;
+      -moz-user-select: initial;
+      -ms-user-select: initial;
+      user-select: initial;
+     } 
+
+    body{
+        font-family: Arial, Helvetica, sans-serif;
+        padding-top: 195px;
+        background: white;
+   }
+   
+       #top_container{
+        color: #46484d;
+        font-size: 22px;
+        font-weight: bold;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        padding-top:20px; 
+        height: 55px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f1f3f8;
+        border-bottom: 1px solid #afb1b6;
+    }
+    
+    
+    #wallet_navigation{
+        align-items: center;
+        display: flex;
+        width: 100%;
+        height: 45px;
+        position: fixed;
+        left: 0px;
+        top:76px;
+          }
+  
+   .wallet_buttons{
+       flex: 1;
+       text-align: center;
+       color: #afb1b6;
+       font-size: 12px;
+       height: 70%;
+       cursor: hand;
+       cursor: pointer;
+       padding-top: 15px;
+           
+   }
+   
+    .wallet_buttons:nth-child(1) {
+        border-right: 1px solid #afb1b6;
+        border-bottom: 1px solid #afb1b6;
+            background: #f8faff; 
+    }
+
+
+   .wallet_buttons:nth-child(3) {
+        border-left: 1px solid #afb1b6;
+        border-bottom: 1px solid #afb1b6;
+            background: #f8faff; 
+    }
+   
+   .wallet_icon{
+        height: auto; 
+        width: auto; 
+        max-width: 40px; 
+        max-height: 40px;
+        padding-bottom: 10px;
+   }
+   
+   
+    .withdraw_topup_btn{
+        color: #3a7ff5;
+        margin-left: 15px;
+        width: 100%;
+        height: 60px;
+        font-size: 20px;
+        border-radius: 4px;
+        outline: none;
+        border: 1px solid #3a7ff5;
+        margin-bottom: 15px;
+    }
+    
+     #top_up_btn{
+        margin-top: 0px;
+        margin-left: 15px;
+        width: calc(100%);
+        height: 60px;
+        font-size: 20px;
+        border-radius: 4px;
+        outline: none;
+         background-color: #3a7ff5;
+       color: #f8faff; 
+       border: none;
+    }
+    
+    #withdraw_topup_container{
+           height: 155px;
+        width: calc(100% - 30px);
+        position: fixed;
+        bottom: 0px;
+        left: 0px;
+    }
+    
+    #balance{
+        font-size: 120px;
+        width: 100%;
+        text-align: center;
+        color: #cecece;
+        height: 180px;
+        letter-spacing: -0.06em;
+       
+    }
+    
+    #balance_strap{
+        font-size: 16px;
+         width: 100%;
+        text-align: center;
+        color: #cecece;
+    }
+    
+    #currency_symbol{
+       
+        width: 35px;
+        height: 35px;
+        text-align: center;
+        color: #cecece;  
+    }
+    
+</style>
+
+</head>
+
+<body>
+    <div id="top_container">
+       Balance
+    </div>
+
+
+    
+    <div id="wallet_navigation">
+        <div class="wallet_buttons" id="pay_btn" >Pay</div>
+        <div class="wallet_buttons" id="balance_btn">Balance</div>
+        <div class="wallet_buttons" id="card_button">Card</div>
+    </div>
+    
+    <div id="balance">
+        0
+    </div>
+    <span id="currency_symbol"></span>
+        
+    
+    <div id="balance_strap">
+        My balance is
+    </div>
+    
+    
+    
+ <div id="withdraw_topup_container">   
+    <button type="button" class="withdraw_topup_btn" id="top_up_btn">Top Up</button>
+    <button type="button" class="withdraw_topup_btn" id="withdraw_btn">Withdraw</button>
+</div>  
+
+<script type="text/javascript" src="./js/socketio.js"></script>
+
+<script>
+
+//-- PREPARE TO CONNECT THE SOCKET
+    var socket = io.connect('https://dev.freemit.tech');
+    
+    //-- GET THE JWT
+    var jwt = localStorage.getItem("jwt");
+        
+    //-- FIRE THE SOCKET
+    alert('Sending JWT');
+    socket.emit('getBalance', {jwt:jwt});
+    
+    socket.on('getBalance', function (msg) {
+        alert('Balance Recieved');
+           var balance = msg.balance;
+           var currencySymbol = msg.currencySymbol;
+           document.getElementById("balance").innerHTML = balance;
+           document.getElementById("currency_symbol").innerHTML = currencySymbol;
+    });     
+    
+//-- NAVIGATION
+    document.getElementById("top_up_btn").addEventListener("click", topUp);
+    document.getElementById("withdraw_btn").addEventListener("click", withdraw);
+    document.getElementById("pay_btn").addEventListener("click", payBtn);
+    document.getElementById("balance_btn").addEventListener("click", balanceBtn);
+    document.getElementById("card_button").addEventListener("click", cardBtn);
+
+    function payBtn(){window.location.href = './pay.html';}
+    function balanceBtn(){window.location.href = './balance.html';}
+    function cardBtn(){window.location.href = './card.html';}
+    function topUp(){window.location.href = './topup.html';}
+    function withdraw(){window.location.href = './withdraw.html';}
+
+</script>
+
+</body>
+</html>

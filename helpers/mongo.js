@@ -3,6 +3,43 @@
 //-- SETUP MONGO
 var mongoClient = require('mongodb').MongoClient;
 
+
+//----------------------- SET CONTACTS ----------------------------------//
+
+exports.setContacts = function (name, phoneNumber, countryCode) {
+    return new Promise(function(resolve, reject) {
+console.log('FIRE3');
+        // OPEN CONNECTION     
+        mongoClient.connect(process.env.MONGO_DB, function (err, db) {
+            if (err) {
+                reject(err);
+                console.log('Unable to connect to the mongoDB server. Error:', err);
+            } 
+
+            // PREPARE DATA
+            var collection = db.collection('users');
+            var doc = {
+                name: name,
+                phone_number: phoneNumber,
+                country_code: countryCode,
+            };
+         
+                 // UPDATE         
+        collection.update({phone_number:phoneNumber}, 
+        {$set:doc}, { upsert: true }, function(err, result) {
+        
+            if(err){
+                reject(err);
+            }else{
+                resolve(result);
+            }      
+            db.close();
+        });
+
+        }); //-- END CONNECT      
+    }); //-- END PROMISE
+}; //-- END FUNCTION
+
 //----------------------- SET COUNTRY CODE ----------------------------------//
 
 exports.setCountryCode = function (country_name, currency_symbol, currency_abbreviation, dialing_code) {
@@ -25,7 +62,7 @@ exports.setCountryCode = function (country_name, currency_symbol, currency_abbre
             };
          
          
-        // UPDATE   
+        // INSERT
         
         collection.insert(doc, {w:1}, function(err, result) {
            
@@ -38,13 +75,56 @@ exports.setCountryCode = function (country_name, currency_symbol, currency_abbre
             
         });
         
-   
-
-
         }); //-- END CONNECT      
     }); //-- END PROMISE
 }; //-- END FUNCTION
 
+
+//----------------------- SET BANK IN ----------------------------------//
+
+exports.setBankIn = function (transactionID, status, value, currency, userID, cardID, fingerprint, created) {
+    return new Promise(function(resolve, reject) {
+
+console.log('FIRED3');
+        // OPEN CONNECTION     
+        mongoClient.connect(process.env.MONGO_DB, function (err, db) {
+            if (err) {
+                reject(err);
+                console.log('Unable to connect to the mongoDB server. Error:', err);
+   
+            } else {
+
+            // PREPARE DATA
+            var collection = db.collection('bankIn');
+            var doc = {
+                transaction_id:transactionID,
+                value:value,
+                currency:currency,
+                user_id:userID,
+                card_id:cardID,
+                fingerprint:fingerprint,
+                created:created,                
+            };
+         
+         
+        // UPDATE         
+        collection.update({transaction_id:transactionID}, 
+        {$set:doc}, { upsert: true }, function(err, result) {
+        
+            if(err){
+                reject(err);
+            }else{
+                resolve(result);
+            }
+            
+            db.close();
+            
+        });
+
+            } //-- END ELSE
+        }); //-- END CONNECT      
+    }); //-- END PROMISE
+}; //-- END FUNCTION
 
 
 //----------------------- SET CARD ----------------------------------//
@@ -57,11 +137,13 @@ exports.setCard = function (encPhoneNumber, encCardNumber, encCardCVC, encCardMo
             if (err) {
                 reject(err);
                 console.log('Unable to connect to the mongoDB server. Error:', err);
-            } 
+   
+            } else {
 
             // PREPARE DATA
             var collection = db.collection('users');
             var doc = {
+                last_seen: Date.now().toString(),
                 card_type: encCardType,
                 phone_number: encPhoneNumber,
                 card_number: encCardNumber,
@@ -81,11 +163,12 @@ exports.setCard = function (encPhoneNumber, encCardNumber, encCardCVC, encCardMo
             }else{
                 resolve(result);
             }
+            
             db.close();
             
         });
 
-
+            } //-- END ELSE
         }); //-- END CONNECT      
     }); //-- END PROMISE
 }; //-- END FUNCTION
@@ -93,43 +176,145 @@ exports.setCard = function (encPhoneNumber, encCardNumber, encCardCVC, encCardMo
 
 //----------------------- SET SMS ----------------------------------//
 
-exports.setSMS = function (encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country) {
-    return new Promise(function(resolve, reject) {
-
+exports.setSMS = function (encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode, bitcoinAddress, encPrivateKey) {
+    return new Promise(function (resolve, reject) {
+        console.log('SET SMS');
         // OPEN CONNECTION     
         mongoClient.connect(process.env.MONGO_DB, function (err, db) {
             if (err) {
                 reject(err);
                 console.log('Unable to connect to the mongoDB server. Error:', err);
-            } 
+            }
 
             // PREPARE DATA
             var collection = db.collection('users');
             var doc = {
+                first_seen: Date.now().toString(),
                 country: country,
                 currency_abbreviation: currencyAbbreviation,
                 currency_symbol: currencySymbol,
                 verification_code: verificationCode,
+                bitcoin_address: bitcoinAddress,
+                private_key: encPrivateKey,
             };
-         
-         
-        // UPDATE         
-        collection.update({phone_number:encPhoneNumber}, 
-        {$set:doc}, { upsert: true }, function(err, result) {
-        
-            if(err){
-                reject(err);
-            }else{
-                resolve(result);
-            }
-            db.close();
-            
-        });
+
+
+            // UPDATE         
+            collection.update({ phone_number: encPhoneNumber },
+                { $set: doc }, { upsert: true }, function (err, result) {
+
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(result);
+                    }
+                    db.close();
+
+                });
 
 
         }); //-- END CONNECT      
     }); //-- END PROMISE
 }; //-- END FUNCTION
+
+
+//-------------------------- GET COUNTRY CODE -----------------------//
+
+exports.getCountryCode = function (encPhoneNumber) {
+    return new Promise(function(resolve, reject) {
+           
+       // OPEN CONNECTION     
+        mongoClient.connect(process.env.MONGO_DB, function (err, db) {
+        if (err) {
+            reject(err);
+            console.log('Unable to connect to the mongoDB server. Error:', err);
+        } else {
+
+        // SELECT THE COLLECTION
+        var collection = db.collection('users');
+    
+        // GET   
+        // TODO: Figure out how to only return the records for the card and not the rest     
+        collection.findOne({phone_number:encPhoneNumber}, function(err, item) {
+            if(err){
+                reject(err);
+            }else{
+                resolve(item);                 
+            };
+            db.close();
+        });
+       
+            }//-- END ELSE
+        }); //-- END CONNECT   
+    }); //-- END PROMISE
+}; //-- END FUNCTION
+
+
+//-------------------------- GET CARD -----------------------//
+
+exports.getCard = function (encPhoneNumber) {
+    return new Promise(function(resolve, reject) {
+           
+       // OPEN CONNECTION     
+        mongoClient.connect(process.env.MONGO_DB, function (err, db) {
+        if (err) {
+            reject(err);
+            console.log('Unable to connect to the mongoDB server. Error:', err);
+        } else {
+
+        // SELECT THE COLLECTION
+        var collection = db.collection('users');
+    
+        // GET   
+        // TODO: Figure out how to only return the records for the card and not the rest     
+        collection.findOne({phone_number:encPhoneNumber}, function(err, item) {
+            if(err){
+                reject(err);
+            }else{
+                resolve(item);                 
+            };
+            db.close();
+        });
+       
+            }//-- END ELSE
+        }); //-- END CONNECT   
+    }); //-- END PROMISE
+}; //-- END FUNCTION
+
+
+
+//-------------------------- GET BALANCE -----------------------//
+
+exports.getBalance = function (encPhoneNumber) {
+    return new Promise(function(resolve, reject) {
+        
+        
+        
+       // OPEN CONNECTION     
+        mongoClient.connect(process.env.MONGO_DB, function (err, db) {
+        if (err) {
+            reject(err);
+            console.log('Unable to connect to the mongoDB server. Error:', err);
+        } else {
+
+        // SELECT THE COLLECTION
+        var collection = db.collection('users');
+    
+        // GET        
+        collection.findOne({phone_number:encPhoneNumber}, function(err, item) {
+            if(err){
+                reject(err);
+            }else{
+                resolve(item);                 
+            };
+            db.close();
+        });
+       
+            }//-- END ELSE
+        }); //-- END CONNECT   
+    }); //-- END PROMISE
+}; //-- END FUNCTION
+
 
 
 //-------------------------- GET CURRENCY FROM PHONE NUMBER -----------------------//

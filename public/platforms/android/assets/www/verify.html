@@ -1,0 +1,222 @@
+<html>
+
+<head>
+    <script src="cordova.js"></script>
+    <title>Freemit - Verify</title>
+    <meta name="format-detection" content="telephone=no">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no">
+    
+    
+<style>
+    body{
+        font-family: Arial, Helvetica, sans-serif;
+        padding-top: 65px;
+        background: #f8faff;
+    }
+    
+    .text{
+        font-size: 15px;
+        display: flex;
+        justify-content: center;
+        color: #aeb0b5;
+        width: calc(100% - 60px);
+        text-align: center;
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-bottom: 15px;
+        padding-top: 15px;
+    }
+    
+    
+      #show_number{
+        color: #46484d;
+        font-size: 15px;
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+        color: #656565;
+        width: calc(100% - 60px);
+        text-align: center;
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-bottom: 0px;
+        padding-top: 0px;
+        text-decoration: none;
+    }
+
+    #top_container{
+        color: #46484d;
+        font-size: 22px;
+        font-weight: bold;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        padding-top:20px; 
+        height: 55px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f1f3f8;
+        border-bottom: 1px solid #afb1b6;
+    }
+    
+    #Cancel_btn{
+        color: #46484d;
+        padding-top:20px; 
+        margin-top: 10px;
+        font-size: 14px;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        height: 55px;
+        width: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f1f3f8;
+        border: none;
+        outline: none;
+         -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    }
+    
+    #number_container{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-top:20px;
+        padding-bottom:20px;
+    }
+    
+    #verification_code_container{
+        flex: 3;
+        padding-right: 10px; 
+        padding-left: 15px; 
+    }
+    
+
+    
+    .verification_code{
+        width: 100%;
+        border: 1px solid #a1a0a1;
+        height: 70px;
+        border-radius: 4px;
+        font-size: 24px;
+        text-align: center; 
+        outline: none;
+        color: #545454;
+        background-color: white;
+    }
+    
+
+    #verify{
+        margin-top: 0px;
+        margin-left: 15px;
+        width: calc(100% - 30px);
+        height: 60px;
+        font-size: 20px;
+        border-radius: 4px;
+        outline: none;
+         background-color: #3a7ff5;
+       color: #f8faff; 
+       border: none;
+    }
+    
+    .error{
+        border: 1px solid #ed1c24;
+    }
+</style>
+
+
+</head>
+
+<body>
+
+    <div id="top_container">
+       Verify
+    </div>
+    <button type="button" id="cancel_btn">Cancel</button>
+    
+    <div class="text">A verification code has been sent to:</div> 
+    <div id="show_number"></div>
+    
+  <div id="number_container">
+      <div id="verification_code_container">
+          <input type="tel" name="tel" id="verification_code" class="verification_code">
+      </div>
+
+  </div>
+      <button type="button" id="verify">Verify</button>
+   <div class="text" id="count"></div>
+
+<script type="text/javascript" src="./js/socketio.js"></script>
+<script>
+  document.addEventListener("deviceready", function(){ 
+       },true);   
+//-- 60 SECOND COUNTDOWN
+var count = 60, timer = setInterval(function() {
+    document.getElementById("count").innerHTML = 'Your SMS should arrive within '+(count--)+' seconds' ;
+    if(count == 0){
+        clearInterval(timer);
+         document.getElementById("count").innerHTML = "";
+    } 
+}, 1000);
+
+//-- SET UP EVENT LISTENERS
+document.getElementById("verify").addEventListener("click", verify);
+document.getElementById("cancel_btn").addEventListener("click", cancelBtn);
+
+//-- GET & SET THE PHONE NUMBER
+var phoneNumber = localStorage.getItem("phoneNumber");
+var countryCode = localStorage.getItem("countryCode");
+document.getElementById("show_number").innerHTML = countryCode +'-'+phoneNumber;
+
+//-- GET AND CHECK THE VERIFICATION CODE
+function verify() {
+    var verificationCode = document.getElementById("verification_code").value;
+
+    if(verificationCode.length <= 3){
+        var verificationCodeCheck = false;
+        document.getElementById("verification_code").classList.add("error");
+    } else {
+        verificationCodeCheck = true;
+        document.getElementById("verification_code").classList.remove("error");
+        sendCode(verificationCode, countryCode, phoneNumber); // We need to have the number from the previous page, vave it in lcal storage or cookie
+    };   
+}
+
+//-- IF THE CHECK PASSES THEN SEND THE VERIFICTION CODE
+function sendCode(verificationCode, countryCode, phoneNumber){   
+    console.log('send'); 
+        var socket = io.connect('https://dev.freemit.tech');
+        socket.emit('checkVerificationCode', {verificationCode:verificationCode, countryCode:countryCode, phoneNumber:phoneNumber });
+        
+        socket.on('checkVerificationCode', function (msg) {
+         
+            if(msg.result == true){
+                localStorage.clear();
+                localStorage.setItem('jwt', msg.jwt);
+                window.location.href = './card.html';
+
+                // TODO: If the user has logged in before take them to home.html not card.html
+                // what if the user requests 2 tokens, the first arives and fails, user then requests 3rd and enters second!!!
+            } else {
+                // TODO: Handle this error! Tel them the verification code was wrong
+            }         
+        });    
+}
+
+
+//-- GO BACK TO HOME
+function cancelBtn() {
+    history.go(-1);
+}
+
+</script>
+
+
+</body>
+
+</html>
