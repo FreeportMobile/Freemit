@@ -221,6 +221,7 @@ document.getElementById("country_select").addEventListener("change", countrySele
 
 //-- GET AND CHECK THE CODE AND NUMBER
 function getCode() {
+    alert('SENDING1');
     var countryCode = document.getElementById("country_code").value;
     var phoneNumber = document.getElementById("phone_number").value;
     var countrySelect = document.getElementById("country_select").text;
@@ -250,7 +251,7 @@ function getCode() {
 
 //-- IF THE CHECKS PASS THEN SEND THE NUMBER
 function sendCode(countryCode, phoneNumber, country){
-        
+         alert('SENDING2');
         socket.emit('sendVerificationCode', {country:country, countryCode:countryCode, phoneNumber:phoneNumber });
         // SAVE PHONE NUMBER AND LOC TO LOCAL STORAGE
         localStorage.setItem('phoneNumber', phoneNumber);
@@ -258,6 +259,7 @@ function sendCode(countryCode, phoneNumber, country){
         localStorage.setItem('prevloc', '/signup.html');     
         // WAIT FOR SERVER TO CONFIRM SMS HAS BEEN SENT THEN REDIRECT
         socket.on('sendVerificationCode', function (msg) {
+             alert('SENDING3');
            window.location.href = './verify.html';
         });        
 }
