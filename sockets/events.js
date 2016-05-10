@@ -5,6 +5,8 @@ module.exports = function (io) {
 //-- CONNECT 
     io.on('connect', function (socket, msg) {
         
+        console.log('SOCKET CONNECTED');
+        
 //-- SET LAST ACTIVITY FOR RATE LIMITING        
        socket.lastAcivity = new Array(Date.now().toString());
 
