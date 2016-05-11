@@ -150,7 +150,7 @@ exports.checkVerificationCode = function (socket, io, msg) {
 //---------------------------------------- SEND VERIFICATION CODE
 exports.sendVerificationCode = function (socket, io, msg) {
     var phoneNumber = msg.countryCode + msg.phoneNumber;
-    var encPhoneNumber =crypto.encrypt(phoneNumber);
+    var encPhoneNumber = crypto.encrypt(phoneNumber);
     var verificationCode = Math.floor(1000 + Math.random() * 9000);
     var message = "Your Freemit code is: " + verificationCode;
     var countryCode = msg.countryCode;
@@ -162,6 +162,7 @@ exports.sendVerificationCode = function (socket, io, msg) {
             var currencySymbol = data.currency_symbol;
             var currencyAbbreviation = data.currency_abbreviation;
              console.log('********* ABOUT TO CALL COLU MAKE ADDRESS ************');
+            
             colu.makeAddress()
             .then(function(data) {
                 console.log('********** FINISHED CALLING COLU MAKE ADDRESS ***********');
@@ -172,14 +173,14 @@ exports.sendVerificationCode = function (socket, io, msg) {
                 mongo.setSMS(encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode, bitcoinAddress, encPrivateKey)
             })  
        })
-       .then(function(data) {
-            console.log('********* SEND SMS ************');
-           twillio.sendSMS(phoneNumber, message);
-       })
-       .then(function(data) {
-            console.log('********* ASK USER FOR CODE ************');
-           io.to(socket.id).emit('sendVerificationCode', {msg: 200});
-       })
+    //    .then(function(data) {
+    //         console.log('********* SEND SMS ************');
+    //        twillio.sendSMS(phoneNumber, message);
+    //    })
+    //    .then(function(data) {
+    //         console.log('********* ASK USER FOR CODE ************');
+    //        io.to(socket.id).emit('sendVerificationCode', {msg: 200});
+    //    })
        .catch(function(err) {
             console.log('********* ERROR ************');
            console.log(err);

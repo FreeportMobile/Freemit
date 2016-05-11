@@ -18,7 +18,9 @@ exports.makeAddress = function () {
             var result = {privateKey: privateKey, bitcoinAddress: bitcoinAddress};
              console.log('********* COLU DETAILS ************');
             console.log(privateKey);
+             console.log('********* COLU DETAILS ************');
             console.log(bitcoinAddress);
+             console.log('********* COLU DETAILS ************');
             console.log(result);
              console.log('********* MAKE ADDRESS COMPLETE ************');
             fulfill(result);
