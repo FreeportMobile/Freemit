@@ -1,8 +1,5 @@
 'use strict';
 
-//-- MAKE COLU AVAILABLE
-var colu = require('../helpers/colu.js');
-
 
 module.exports = function (io) {
 
@@ -44,7 +41,7 @@ module.exports = function (io) {
         
         socket.on('topup', function (msg) {
             rateLimiter(socket);
-            freemit.user.topUp(socket, io, msg);           
+            freemit.user.topUp(socket, io, msg);
         });
         
         socket.on('saveContacts', function (msg) {
