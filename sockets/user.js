@@ -40,15 +40,11 @@ exports.saveContacts = function (socket, io, msg) {
 //----------------------------------------- TOP UP
 exports.topUp = function (socket, io, msg) {
     console.log('topup');
-    console.log('----- MSG FROM APP -----');
-    console.log(msg);
     // READ THE JWT
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     // GET CARD DETAILS FROM MONGO
     mongo.getCard(encPhoneNumber)
         .then(function(data) {
-            console.log('----- MONGO DATA -----');
-            console.log(data);
             if(data.card_number){
                 var value = msg.value; // TODO: Change namr value to amount
                 // DECRYPT THE CARD DTAILS AND PREPARE DATA FOR STRIPE
@@ -68,26 +64,23 @@ exports.topUp = function (socket, io, msg) {
                 // DONT ALLOW USER TO DOUBLE CHARGE ACCIDENTLY 
                 var idempotencyKey = msg.idempotencyKey;
                 // SEND REQUEST TO STRIPE
-                console.log('----- START -----');
-                console.log(value);
-                console.log('----------');
-                console.log(currency);
-                console.log('----------');
-                console.log(source);
-                console.log('----------');
-                console.log(description);
-                console.log('----------');
-                console.log(metadata);
-                console.log('----------');
-                console.log(idempotencyKey);
-                console.log('---- END -----');
                 stripe.createCharge(value, currency, source, description, metadata, idempotencyKey)
-                        .then(function(data) {
-                           colu.addAsset(currency, value, bitcoinAddress);
-                     })
-                        .catch(function(err) {
-                            io.to(socket.id).emit('topup', {error: err.raw.message});
-                        });                         
+                .then(function(data) {
+                            console.log('---------- CALLING COLU ------------');
+                            colu.addAsset(currency, value, bitcoinAddress)
+                                .then(function(data) {
+                                console.log('---------- COLU RESPONSE ------------');
+                                console.log(data);
+                            })
+                            .catch(function(err) {
+                                console.log('---------- COLU ERROR ------------');
+                                console.log(err);
+                            });       
+                        })
+                .catch(function(err) {
+                    io.to(socket.id).emit('topup', {error: err.raw.message});
+                });
+                                                 
             } else {
                 io.to(socket.id).emit('topup', {error: 'noCard'});
             }// END ELSE        

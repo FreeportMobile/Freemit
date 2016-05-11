@@ -70,6 +70,7 @@ exports.getAssets = function (bitcoinAddress) {  // Get Balance of Public Bitcoi
 //------------------------------------------------- ADD ASSET TO ADDRESS --------------------------
 
 exports.addAsset = function (currency, amount, publicAddress) {
+    console.log('---------- ADD ASSET ------------');
     return new Promise(function (fulfill, reject) { // Create Promise
        
      // TODO: Link this to our database of currencies
