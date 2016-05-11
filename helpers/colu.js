@@ -126,15 +126,21 @@ console.log('--------------- END -----------------');
                 amount: amount
             }]
         };
+        
+console.log('--------------- SEND -----------------');
+console.log(send);
+
         var settings = {
 	        "network": "mainnet",
 	        "privateSeed":process.env.COLU_PRIVATE_SEED,
 	        "apiKey": process.env.COLU_APIKEY
 }
+console.log('--------------- SETTINGS -----------------');
+console.log(settings);
 
         var colu = new Colu(settings);
         colu.on('connect', function () {  //  Once connected perform function
-            console.log("connected");
+console.log('--------------- CONNECTED -----------------');
             colu.sendAsset(send, function (err, body) {
                 if (err) {
                     reject(err);
