@@ -9,7 +9,7 @@ var mongo = require('../helpers/mongo.js');
 //-- MAKE STRIPE AVAILABLE
 var stripe = require('../helpers/stripe.js');
 //-- MAKE COLU AVAILABLE
-var colu = require('../helpers/colu.js');
+var colu23 = require('../helpers/colu23.js');
 
 //----------------------------------------- SAVE CONTACTS
 exports.saveContacts = function (socket, io, msg) {
@@ -40,11 +40,14 @@ exports.saveContacts = function (socket, io, msg) {
 //----------------------------------------- TOP UP
 exports.topUp = function (socket, io, msg) {
     
+    colu23.addAsset("USD",6,'1KCZDRbwhpBh55NPf9mVUQyyCbLzMXopXG').then(function(result){
+    console.log(result);
+}).catch(function(result)
+{
+    console.log(result);
+});
     
-
-    
-    
-    console.log('topup');
+    console.log('#######################################');
     // READ THE JWT
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     // GET CARD DETAILS FROM MONGO
@@ -71,17 +74,16 @@ exports.topUp = function (socket, io, msg) {
                 // SEND REQUEST TO STRIPE
                 stripe.createCharge(value, currency, source, description, metadata, idempotencyKey)
                 .then(function(data) {
-
-
-
-
-
-
-
-
-
-   
+                        colu.addAsset(currency, value, bitcoinAddress)
+                        .then(function(data) {
+                            console.log('---------- COLU RESPONSE ------------');
+                            console.log(data);
                         })
+                        .catch(function(err) {
+                            console.log('---------- COLU ERROR ------------');
+                            console.log(err);
+                        });    
+                })
                 .catch(function(err) {
                     io.to(socket.id).emit('topup', {error: err.raw.message});
                 });
