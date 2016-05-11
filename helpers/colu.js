@@ -30,7 +30,7 @@ exports.getAssets = function (bitcoinAddress) {  // Get Balance of Public Bitcoi
            
         var settings = {
 	        "network": "mainnet",
-	        "privateSeed": process.env.COLU_PRIVATE_KEY,
+	        "privateSeed": process.env.COLU_PRIVATE_SEED,
 	        "apiKey": process.env.COLU_APIKEY
         }
 
@@ -69,7 +69,7 @@ exports.getAssets = function (bitcoinAddress) {  // Get Balance of Public Bitcoi
 
 //------------------------------------------------- ADD ASSET TO ADDRESS --------------------------
 
-exports.addAsset = function (currency, amount, publicAddress) {
+exports.addAsset = function (currency, amount, bitcoinAddress) {
     console.log('---------- ADD ASSET ------------');
     return new Promise(function (fulfill, reject) { // Create Promise
        
@@ -79,7 +79,7 @@ exports.addAsset = function (currency, amount, publicAddress) {
             return false;
         } 
         
-        exports.moveAsset("USD", "USD", process.env.COLU_PRIVATE_KEY, process.env.COLU_PUBLIC_ADDRESS, publicAddress, amount).then(function (result) {
+        exports.moveAsset("USD", "USD", process.env.COLU_PRIVATE_SEED, process.env.COLU_PUBLIC_ADDRESS, bitcoinAddress, amount).then(function (result) {
             fufill(result);
         }).catch(function (err) {
             reject(err)
@@ -112,7 +112,7 @@ exports.moveAsset = function (fromCurrency, toCurrency, privateKey, fromAddress,
         };
         var settings = {
 	        "network": "mainnet",
-	        "privateSeed":process.env.COLU_PRIVATE_KEY,
+	        "privateSeed":process.env.COLU_PRIVATE_SEED,
 	        "apiKey": process.env.COLU_APIKEY
 }
 
