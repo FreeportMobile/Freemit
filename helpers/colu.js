@@ -29,7 +29,12 @@ exports.getAssets = function (bitcoinAddress) {  // Get Balance of Public Bitcoi
     console.log(bitcoinAddress);
     return new Promise(function (fulfill, reject) { // Create Promise
         console.log('in promise');
-        var settings = {apiKey: process.env.COLU_APIKEY,network: 'mainnet',privateSeed: null};
+        
+        var settings = {
+            network: 'mainnet',
+            privateSeed: process.env.COLU_PRIVATE_KEY
+        };
+        
         console.log('in settings');
         var colu = new Colu(settings);
         console.log('in colu');
