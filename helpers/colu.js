@@ -26,12 +26,12 @@ exports.makeAddress = function () {
 
 //------------------------------------------------- GET ASSET BALLANCE --------------------------
 
-exports.getAssets = function (publicAddress) {  // Get Balance of Public Bitcoin Address
+exports.getAssets = function (bitcoinAddress) {  // Get Balance of Public Bitcoin Address
     return new Promise(function (fulfill, reject) { // Create Promise
         var colu = new Colu(settings);
         colu.on('connect', function () {  //  Once connected perform function
             
-            colu.coloredCoins.getAddressInfo(publicAddress, function (err, body) {
+            colu.coloredCoins.getAddressInfo(bitcoinAddress, function (err, body) {
                 if (err) {
                     reject(err); // Return promise rejected
                     return console.error(err);

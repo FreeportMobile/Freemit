@@ -86,7 +86,7 @@ exports.getBalance = function (socket, io, msg) {
     // GET ENCRYPTED POHONE NUMBER FROM JWT
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     // GET BALANCE FROM MONGO
-    colu.getAssets()
+    colu.getAssets('1pDbopMHNR1vNgUMrFPp4aduKkoqwxgQq')
         .then(function(data) {
             if(!data.total){
                 io.to(socket.id).emit('getBalance', {balance:0, currencySymbol:" "});
