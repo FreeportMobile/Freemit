@@ -40,12 +40,14 @@ exports.saveContacts = function (socket, io, msg) {
 //----------------------------------------- TOP UP
 exports.topUp = function (socket, io, msg) {
     console.log('topup');
+    console.log('----- MSG FROM APP -----');
     console.log(msg);
     // READ THE JWT
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     // GET CARD DETAILS FROM MONGO
     mongo.getCard(encPhoneNumber)
         .then(function(data) {
+            console.log('----- MONGO DATA -----');
             console.log(data);
             if(cardNumber){
                 var value = msg.value; // TODO: Change namr value to amount

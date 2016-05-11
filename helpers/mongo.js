@@ -239,6 +239,7 @@ exports.getCountryCode = function (encPhoneNumber) {
 //-------------------------- GET CARD -----------------------//
 
 exports.getCard = function (encPhoneNumber) {
+   console.log('----- MONGO GETTING CARD -----');
     return new Promise(function(resolve, reject) {
            
        // OPEN CONNECTION     
