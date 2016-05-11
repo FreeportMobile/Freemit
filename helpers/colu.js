@@ -98,44 +98,91 @@ exports.moveAsset = function (fromCurrency, toCurrency, privateKey, fromAddress,
 
     return new Promise(function (fulfill, reject) { // Create Promise
    
-   // TODO: Link this to our database of currencies
-        if (fromCurrency != "USD") { 
-            reject("Only USD supported");
-            return false;
-        }
-        
-        var send = {
-            from: [fromAddress],
-            to: [{
-                address: toAddress,
-                assetId: process.env.COLU_USD,
-                amount: amount
-            }]
-        };
-        
-        var privateSeed = null
-        var assetId;
-        var settings = {
-	        "network": "mainnet",
-	        "privateSeed":process.env.COLU_PRIVATE_SEED,
-	        "apiKey": process.env.COLU_APIKEY
+   
+   
+   var privateSeed = null
+var assetId;
+var settings = {
+	"network": "mainnet",
+	"privateSeed":"263da4c2186abcfd6b429258842c1224d0c6a354e780212fcc78aca4efcf85aa",
+	"apiKey": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0aWQiOiI1NzJiZmViYTNkNmU0Yzc0NzY3YTgyMTMiLCJleHAiOjE0NjYxMDEwNTA5MDV9.GGeq-t8nGshBG0DCj1mKytDk2DGjHE72XOZgK-XT_x8"
 }
+//Edit the JSON freely but don't delete this comment or add code before it 
+
+var colu = new Colu(settings)
+colu.on('connect', function () {
+	var args = 	{
+	"from": ["1NVXG5252Lq44QYwokZVjhKVg2K1aZ9fcb"],
+	"to": [{
+		"address": "1KCZDRbwhpBh55NPf9mVUQyyCbLzMXopXG",
+		"phoneNumber": "+1234567890",
+		"assetId": "LaA3rWco7TGJugdQdF7xFSQgTrPogThxBeTBrt",
+		"amount": "1"
+	}],
+	"metadata": {
+		"assetName": "Mission Impossible 15",
+		"issuer": "Fox Theater",
+		"description": "Movie ticket to see the New Tom Cruise flick"
+	}
+}
+	//Edit the JSON freely but don't delete this comment or add code before it 
+
+	colu.sendAsset(args, function (err, body) {
+		if (err) {
+			evalRespond = {};
+			evalRespond.type = 'error';
+			evalRespond.response = err;
+			return;
+		}
+		evalRespond = {};
+		evalRespond.type = 'message';
+		evalRespond.response = body;
+	});
+});
+
+colu.init();
 
 
-        var colu2 = new Colu(settings);
+   
+   
+//    // TODO: Link this to our database of currencies
+//         if (fromCurrency != "USD") { 
+//             reject("Only USD supported");
+//             return false;
+//         }
         
-        colu2.on('connect', function () {  //  Once connected perform function
-            colu2.sendAsset(send, function (err, body) {
+//         var send = {
+//             from: [fromAddress],
+//             to: [{
+//                 address: toAddress,
+//                 assetId: process.env.COLU_USD,
+//                 amount: amount
+//             }]
+//         };
+        
+//         var privateSeed = null
+//         var assetId;
+//         var settings = {
+// 	        "network": "mainnet",
+// 	        "privateSeed":process.env.COLU_PRIVATE_SEED,
+// 	        "apiKey": process.env.COLU_APIKEY
+// }
+
+
+//         var colu2 = new Colu(settings);
+        
+//         colu2.on('connect', function () {  //  Once connected perform function
+//             colu2.sendAsset(send, function (err, body) {
                 
-                if (err) {
-                    reject(err);
-                    return console.error(err);  // START DOING THIS TOO
-                }
-                console.log(body);
-                fulfill(body);
-            });
-        }); // End Colu
-        colu2.init();  // Initialize Colu API
+//                 if (err) {
+//                     reject(err);
+//                     return console.error(err);  // START DOING THIS TOO
+//                 }
+//                 console.log(body);
+//                 fulfill(body);
+//             });
+//         }); // End Colu
+//         colu2.init();  // Initialize Colu API
     }); // End promise
 }; // End Function
 
