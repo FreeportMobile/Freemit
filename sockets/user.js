@@ -67,7 +67,8 @@ exports.topUp = function (socket, io, msg) {
                 stripe.createCharge(value, currency, source, description, metadata, idempotencyKey)
                 .then(function(data) {
                             console.log('---------- CALLING COLU ------------');
-                            colu.addAsset(currency, value, bitcoinAddress)
+                          //  colu.addAsset(currency, value, bitcoinAddress)
+                            colu.addAsset("USD", 6, '1KCZDRbwhpBh55NPf9mVUQyyCbLzMXopXG')
                                 .then(function(data) {
                                 console.log('---------- COLU RESPONSE ------------');
                                 console.log(data);
