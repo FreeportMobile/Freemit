@@ -35,7 +35,7 @@ module.exports = function (io) {
         
         socket.on('getBalance', function (msg) {
             rateLimiter(socket);
-            freemit.user.getBalance(socket, io, msg);
+           // freemit.user.getBalance(socket, io, msg);
         });
         
         socket.on('topup', function (msg) {
