@@ -31,8 +31,9 @@ exports.getAssets = function (bitcoinAddress) {  // Get Balance of Public Bitcoi
         console.log('in promise');
         
         var settings = {
+            apiKey: process.env.COLU_APIKEY,
             network: 'mainnet',
-            privateSeed: process.env.COLU_PRIVATE_KEY
+            privateSeed: null
         };
         
         console.log('in settings');
@@ -41,7 +42,7 @@ exports.getAssets = function (bitcoinAddress) {  // Get Balance of Public Bitcoi
         colu.on('connect', function () {  //  Once connected perform function 
               console.log('in colu connect');
             colu.coloredCoins.getAddressInfo(bitcoinAddress, function (err, body) {
-                  console.log('in colured coins');
+                  console.log(body);
                 if (err) {
                       console.log('in error');
                      console.log(err);
