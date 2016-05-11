@@ -71,7 +71,7 @@ exports.topUp = function (socket, io, msg) {
                             io.to(socket.id).emit('topup', {error: err.raw.message});
                         });                         
             } else {
-                io.to(socket.id).emit('topup', {error: err.raw.message});
+                io.to(socket.id).emit('topup', {error: 'noCard'});
             }// END ELSE        
         }) // END THEN
         .catch(function(err) {
