@@ -49,9 +49,7 @@ colu.on('connect', function () {
 			evalRespond.response = err;
 			return;
 		}
-		evalRespond = {};
-		evalRespond.type = 'message';
-		evalRespond.response = body;
+            console.log(body);
 	})
 })
 colu.init()
