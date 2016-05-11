@@ -8,8 +8,8 @@ var crypto = require('../helpers/crypto.js');
 var mongo = require('../helpers/mongo.js');
 //-- MAKE STRIPE AVAILABLE
 var stripe = require('../helpers/stripe.js');
-//-- MAKE BLOCKCHAIN AVAILABLE
-var blockchain = require('../helpers/blockchain.js');
+//-- MAKE COLU AVAILABLE
+var colu = require('../helpers/colu.js');
 //-- MAKE BANK AVAILABLE
 var bank =  require('./bank.js');
 
@@ -149,7 +149,6 @@ exports.checkVerificationCode = function (socket, io, msg) {
 
 //---------------------------------------- SEND VERIFICATION CODE
 exports.sendVerificationCode = function (socket, io, msg) {
-    console.log('BANG 1');
     var phoneNumber = msg.countryCode + msg.phoneNumber;
     var encPhoneNumber =crypto.encrypt(phoneNumber);
     var verificationCode = Math.floor(1000 + Math.random() * 9000);
@@ -157,16 +156,14 @@ exports.sendVerificationCode = function (socket, io, msg) {
     var countryCode = msg.countryCode;
     var country = msg.country;
     var countryCode = msg.countryCode;
-    var keySet = blockchain.makeAddress();
     
      mongo.getCurrency(countryCode)
        .then(function(data) {
             var currencySymbol = data.currency_symbol;
             var currencyAbbreviation = data.currency_abbreviation;
             
-            blockchain.makeAddress()
+            colu.makeAddress()
             .then(function(data) {
-                var publicKey = data.publicKey;
                 var bitcoinAddress = data.bitcoinAddress;
                 var privateKey = data.privateKey;
                 var encPrivateKey = crypto.encrypt(privateKey);
