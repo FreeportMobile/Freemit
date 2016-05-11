@@ -1,5 +1,9 @@
 'use strict';
 
+//-- MAKE COLU AVAILABLE
+var colu = require('../helpers/colu.js');
+
+
 module.exports = function (io) {
 
 //-- CONNECT 
