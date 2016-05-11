@@ -23,7 +23,7 @@ exports.makeAddress = function () {
     }); // End Promise
 }; // End Functoiin
 
-//------------------------------------------------- GET ASSET BALLANCE --------------------------
+//------------------------------------------------- GET ASSETS BALANCES --------------------------
 
 exports.getAssets = function (bitcoinAddress) {  // Get Balance of Public Bitcoin Address
     return new Promise(function (fulfill, reject) { // Create Promise
@@ -43,7 +43,7 @@ exports.getAssets = function (bitcoinAddress) {  // Get Balance of Public Bitcoi
 	            colu.coloredCoins.getAddressInfo(args.address, function (err, body) {
 		            if (err) {
                         reject(err);
-			        return;
+			            return;
 		            }
                     var total = 0;  
                     for (var i = 0; i < body.utxos.length; i++) {  // Iterate through all bitcoin transactions
