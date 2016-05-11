@@ -86,12 +86,12 @@ exports.getBalance = function (socket, io, msg) {
     // GET ENCRYPTED POHONE NUMBER FROM JWT
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     // GET BALANCE FROM MONGO
-    mongo.getBalance(encPhoneNumber)
+    colu.getAssets()
         .then(function(data) {
-            if(!data.balance){
-                io.to(socket.id).emit('getBalance', {balance:0, currencySymbol:data.currency_symbol});
+            if(!data.total){
+                io.to(socket.id).emit('getBalance', {balance:0, currencySymbol:" "});
             }else{
-                io.to(socket.id).emit('getBalance', {balance: data.balance, currencySymbol:data.currency_symbol});
+                io.to(socket.id).emit('getBalance', {balance: data.total, currencySymbol:data.currencyAbbreviation});
             }
             
         })
@@ -161,11 +161,9 @@ exports.sendVerificationCode = function (socket, io, msg) {
        .then(function(data) {
             var currencySymbol = data.currency_symbol;
             var currencyAbbreviation = data.currency_abbreviation;
-             console.log('********* ABOUT TO CALL COLU MAKE ADDRESS ************');
             
             colu.makeAddress()
             .then(function(data) {
-                console.log('********** FINISHED CALLING COLU MAKE ADDRESS ***********');
                 console.log(data);
                 var bitcoinAddress = data.bitcoinAddress;
                 var privateKey = data.privateKey;
@@ -174,15 +172,12 @@ exports.sendVerificationCode = function (socket, io, msg) {
             })  
        })
        .then(function(data) {
-            console.log('********* SEND SMS ************');
            twillio.sendSMS(phoneNumber, message);
        })
        .then(function(data) {
-            console.log('********* ASK USER FOR CODE ************');
            io.to(socket.id).emit('sendVerificationCode', {msg: 200});
        })
        .catch(function(err) {
-            console.log('********* ERROR ************');
            console.log(err);
 	       // TODO: Handle this error!
         });

@@ -9,22 +9,15 @@ var colu = new Colu(settings);
 //------------------------------------------------- MAKE ADDRESS --------------------------
 
 exports.makeAddress = function () {
-    console.log('############ MAKE ADDRESS ##############');
-    var settings = {apiKey: process.env.COLU_APIKEY,network: 'mainnet',privateSeed: null};
-var colu = new Colu(settings);
     return new Promise(function (fulfill, reject) { // Create Promise
+        var colu = new Colu(settings);
         colu.on('connect', function () {
-
             var privateKey = colu.hdwallet.getPrivateSeed();
             var bitcoinAddress = colu.hdwallet.getAddress();
             var result = {privateKey: privateKey, bitcoinAddress: bitcoinAddress};
-             console.log('********* COLU DETAILS ************');
             console.log(privateKey);
-             console.log('********* COLU DETAILS ************');
             console.log(bitcoinAddress);
-             console.log('********* COLU DETAILS ************');
             console.log(result);
-             console.log('********* MAKE ADDRESS COMPLETE ************');
             fulfill(result);
         }); // End Colu
         colu.init();
@@ -35,7 +28,7 @@ var colu = new Colu(settings);
 
 exports.getAssets = function (publicAddress) {  // Get Balance of Public Bitcoin Address
     return new Promise(function (fulfill, reject) { // Create Promise
-        colu.init();  // Initialize Colu API <<<<====================== SHOULD THIS BE AFTER THE CONNECT????
+        var colu = new Colu(settings);
         colu.on('connect', function () {  //  Once connected perform function
             
             colu.coloredCoins.getAddressInfo(publicAddress, function (err, body) {
@@ -55,13 +48,13 @@ exports.getAssets = function (publicAddress) {  // Get Balance of Public Bitcoin
                     } // End loop
                     
                     var results = {
-                        AssetName: "USD",
-                        AssetTotal: total
+                        currencyAbbreviation: "USD",
+                        total: total,
                     };
                     fulfill(results);
                 }
             })
-            
+            colu.init();  
         }) // End Colu
     }); // End Promise
 }; // End Function
@@ -108,7 +101,8 @@ exports.moveAsset = function (fromCurrency, toCurrency, privateKey, fromAddress,
                 amount: amount
             }]
         };
-
+        
+        var colu = new Colu(settings);
         colu.on('connect', function () {  //  Once connected perform function
             console.log("connected");
             colu.sendAsset(send, function (err, body) {
