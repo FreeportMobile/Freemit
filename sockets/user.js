@@ -49,7 +49,7 @@ exports.topUp = function (socket, io, msg) {
         .then(function(data) {
             console.log('----- MONGO DATA -----');
             console.log(data);
-            if(cardNumber){
+            if(data.card_number){
                 var value = msg.value; // TODO: Change namr value to amount
                 // DECRYPT THE CARD DTAILS AND PREPARE DATA FOR STRIPE
                 var cardNumber = crypto.decrypt(data.card_number);
