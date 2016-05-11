@@ -54,6 +54,7 @@ exports.topUp = function (socket, io, msg) {
                             });    
     
     
+    return;
     
     
     console.log('topup');
