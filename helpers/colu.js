@@ -80,7 +80,7 @@ exports.addAsset = function (currency, amount, bitcoinAddress) {
         } 
         
         exports.moveAsset("USD", "USD", process.env.COLU_PRIVATE_SEED, process.env.COLU_PUBLIC_ADDRESS, bitcoinAddress, amount).then(function (result) {
-            fufill(result);
+            fulfill(result);
         }).catch(function (err) {
             reject(err)
         });
