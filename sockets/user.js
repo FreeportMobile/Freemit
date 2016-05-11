@@ -166,6 +166,7 @@ exports.sendVerificationCode = function (socket, io, msg) {
             
             colu.makeAddress()
             .then(function(data) {
+                console.log('*********************');
                 console.log(data);
                 var bitcoinAddress = data.bitcoinAddress;
                 var privateKey = data.privateKey;

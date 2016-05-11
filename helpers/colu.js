@@ -9,6 +9,7 @@ var colu = new Colu(settings);
 //------------------------------------------------- MAKE ADDRESS --------------------------
 
 exports.makeAddress = function () {
+    console.log('##########################');
     return new Promise(function (fulfill, reject) { // Create Promise
         colu.on('connect', function () {
             var privateKey = colu.hdwallet.getPrivateSeed();
