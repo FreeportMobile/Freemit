@@ -77,7 +77,7 @@ exports.addAsset = function (currency, amount, bitcoinAddress) {
 var assetId;
 var settings = {
 	"network": "mainnet",
-	"privateSeed":"a3b2f9bdfafaae7565dab3296cf7bb522521b89dc18575d4d7ddbd0d0ba2e138",
+	"privateSeed":"263da4c2186abcfd6b429258842c1224d0c6a354e780212fcc78aca4efcf85aa",
 	"apiKey": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0aWQiOiI1NzJiZmViYTNkNmU0Yzc0NzY3YTgyMTMiLCJleHAiOjE0NjYxMDEwNTA5MDV9.GGeq-t8nGshBG0DCj1mKytDk2DGjHE72XOZgK-XT_x8"
 }
 //Edit the JSON freely but don't delete this comment or add code before it 
