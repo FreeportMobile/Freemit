@@ -27,6 +27,7 @@ exports.makeAddress = function () {
 //------------------------------------------------- GET ASSET BALLANCE --------------------------
 
 exports.getAssets = function (bitcoinAddress) {  // Get Balance of Public Bitcoin Address
+    console.log(bitcoinAddress);
     return new Promise(function (fulfill, reject) { // Create Promise
         var colu = new Colu(settings);
         colu.on('connect', function () {  //  Once connected perform function
