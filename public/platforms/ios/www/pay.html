@@ -190,26 +190,21 @@ function onSuccess(contacts) {
     //-- LOOP OVER THE CONTACTS
     for (var i = 0; i < contacts.length; i++) {
         
-
-
-
-
-if(contacts[i].phoneNumbers){
-        //-- LOOP OVER THE PHONE NUMBERS WITHIN CONACTS        
-        for (var j=0; j < contacts[i].phoneNumbers.length; j++) {  
-            // PUSH INTO THE ARRAY THE PHONE NUMBER AND NAME AND STRIP ALL NON NUMBER CHARECTORS
-            // TODO: We should also send what type of number ie mobile, home, main etc
-                if(contacts[i].phoneNumbers[j].length != null)
-                    myContacts.push({name:contacts[i].name.formatted, phoneNumber:contacts[i].phoneNumbers[j].value.replace(/\D/g,'')}
-            );
-        }
-    };
-    
-     
-        
+        if(contacts[i].phoneNumbers){
+            //-- LOOP OVER THE PHONE NUMBERS WITHIN CONACTS        
+            for (var j=0; j < contacts[i].phoneNumbers.length; j++) {  
+                // PUSH INTO THE ARRAY THE PHONE NUMBER AND NAME AND STRIP ALL NON NUMBER CHARECTORS
+                // TODO: We should also send what type of number ie mobile, home, main etc
+                console.log('FIRE A');
+                    if(contacts[i].phoneNumbers[j].length != null)
+                    console.log('FIRE B');
+                        myContacts.push({name:contacts[i].name.formatted, phoneNumber:contacts[i].phoneNumbers[j].value.replace(/\D/g,'')}
+                );
+            }
+        };
     }
    //-- SEND CONTACTS
-    alert('Sending COntacts');
+    alert(myContacts.length);
     socket.emit('saveContacts', {jwt:jwt, contacts:myContacts});
     // Add the contents of options[0] to #MYLIST
     // TODO: Maybe myContacts should come from the server??? with bitcoin address and phone numbers with dialing codes!
