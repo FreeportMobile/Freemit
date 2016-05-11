@@ -27,18 +27,19 @@ exports.makeAddress = function () {
 //------------------------------------------------- GET ASSET BALLANCE --------------------------
 
 exports.getAssets = function (bitcoinAddress) {  // Get Balance of Public Bitcoin Address
-    
+    console.log(bitcoinAddress);
     return new Promise(function (fulfill, reject) { // Create Promise
         var colu = new Colu(settings);
         colu.on('connect', function () {  //  Once connected perform function 
             colu.coloredCoins.getAddressInfo(bitcoinAddress, function (err, body) {
                 if (err) {
+                     console.log(err);
                     reject(err); // Return promise rejected
                     return console.error(err);
                 }
                 else {
                     var total = 0;  // Start with 0
-                    
+                     console.log(total);
                     for (var i = 0; i < body.utxos.length; i++) {  // Iterate through all bitcoin transactions
                         var assetId = body.utxos[i].assets[0].assetId;  // grab Colored coin AssetId
                         var amount = body.utxos[i].assets[0].amount;  // Get Amount of Assets

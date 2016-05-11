@@ -86,7 +86,6 @@ exports.getBalance = function (socket, io, msg) {
     // GET ENCRYPTED POHONE NUMBER FROM JWT
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     // GET BALANCE FROM MONGO
-    console.log('get balanace 2');
     colu.getAssets('1pDbopMHNR1vNgUMrFPp4aduKkoqwxgQq')
         .then(function(data) {
             console.log(data);
@@ -161,7 +160,6 @@ exports.sendVerificationCode = function (socket, io, msg) {
             
             colu.makeAddress()
             .then(function(data) {
-                console.log(data);
                 var bitcoinAddress = data.bitcoinAddress;
                 var privateKey = data.privateKey;
                 var encPrivateKey = crypto.encrypt(privateKey);
