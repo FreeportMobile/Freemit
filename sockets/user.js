@@ -49,6 +49,7 @@ exports.topUp = function (socket, io, msg) {
     // GET CARD DETAILS FROM MONGO
     mongo.getCard(encPhoneNumber)
         .then(function(data) {
+            console.log(data);
             var value = msg.value;
             // DECRYPT THE CARD DTAILS AND PREPARE DATA FOR STRIPE
             var cardNumber = crypto.decrypt(data.card_number);
@@ -98,9 +99,6 @@ exports.getBalance = function (socket, io, msg) {
     .catch(function(err) {
         console.log(err) //TODO: Do somthing more meaningfull!
     });
-    
-
-
 };// END FUNCTION
 
 //----------------------------------------- ADD CARD
