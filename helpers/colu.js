@@ -73,33 +73,6 @@ exports.addAsset = function (currency, amount, bitcoinAddress) {
     console.log('---------- ADD ASSET ------------');
     return new Promise(function (fulfill, reject) { // Create Promise
        
-     // TODO: Link this to our database of currencies
-        if (currency != "USD") { 
-            reject("Only USD supported");
-            return false;
-        } 
-        
-        exports.moveAsset("USD", "USD", process.env.COLU_PRIVATE_SEED, process.env.COLU_PUBLIC_ADDRESS, bitcoinAddress, amount).then(function (result) {
-            fulfill(result);
-        }).catch(function (err) {
-            reject(err)
-        });
-        
-    }); // End Promise
-}; // End Functioin
-
-//------------------------------------------------- MOVE / CONVERT ASSET --------------------------
-// between bit coin addresss
-// amount = amount in fiat currency
-// all curecy will not be int, will be a float (2)
-
-exports.moveAsset = function (fromCurrency, toCurrency, privateKey, fromAddress, toAddress, amount) {
-    
-
-    return new Promise(function (fulfill, reject) { // Create Promise
-   
-   
-   
    var privateSeed = null
 var assetId;
 var settings = {
@@ -137,6 +110,24 @@ console.log(body);
 });
 
 colu.init();
+        
+
+    }); // End Promise
+}; // End Functioin
+
+//------------------------------------------------- MOVE / CONVERT ASSET --------------------------
+// between bit coin addresss
+// amount = amount in fiat currency
+// all curecy will not be int, will be a float (2)
+
+exports.moveAsset = function (fromCurrency, toCurrency, privateKey, fromAddress, toAddress, amount) {
+    
+
+    return new Promise(function (fulfill, reject) { // Create Promise
+   
+   
+   
+
 
 
    
