@@ -10,6 +10,8 @@ var colu = new Colu(settings);
 
 exports.makeAddress = function () {
     console.log('############ MAKE ADDRESS ##############');
+    var settings = {apiKey: process.env.COLU_APIKEY,network: 'mainnet',privateSeed: null};
+var colu = new Colu(settings);
     return new Promise(function (fulfill, reject) { // Create Promise
         colu.on('connect', function () {
 
