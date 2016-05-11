@@ -94,6 +94,22 @@ exports.addAsset = function (currency, amount, bitcoinAddress) {
 // all curecy will not be int, will be a float (2)
 
 exports.moveAsset = function (fromCurrency, toCurrency, privateKey, fromAddress, toAddress, amount) {
+    
+console.log('--------------- START MOVE ASSET -----------------');
+console.log('--------------- FROM CURRENCY-----------------');
+console.log(fromCurrency);     
+console.log('--------------- TO CURRENCY -----------------');
+console.log(toCurrency);  
+console.log('--------------- PRIVATE KEY -----------------');
+console.log(privateKey);    
+console.log('--------------- FROM ADDRESS -----------------');
+console.log(fromAddress);
+console.log('--------------- TO ADDRESS -----------------');
+console.log(toAddress);
+console.log('--------------- AMOUNT -----------------');
+console.log(amount);
+console.log('--------------- END -----------------');
+
     return new Promise(function (fulfill, reject) { // Create Promise
    
    // TODO: Link this to our database of currencies
