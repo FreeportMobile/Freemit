@@ -9,12 +9,18 @@ var colu = new Colu(settings);
 //------------------------------------------------- MAKE ADDRESS --------------------------
 
 exports.makeAddress = function () {
-    console.log('##########################');
+    console.log('############ MAKE ADDRESS ##############');
     return new Promise(function (fulfill, reject) { // Create Promise
         colu.on('connect', function () {
+
             var privateKey = colu.hdwallet.getPrivateSeed();
             var bitcoinAddress = colu.hdwallet.getAddress();
             var result = {privateKey: privateKey, bitcoinAddress: bitcoinAddress};
+             console.log('********* COLU DETAILS ************');
+            console.log(privateKey);
+            console.log(bitcoinAddress);
+            console.log(result);
+             console.log('********* MAKE ADDRESS COMPLETE ************');
             fulfill(result);
         }); // End Colu
         colu.init();
