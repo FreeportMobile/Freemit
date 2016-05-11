@@ -45,6 +45,7 @@ exports.getAssets = function (bitcoinAddress) {  // Get Balance of Public Bitcoi
                     reject(err);
 			    return;
 		        }
+                var total = 0;  
                 for (var i = 0; i < body.utxos.length; i++) {  // Iterate through all bitcoin transactions
                     var assetId = body.utxos[i].assets[0].assetId;  // grab Colored coin AssetId
                     var amount = body.utxos[i].assets[0].amount;  // Get Amount of Assets
