@@ -129,14 +129,10 @@ colu.on('connect', function () {
 
 	colu.sendAsset(args, function (err, body) {
 		if (err) {
-			evalRespond = {};
-			evalRespond.type = 'error';
-			evalRespond.response = err;
+console.log(err);
 			return;
 		}
-		evalRespond = {};
-		evalRespond.type = 'message';
-		evalRespond.response = body;
+console.log(body);
 	});
 });
 
