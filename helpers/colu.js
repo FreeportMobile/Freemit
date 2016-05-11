@@ -110,7 +110,12 @@ exports.moveAsset = function (fromCurrency, toCurrency, privateKey, fromAddress,
                 amount: amount
             }]
         };
-        
+        var settings = {
+	        "network": "mainnet",
+	        "privateSeed":process.env.COLU_PRIVATE_KEY,
+	        "apiKey": process.env.COLU_APIKEY
+}
+
         var colu = new Colu(settings);
         colu.on('connect', function () {  //  Once connected perform function
             console.log("connected");
