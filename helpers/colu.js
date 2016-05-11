@@ -45,9 +45,25 @@ exports.getAssets = function (bitcoinAddress) {  // Get Balance of Public Bitcoi
                     reject(err);
 			    return;
 		        }
-                console.log(body);
-	        })
-        })
+                for (var i = 0; i < body.utxos.length; i++) {  // Iterate through all bitcoin transactions
+                    var assetId = body.utxos[i].assets[0].assetId;  // grab Colored coin AssetId
+                    var amount = body.utxos[i].assets[0].amount;  // Get Amount of Assets
+                    
+                    if (assetId == process.env.COLU_USD) {  // Filter out non Freemit Assets
+                        total = total + amount;  //  Add to totals 
+                    }
+                } // End loop
+                
+                var results = {
+                    currencyAbbreviation: "USD",
+                    total: total,
+                    };
+                    
+                    console.log(results);
+                    fulfill(results);
+                    
+	        }) // END COLOURED COINS
+        }) // END COLU
     colu.init()
 
         
