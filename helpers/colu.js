@@ -95,20 +95,6 @@ exports.addAsset = function (currency, amount, bitcoinAddress) {
 
 exports.moveAsset = function (fromCurrency, toCurrency, privateKey, fromAddress, toAddress, amount) {
     
-console.log('--------------- START MOVE ASSET -----------------');
-console.log('--------------- FROM CURRENCY-----------------');
-console.log(fromCurrency);     
-console.log('--------------- TO CURRENCY -----------------');
-console.log(toCurrency);  
-console.log('--------------- PRIVATE KEY -----------------');
-console.log(process.env.COLU_PRIVATE_SEED);    
-console.log('--------------- FROM ADDRESS -----------------');
-console.log(fromAddress);
-console.log('--------------- TO ADDRESS -----------------');
-console.log(toAddress);
-console.log('--------------- AMOUNT -----------------');
-console.log(amount);
-console.log('--------------- END -----------------');
 
     return new Promise(function (fulfill, reject) { // Create Promise
    
@@ -127,37 +113,29 @@ console.log('--------------- END -----------------');
             }]
         };
         
-console.log('--------------- SEND -----------------');
-console.log(send);
-
+        var privateSeed = null
+        var assetId;
         var settings = {
 	        "network": "mainnet",
 	        "privateSeed":process.env.COLU_PRIVATE_SEED,
 	        "apiKey": process.env.COLU_APIKEY
 }
-console.log('--------------- SETTINGS -----------------');
-console.log(settings);
 
-        var colu = new Colu(settings);
+
+        var colu2 = new Colu(settings);
         
-        colu.on('connect', function () {  //  Once connected perform function
-console.log('--------------- CONNECTED -----------------');
-console.log(colu.hdwallet.getPrivateSeed());
-console.log('--------------- SEND -----------------');
-console.log(send);
-            colu.sendAsset(send, function (err, body) {
+        colu2.on('connect', function () {  //  Once connected perform function
+            colu2.sendAsset(send, function (err, body) {
                 
                 if (err) {
                     reject(err);
- console.log('--------------- ERROR HERE? -----------------');
                     return console.error(err);  // START DOING THIS TOO
                 }
-console.log('--------------- BODY -----------------');
                 console.log(body);
                 fulfill(body);
             });
         }); // End Colu
-        colu.init();  // Initialize Colu API
+        colu2.init();  // Initialize Colu API
     }); // End promise
 }; // End Function
 
