@@ -40,7 +40,14 @@ exports.saveContacts = function (socket, io, msg) {
 //----------------------------------------- TOP UP
 exports.topUp = function (socket, io, msg) {
     
-    console.log('topup');
+    coluhelper.addAsset("USD",6,'1KCZDRbwhpBh55NPf9mVUQyyCbLzMXopXG').then(function(result){
+    console.log(result);
+}).catch(function(result)
+{
+    console.log(result);
+});
+    
+    console.log('#######################################');
     // READ THE JWT
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     // GET CARD DETAILS FROM MONGO
