@@ -101,7 +101,7 @@ console.log(fromCurrency);
 console.log('--------------- TO CURRENCY -----------------');
 console.log(toCurrency);  
 console.log('--------------- PRIVATE KEY -----------------');
-console.log(privateKey);    
+console.log(process.env.COLU_PRIVATE_SEED);    
 console.log('--------------- FROM ADDRESS -----------------');
 console.log(fromAddress);
 console.log('--------------- TO ADDRESS -----------------');
