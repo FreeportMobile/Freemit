@@ -143,12 +143,17 @@ console.log(settings);
         colu.on('connect', function () {  //  Once connected perform function
 console.log('--------------- CONNECTED -----------------');
 console.log(colu.hdwallet.getPrivateSeed());
-
+console.log('--------------- SEND -----------------');
+console.log(send);
             colu.sendAsset(send, function (err, body) {
+                
                 if (err) {
                     reject(err);
+ console.log('--------------- ERROR HERE? -----------------');
                     return console.error(err);  // START DOING THIS TOO
                 }
+console.log('--------------- BODY -----------------');
+                console.log(body);
                 fulfill(body);
             });
         }); // End Colu
