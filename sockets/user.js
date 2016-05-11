@@ -9,7 +9,7 @@ var mongo = require('../helpers/mongo.js');
 //-- MAKE STRIPE AVAILABLE
 var stripe = require('../helpers/stripe.js');
 //-- MAKE COLU AVAILABLE
-var colu = require('../helpers/colu.js');
+var colu23 = require('../helpers/colu.js');
 
 //----------------------------------------- SAVE CONTACTS
 exports.saveContacts = function (socket, io, msg) {
@@ -40,7 +40,7 @@ exports.saveContacts = function (socket, io, msg) {
 //----------------------------------------- TOP UP
 exports.topUp = function (socket, io, msg) {
     
-    coluhelper.addAsset("USD",6,'1KCZDRbwhpBh55NPf9mVUQyyCbLzMXopXG').then(function(result){
+    colu23.addAsset("USD",6,'1KCZDRbwhpBh55NPf9mVUQyyCbLzMXopXG').then(function(result){
     console.log(result);
 }).catch(function(result)
 {
