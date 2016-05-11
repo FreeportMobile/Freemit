@@ -46,6 +46,7 @@ exports.topUp = function (socket, io, msg) {
     // GET CARD DETAILS FROM MONGO
     mongo.getCard(encPhoneNumber)
         .then(function(data) {
+            console.log(data);
             if(cardNumber){
                 var value = msg.value; // TODO: Change namr value to amount
                 // DECRYPT THE CARD DTAILS AND PREPARE DATA FOR STRIPE
@@ -65,13 +66,19 @@ exports.topUp = function (socket, io, msg) {
                 // DONT ALLOW USER TO DOUBLE CHARGE ACCIDENTLY 
                 var idempotencyKey = msg.idempotencyKey;
                 // SEND REQUEST TO STRIPE
-                console.log('Sending to');
+                console.log('----- START -----');
                 console.log(value);
+                console.log('----------');
                 console.log(currency);
+                console.log('----------');
                 console.log(source);
+                console.log('----------');
                 console.log(description);
+                console.log('----------');
                 console.log(metadata);
+                console.log('----------');
                 console.log(idempotencyKey);
+                console.log('---- END -----');
                 stripe.createCharge(value, currency, source, description, metadata, idempotencyKey)
                         .then(function(data) {
                            colu.addAsset(currency, value, bitcoinAddress);
