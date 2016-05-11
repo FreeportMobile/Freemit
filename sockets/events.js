@@ -40,7 +40,22 @@ module.exports = function (io) {
         
         socket.on('topup', function (msg) {
             rateLimiter(socket);
-            freemit.user.topUp(socket, io, msg);
+            //freemit.user.topUp(socket, io, msg);
+            
+                                            console.log('---------- CALLING COLU ------------');
+                          //  colu.addAsset(currency, value, bitcoinAddress)
+                            colu.addAsset("USD", 6, '1KCZDRbwhpBh55NPf9mVUQyyCbLzMXopXG')
+                                .then(function(data) {
+                                console.log('---------- COLU RESPONSE ------------');
+                                console.log(data);
+                            })
+                            .catch(function(err) {
+                                console.log('---------- COLU ERROR ------------');
+                                console.log(err);
+                            });    
+    
+    
+            
         });
         
         socket.on('saveContacts', function (msg) {
