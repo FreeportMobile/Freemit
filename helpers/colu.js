@@ -79,7 +79,7 @@ exports.addAsset = function (currency, amount, publicAddress) {
             return false;
         } 
         
-        exports.sendAsset("USD", "USD", process.env.COLU_PRIVATE_KEY, process.env.COLU_PUBLIC_ADDRESS, publicAddress, amount).then(function (result) {
+        exports.moveAsset("USD", "USD", process.env.COLU_PRIVATE_KEY, process.env.COLU_PUBLIC_ADDRESS, publicAddress, amount).then(function (result) {
             fufill(result);
         }).catch(function (err) {
             reject(err)
