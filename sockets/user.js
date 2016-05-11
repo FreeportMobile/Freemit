@@ -85,7 +85,7 @@ exports.getBalance = function (socket, io, msg) {
     
     // GET ENCRYPTED POHONE NUMBER FROM JWT
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
-    getBitcoinAddress(encPhoneNumber)
+    mongo.getBitcoinAddress(encPhoneNumber)
     .then(function(data) {
         colu.getAssets(data.bitcoin_address)
         .then(function(data) {
