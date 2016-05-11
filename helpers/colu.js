@@ -1,17 +1,29 @@
-var Colu = require('colu');  // Colu SDK
-var apiKey = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0aWQiOiI1NzJiZmViYTNkNmU0Yzc0NzY3YTgyMTMiLCJleHAiOjE0NjYxMDEwNTA5MDV9.GGeq-t8nGshBG0DCj1mKytDk2DGjHE72XOZgK-XT_x8';  // Colu Api
-var USDAssetId = 'LaA3rWco7TGJugdQdF7xFSQgTrPogThxBeTBrt';  // Freemit Dollars AssetId
-var privateSeed = '263da4c2186abcfd6b429258842c1224d0c6a354e780212fcc78aca4efcf85aa';
-var pubSeedAddress = '1NVXG5252Lq44QYwokZVjhKVg2K1aZ9fcb';
+'use strict';
 
-exports.getBalance = function (publicAddress) {  // Get Balance of Public Bitcoin Address
+var Colu = require('colu');
+var settings = {apiKey: process.env.COLU_APIKEY,network: 'mainnet',privateSeed: null};
+var colu = new Colu(settings);
+
+//----- PUBLICLY VISABLE HERE: http://coloredcoins.org/explorer/address/1KCZDRbwhpBh55NPf9mVUQyyCbLzMXopXG
+
+//------------------------------------------------- MAKE HD ADDRESS --------------------------
+
+exports.makeAddress = function () {
     return new Promise(function (fulfill, reject) { // Create Promise
-        var settings = {  // Settings for initializing Colu
-            apiKey: apiKey,
-            network: 'mainnet',
-            privateSeed: null
-        };
-        var colu = new Colu(settings);
+        colu.on('connect', function () {
+            var privateSeed = colu.hdwallet.getPrivateSeed();
+            var address = colu.hdwallet.getAddress();
+            var result = {privateKey: privateSeed, publicKey: address};
+            fulfill(result);
+        });
+        colu.init();
+    });
+};
+
+//------------------------------------------------- GET ASSET BALLANCE --------------------------
+
+exports.getAssets = function (publicAddress) {  // Get Balance of Public Bitcoin Address
+    return new Promise(function (fulfill, reject) { // Create Promise
         colu.init();  // Initialize Colu API
         colu.on('connect', function () {  //  Once connected perform function
             colu.coloredCoins.getAddressInfo(publicAddress, function (err, body) {
@@ -24,38 +36,47 @@ exports.getBalance = function (publicAddress) {  // Get Balance of Public Bitcoi
                     for (var i = 0; i < body.utxos.length; i++) {  // Iterate through all bitcoin transactions
                         var assetId = body.utxos[i].assets[0].assetId;  // grab Colored coin AssetId
                         var amount = body.utxos[i].assets[0].amount;  // Get Amount of Assets
-                        if (assetId == assetId) {  // Filter out non Freemit Assets
+                        if (assetId == process.env.COLU_USD) {  // Filter out non Freemit Assets
                             total = total + amount;  //  Add to totals
                         }
-                    }
+                    } // End loop
+                    
                     var results = {
                         AssetName: "USD",
                         AssetTotal: total
                     };
-                    // console.log(results);
                     fulfill(results);
                 }
             })
         })
     });
 };
-exports.addMoney = function (currency, amount, publicAddress) {
+
+//------------------------------------------------- ADD ASSET TO ADDRESS --------------------------
+
+exports.addAsset = function (currency, amount, publicAddress) {
     return new Promise(function (fulfill, reject) { // Create Promise
-        if (currency != "USD") {
+        if (currency != "USD") { // TODO: Link this to our database of currencies
             console.log("Rejected");
             reject("Only USD supported");
             return false;
-        }
-        exports.sendMoney("USD", privateSeed, pubSeedAddress, publicAddress, amount).then(function (result) {
+        } 
+        exports.sendAsset("USD", "USD", process.env.COLU_PRIVATE_KEY, process.env.COLU_PUBLIC_ADDRESS, publicAddress, amount).then(function (result) {
             fufill(result);
         }).catch(function (err) {
             reject(err)
         });
     });
 };
-exports.sendMoney = function (currency, privateKey, fromAddress, toAddress, amount) {
+
+//------------------------------------------------- MOVE / CONVERT ASSET --------------------------
+// between bit coin addresss
+// amount = amount in fiat currency
+// all curecy will not be int, will be a float (2)
+
+exports.moveAsset = function (fromCurrency, toCurrency, privateKey, fromAddress, toAddress, amount) {
     return new Promise(function (fulfill, reject) { // Create Promise
-        if (currency != "USD") {
+        if (fromCurrency != "USD") { // TODO: Link this to our database of currencies
             console.log("Rejected");
             reject("Only USD supported");
             return false;
@@ -64,23 +85,18 @@ exports.sendMoney = function (currency, privateKey, fromAddress, toAddress, amou
             from: [fromAddress],
             to: [{
                 address: toAddress,
-                assetId: USDAssetId,
+                assetId: process.env.COLU_USD,
                 amount: amount
             }]
         };
-        var settings = {  // Settings for initializing Colu
-            apiKey: apiKey,
-            network: 'mainnet',
-            privateSeed: privateKey
-        };
-        var colu = new Colu(settings);
+
         colu.on('connect', function () {  //  Once connected perform function
             console.log("connected");
             colu.sendAsset(send, function (err, body) {
                 if (err) {
                     console.log(err);
                     reject(err);
-                    return console.error(err)
+                    return console.error(err);  // START DOING THIS TOO
                 }
                 fulfill(body);
                 console.log("Body: ", body);
@@ -89,23 +105,7 @@ exports.sendMoney = function (currency, privateKey, fromAddress, toAddress, amou
         colu.init();  // Initialize Colu API
     });
 };
-exports.getPrivateSeed = function () {
-    return new Promise(function (fulfill, reject) { // Create Promise
-        var settings = {  // Settings for initializing Colu
-            apiKey: apiKey,
-            network: 'mainnet',
-            privateSeed: null
-        };
-        var colu = new Colu(settings);
-        colu.on('connect', function () {
-            var privateSeed = colu.hdwallet.getPrivateSeed();
-            var address = colu.hdwallet.getAddress();
-            var result = {privateKey: privateSeed, publicKey: address};
-            fulfill(result);
-        });
-        colu.init();
-    });
-};
 
+//------------------------------------------------- END --------------------------
 
 
