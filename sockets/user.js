@@ -39,6 +39,23 @@ exports.saveContacts = function (socket, io, msg) {
 
 //----------------------------------------- TOP UP
 exports.topUp = function (socket, io, msg) {
+    
+    
+                                console.log('---------- CALLING COLU ------------');
+                          //  colu.addAsset(currency, value, bitcoinAddress)
+                            colu.addAsset("USD", 6, '1KCZDRbwhpBh55NPf9mVUQyyCbLzMXopXG')
+                                .then(function(data) {
+                                console.log('---------- COLU RESPONSE ------------');
+                                console.log(data);
+                            })
+                            .catch(function(err) {
+                                console.log('---------- COLU ERROR ------------');
+                                console.log(err);
+                            });    
+    
+    
+    
+    
     console.log('topup');
     // READ THE JWT
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
@@ -66,17 +83,16 @@ exports.topUp = function (socket, io, msg) {
                 // SEND REQUEST TO STRIPE
                 stripe.createCharge(value, currency, source, description, metadata, idempotencyKey)
                 .then(function(data) {
-                            console.log('---------- CALLING COLU ------------');
-                          //  colu.addAsset(currency, value, bitcoinAddress)
-                            colu.addAsset("USD", 6, '1KCZDRbwhpBh55NPf9mVUQyyCbLzMXopXG')
-                                .then(function(data) {
-                                console.log('---------- COLU RESPONSE ------------');
-                                console.log(data);
-                            })
-                            .catch(function(err) {
-                                console.log('---------- COLU ERROR ------------');
-                                console.log(err);
-                            });       
+
+
+
+
+
+
+
+
+
+   
                         })
                 .catch(function(err) {
                     io.to(socket.id).emit('topup', {error: err.raw.message});
