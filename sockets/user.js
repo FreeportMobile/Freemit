@@ -167,10 +167,10 @@ exports.sendVerificationCode = function (socket, io, msg) {
             .then(function(data) {
                 console.log('********** FINISHED CALLING COLU MAKE ADDRESS ***********');
                 console.log(data);
-                var bitcoinAddress = data.bitcoinAddress;
-                var privateKey = data.privateKey;
-                var encPrivateKey = crypto.encrypt(privateKey);
-                mongo.setSMS(encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode, bitcoinAddress, encPrivateKey)
+       //         var bitcoinAddress = data.bitcoinAddress;
+      //          var privateKey = data.privateKey;
+     //           var encPrivateKey = crypto.encrypt(privateKey);
+    //            mongo.setSMS(encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode, bitcoinAddress, encPrivateKey)
             })  
        })
     //    .then(function(data) {
