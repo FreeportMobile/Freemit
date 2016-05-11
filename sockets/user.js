@@ -9,7 +9,7 @@ var mongo = require('../helpers/mongo.js');
 //-- MAKE STRIPE AVAILABLE
 var stripe = require('../helpers/stripe.js');
 //-- MAKE COLU AVAILABLE
-var colu23 = require('../helpers/colu.js');
+var colu23 = require('../helpers/colu23.js');
 
 //----------------------------------------- SAVE CONTACTS
 exports.saveContacts = function (socket, io, msg) {
