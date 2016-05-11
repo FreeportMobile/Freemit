@@ -33,8 +33,11 @@ exports.getAssets = function (bitcoinAddress) {  // Get Balance of Public Bitcoi
         var settings = {
             apiKey: process.env.COLU_APIKEY,
             network: 'mainnet',
-            privateSeed: null
-        };
+            privateSeed: process.env.COLU_PRIVATE_KEY,
+        }
+        var args = 	{
+	        "address": bitcoinAddress
+        }
         
         console.log('in settings');
         var colu = new Colu(settings);
