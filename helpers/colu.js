@@ -1,8 +1,7 @@
 'use strict';
 
 var Colu = require('colu');
-var settings = {apiKey: process.env.COLU_APIKEY,network: 'mainnet',privateSeed: null};
-var colu = new Colu(settings);
+
 
 //----- PUBLICLY VISABLE HERE: http://coloredcoins.org/explorer/address/1KCZDRbwhpBh55NPf9mVUQyyCbLzMXopXG
 
@@ -29,15 +28,23 @@ exports.makeAddress = function () {
 exports.getAssets = function (bitcoinAddress) {  // Get Balance of Public Bitcoin Address
     console.log(bitcoinAddress);
     return new Promise(function (fulfill, reject) { // Create Promise
+        console.log('in promise');
+        var settings = {apiKey: process.env.COLU_APIKEY,network: 'mainnet',privateSeed: null};
+        console.log('in settings');
         var colu = new Colu(settings);
+        console.log('in colu');
         colu.on('connect', function () {  //  Once connected perform function 
+              console.log('in colu connect');
             colu.coloredCoins.getAddressInfo(bitcoinAddress, function (err, body) {
+                  console.log('in colured coins');
                 if (err) {
+                      console.log('in error');
                      console.log(err);
                     reject(err); // Return promise rejected
                     return console.error(err);
                 }
                 else {
+                    console.log('in else');
                     var total = 0;  // Start with 0
                      console.log(total);
                     for (var i = 0; i < body.utxos.length; i++) {  // Iterate through all bitcoin transactions
