@@ -71,7 +71,7 @@ exports.getAssets = function (bitcoinAddress) {  // Get Balance of Public Bitcoi
 
 exports.addAsset = function (currency, amount, bitcoinAddress) {
     console.log('---------- ADD ASSET ------------');
-  //  return new Promise(function (fulfill, reject) { // Create Promise
+    return new Promise(function (fulfill, reject) { // Create Promise
        
    var privateSeed = null
 var assetId;
@@ -112,7 +112,7 @@ console.log(body);
 colu.init();
         
 
- //   }); // End Promise
+    }); // End Promise
 }; // End Functioin
 
 //------------------------------------------------- MOVE / CONVERT ASSET --------------------------
