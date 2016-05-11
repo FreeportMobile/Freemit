@@ -27,11 +27,10 @@ exports.makeAddress = function () {
 //------------------------------------------------- GET ASSET BALLANCE --------------------------
 
 exports.getAssets = function (bitcoinAddress) {  // Get Balance of Public Bitcoin Address
-    console.log(bitcoinAddress);
+    
     return new Promise(function (fulfill, reject) { // Create Promise
         var colu = new Colu(settings);
-        colu.on('connect', function () {  //  Once connected perform function
-            
+        colu.on('connect', function () {  //  Once connected perform function 
             colu.coloredCoins.getAddressInfo(bitcoinAddress, function (err, body) {
                 if (err) {
                     reject(err); // Return promise rejected
@@ -52,6 +51,7 @@ exports.getAssets = function (bitcoinAddress) {  // Get Balance of Public Bitcoi
                         currencyAbbreviation: "USD",
                         total: total,
                     };
+                    console.log(results);
                     fulfill(results);
                 }
             })
