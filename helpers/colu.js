@@ -27,32 +27,28 @@ exports.makeAddress = function () {
 
 exports.getAssets = function (bitcoinAddress) {  // Get Balance of Public Bitcoin Address
     return new Promise(function (fulfill, reject) { // Create Promise
-        
-        
-var settings = {
-	"network": "mainnet",
-	"privateSeed": "263da4c2186abcfd6b429258842c1224d0c6a354e780212fcc78aca4efcf85aa",
-	"apiKey": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0aWQiOiI1NzJiZmViYTNkNmU0Yzc0NzY3YTgyMTMiLCJleHAiOjE0NjYxMDEwNTA5MDV9.GGeq-t8nGshBG0DCj1mKytDk2DGjHE72XOZgK-XT_x8"
-}
-//Edit the JSON freely but don't delete this comment or add code before it 
+           
+    var settings = {
+	    "network": "mainnet",
+	    "privateSeed": process.env.COLU_PRIVATE_KEY,
+	    "apiKey": process.env.COLU_APIKEY
+    }
 
-var args = 	{
-	"address": "1pDbopMHNR1vNgUMrFPp4aduKkoqwxgQq"
-}
-//Edit the JSON freely but don't delete this comment or add code before it 
-var colu = new Colu(settings)
-colu.on('connect', function () {
-	colu.coloredCoins.getAddressInfo(args.address, function (err, body) {
-		if (err) {
-			evalRespond = {};
-			evalRespond.type = 'error';
-			evalRespond.response = err;
-			return;
-		}
-            console.log(body);
-	})
-})
-colu.init()
+    var args = 	{
+	    "address": "1pDbopMHNR1vNgUMrFPp4aduKkoqwxgQq"
+    }
+
+    var colu = new Colu(settings)
+        colu.on('connect', function () {
+	        colu.coloredCoins.getAddressInfo(args.address, function (err, body) {
+		        if (err) {
+                    reject(err);
+			    return;
+		        }
+                console.log(body);
+	        })
+        })
+    colu.init()
 
         
         // var settings = {
