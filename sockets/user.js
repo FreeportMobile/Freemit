@@ -10,11 +10,6 @@ var mongo = require('../helpers/mongo.js');
 var stripe = require('../helpers/stripe.js');
 //-- MAKE COLU AVAILABLE
 var colu = require('../helpers/colu.js');
-//-- MAKE BANK AVAILABLE
-var bank =  require('./bank.js');
-
-
-
 
 //----------------------------------------- SAVE CONTACTS
 exports.saveContacts = function (socket, io, msg) {
@@ -49,38 +44,41 @@ exports.topUp = function (socket, io, msg) {
     // GET CARD DETAILS FROM MONGO
     mongo.getCard(encPhoneNumber)
         .then(function(data) {
-            console.log(data);
-            var value = msg.value;
-            // DECRYPT THE CARD DTAILS AND PREPARE DATA FOR STRIPE
-            var cardNumber = crypto.decrypt(data.card_number);
-            var cardCVC = crypto.decrypt(data.card_CVC);
-            var cardMonth = crypto.decrypt(data.card_month);
-            var cardYear = crypto.decrypt(data.card_year);
-            var currency = data.currency_abbreviation;
-            // CREATE THE SOURCE FOR STRIPE
-            var source = {exp_month:cardMonth, exp_year:cardYear, number:cardNumber,object:'card',cvc:cardCVC};
-            var userID = data._id.toString()
-            var timeNow = Date.now().toString()
-            var description = 'Top Up: '+ value + ' ' + currency + ' - ' + userID;
-            // CREATE META DATA FOR STRIPE
-            var metadata = {id:userID, time:timeNow, value:value, currency:currency};
-            // DONT ALLOW USER TO DOUBLE CHARGE ACCIDENTLY 
-            var idempotencyKey = msg.idempotencyKey;
-            // SEND REQUEST TO STRIPE
-            stripe.createCharge(value, currency, source, description, metadata, idempotencyKey)
-                    .then(function(data) {
-                        bank.add(data);
-                    })
-                    .catch(function(err) {
-                      //  bank.error(data);
-                         io.to(socket.id).emit('topup', {error: err.raw.message});
-                    });      
-        })
+            if(cardNumber){
+                var value = msg.value; // TODO: Change namr value to amount
+                // DECRYPT THE CARD DTAILS AND PREPARE DATA FOR STRIPE
+                var cardNumber = crypto.decrypt(data.card_number);
+                var cardCVC = crypto.decrypt(data.card_CVC);
+                var cardMonth = crypto.decrypt(data.card_month);
+                var cardYear = crypto.decrypt(data.card_year);
+                var currency = data.currency_abbreviation;
+                var bitcoinAddress = data.bitcoin_address;
+                // CREATE THE SOURCE FOR STRIPE
+                var source = {exp_month:cardMonth, exp_year:cardYear, number:cardNumber,object:'card',cvc:cardCVC};
+                var userID = data._id.toString()
+                var timeNow = Date.now().toString()
+                var description = 'Top Up: '+ value + ' ' + currency + ' - ' + userID;
+                // CREATE META DATA FOR STRIPE
+                var metadata = {id:userID, time:timeNow, value:value, currency:currency};
+                // DONT ALLOW USER TO DOUBLE CHARGE ACCIDENTLY 
+                var idempotencyKey = msg.idempotencyKey;
+                // SEND REQUEST TO STRIPE
+                stripe.createCharge(value, currency, source, description, metadata, idempotencyKey)
+                        .then(function(data) {
+                           colu.addAsset(currency, value, bitcoinAddress);
+                     })
+                        .catch(function(err) {
+                            io.to(socket.id).emit('topup', {error: err.raw.message});
+                        });                         
+            } else {
+                io.to(socket.id).emit('topup', {error: err.raw.message});
+            }// END ELSE        
+        }) // END THEN
         .catch(function(err) {
            console.log(err) //TODO: Do somthing more meaningfull!
-        });
-
+        }); // END CATCH
 };// END FUNCTION
+
 //----------------------------------------- GET BALANCE
 exports.getBalance = function (socket, io, msg) {
     
