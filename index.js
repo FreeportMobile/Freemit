@@ -44,11 +44,11 @@ app.get('/', function (req, res) {
 exports.io = require('./sockets/events.js')(io);
 
 //--START SERVER
-colu.on('connect', function () {
+//colu.on('connect', function () {
 server.listen(process.env.WEB_PORT, function () {
      console.info('--- STARTED ---');
 });
-});
+//});
 
 
 
