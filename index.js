@@ -41,9 +41,10 @@ app.get('/issueAsset', function (req, res) {
             return callback(error);
         }
         if (typeof body === 'string') {
-            body = JSON.parse(body)
+            body = JSON.parse(body);
+            txHex = body.txHex;
         }
-        res.status(response.statusCode).json({ body: JSON.stringify(body.txHex) });
+        res.status(response.statusCode).json({ txHex: JSON.stringify(txHex) });
  
     });
 
