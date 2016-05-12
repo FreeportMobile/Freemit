@@ -49,7 +49,16 @@ app.get('/issueAsset', function (req, res) {
             console.log('ELSE');
             console.log(txHex);
         }
-        res.status(200).json({ txHex: JSON.stringify(txHex) });
+        
+        var wif = 'KyBSb689eBfT9myFR78DtR7cSmFC3Jx4CwPzuX5hA5Nsang8DAjn'
+        var privateKey = bitcoin.ECKey.fromWIF(wif)
+        var tx = bitcoin.Transaction.fromHex(unsignedTx)
+        var insLength = tx.ins.length
+        for (var i = 0; i < insLength; i++) {
+            tx.sign(i, privateKey)
+        }
+
+        res.status(200).json({ signed_txHex: tx.toHex() });
  
     });
 
