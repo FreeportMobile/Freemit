@@ -44,12 +44,8 @@ app.get('/issueAsset', function (req, res) {
         if (typeof body === 'string') {
             body = JSON.parse(body);
             var txHex = body.txHex;
-            console.log(txHex);
-        }else {
-            console.log('ELSE');
-            console.log(txHex);
         }
-        
+        var unsignedTx = txHex;
         var wif = 'KyBSb689eBfT9myFR78DtR7cSmFC3Jx4CwPzuX5hA5Nsang8DAjn'
         var privateKey = bitcoin.ECKey.fromWIF(wif)
         var tx = bitcoin.Transaction.fromHex(unsignedTx)
