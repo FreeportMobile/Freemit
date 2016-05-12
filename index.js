@@ -30,7 +30,7 @@ app.get('/issueAsset', function (req, res) {
         'amount': 1,
         'fee': 5000
     };
-       
+    // MAKE POST 1   
     request.post({
         url: 'http://testnet.api.coloredcoins.org:80/v3/issue',
         headers: {'Content-Type': 'application/json'},
@@ -57,41 +57,41 @@ app.get('/issueAsset', function (req, res) {
         for (var i = 0; i < insLength; i++) {
             tx.sign(i, privateKey)
         }
-
-        res.status(200).json({ signed_txHex: tx.toHex() });
- 
+        var signedTxHex = tx.toHex();
+        var transaction = {'txHex': signedTxHex };
+        // MAKE POST 2
+        
+        request.post({
+            url: 'http://testnet.api.coloredcoins.org:80/v3/broadcast',
+            headers: {'Content-Type': 'application/json'},
+            form: transaction
+        }, 
+        function (error, response, body) {
+            if (error) {
+                return callback(error);
+            }
+            if (typeof body === 'string') {
+                body = JSON.parse(body)
+            }
+             res.status(response.statusCode).json({ body: JSON.stringify(body) });
+            });
+     
     });
 
 });
 
-
-//------------------------- SIGN TRANSACTION ---------------------
-
-app.get('/issueAsset', function (req, res) {
-
-    function signTx (unsignedTx, wif) {
-        var wif = 'KyBSb689eBfT9myFR78DtR7cSmFC3Jx4CwPzuX5hA5Nsang8DAjn'
-        var privateKey = bitcoin.ECKey.fromWIF(wif)
-        var tx = bitcoin.Transaction.fromHex(unsignedTx)
-        var insLength = tx.ins.length
-        for (var i = 0; i < insLength; i++) {
-            tx.sign(i, privateKey)
-        }
-        return tx.toHex()
-    }
-    
-    
-    var key = 'wif format of private key of your issuance address'
-// e.g. var key = 'KzH9zdXm95Xv3z7oNxzM6HqSPUiQbuyKoFdQBTf3HKx1B6eYdbAn';
-var txHex = 'body.txHex response to issue';
-// e.g. txHex = '0100000001e0cd69ce93aded7a8d51063ed5f7bb5c9cdcc885a93fa629574dedb2cd5b48ad0100000000ffffffff020000000000000000086a06434301050110b8820100000000001976a914ea55c2430dca31e56ef5ae55c2863dae65df908688ac00000000'
+//------------------------- ISSUE ASSET ---------------------
 
 
-var signedTxHex = signTx(txHex, key);
-console.log("signedTxHex: ["+signedTxHex+"]");
-    
-    
-});
+
+
+
+
+
+
+
+
+
 
 
 //--SOCKET EVENTS
