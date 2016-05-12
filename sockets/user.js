@@ -74,15 +74,15 @@ exports.topUp = function (socket, io, msg) {
                 // SEND REQUEST TO STRIPE
                 stripe.createCharge(value, currency, source, description, metadata, idempotencyKey)
                 .then(function(data) {
-                        colu.addAsset(currency, value, bitcoinAddress)
-                        .then(function(data) {
-                            console.log('---------- COLU RESPONSE ------------');
-                            console.log(data);
-                        })
-                        .catch(function(err) {
-                            console.log('---------- COLU ERROR ------------');
-                            console.log(err);
-                        });    
+                        // colu23.addAsset(currency, value, bitcoinAddress)
+                        // .then(function(data) {
+                        //     console.log('---------- COLU RESPONSE ------------');
+                        //     console.log(data);
+                        // })
+                        // .catch(function(err) {
+                        //     console.log('---------- COLU ERROR ------------');
+                        //     console.log(err);
+                        // });    
                 })
                 .catch(function(err) {
                     io.to(socket.id).emit('topup', {error: err.raw.message});
@@ -104,7 +104,7 @@ exports.getBalance = function (socket, io, msg) {
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     mongo.getBitcoinAddress(encPhoneNumber)
     .then(function(data) {
-        colu.getAssets(data.bitcoin_address)
+        colu23.getAssets(data.bitcoin_address)
         .then(function(data) {
             io.to(socket.id).emit('getBalance', {balance: data.total, currencySymbol:data.currencyAbbreviation});            
         })
@@ -178,7 +178,7 @@ exports.sendVerificationCode = function (socket, io, msg) {
             var currencySymbol = data.currency_symbol;
             var currencyAbbreviation = data.currency_abbreviation;
             
-            colu.makeAddress()
+            colu23.makeAddress()
             .then(function(data) {
                 var bitcoinAddress = data.bitcoinAddress;
                 var privateKey = data.privateKey;
