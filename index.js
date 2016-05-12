@@ -27,11 +27,11 @@ console.log('Private Key of new address (WIF format): ['+wif+']');
 exports.io = require('./sockets/events.js')(io);
 
 //--START SERVER
-colu.on('connect', function () {
+
     server.listen(process.env.WEB_PORT, function () {
         console.info('--- STARTED ---');
     });
-})
+
 
 
 
