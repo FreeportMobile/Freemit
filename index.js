@@ -43,7 +43,7 @@ app.get('/issueAsset', function (req, res) {
         if (typeof body === 'string') {
             body = JSON.parse(body)
         }
-        res.status(response.statusCode).json({ body: JSON.stringify(body.body) });
+        res.status(response.statusCode).json({ body: JSON.stringify(body) });
  
     });
 
