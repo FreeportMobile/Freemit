@@ -22,35 +22,25 @@ app.get('/', function (req, res) {
     
     
     
-   
+  var Colu = require('colu')
 var settings = {
     coloredCoinsHost: 'https://testnet.api.coloredcoins.org',
     coluHost: 'https://testnet.engine.colu.co',
     network: 'testnet',
-    privateSeed: '09357bde26559b424a1c50b7228aa7283b6d36d277e9b8d3d2f9a8f3fae20963'
+    privateSeed: 'abcd4986fdac1b3a710892ef6eaa708d619d67100d0514ab996582966f927982'
 }
 var colu = new Colu(settings)
-
-var assetId = 'La48eD69AVoYTBbpeX5XD8QKbFnZRwNw6KkcgP';
-var fromAddress = '16iFLp6znGKxA5LrTPVVVmNbBDcQe7vKqz';
-var toAddress = 'mhiwFNRAbDyyhQi1967qtxjqwiS9R8xuWs';
-
-var send = {
-    from: [fromAddress],
-    to: [{
-        address: toAddress,
-        assetId: assetId,
-        amount: 1
-    }],
+var asset = {
+    amount: 500,
     metadata: {        
-        'assetName': '1 Ticket to see the Chicago Musical on 1/1/2016 at 8 PM',
-        'issuer': 'Ticket booth on Times Square',
-        'description': 'Seat 12 at row 10'
+        'assetName': 'Chicago: The Musical',
+        'issuer': 'AMBASSADOR THEATRE, 219 West 49th Street, New York, NY 10019',
+        'description': 'Tickets to the show on 1/1/2016 at 8 PM'
     }
-};
+}
 
 colu.on('connect', function () {
-    colu.sendAsset(send, function (err, body) {
+    colu.issueAsset(asset, function (err, body) {
         if (err) return console.error(err)        
         console.log("Body: ",body)
     })
