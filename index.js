@@ -42,6 +42,12 @@ app.get('/', function (req, res) {
   
 });
 
+//-- SERVE ASSETS FILE
+app.get('/assets.txt', function (req, res) {
+  res.sendFile(__dirname + '/public/www/assets.txt');
+});
+
+
 //-- SERVE BALANCE FILE
 app.get('/balance.html', function (req, res) {
   res.sendFile(__dirname + '/public/www/balance.html');
