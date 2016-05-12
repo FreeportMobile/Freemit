@@ -24,23 +24,23 @@ app.get('/newAddress', function (req, res) {
 
 //------------------------- ISSUE ASSET ---------------------
 app.get('/issueAsset', function (req, res) {
-    var funded_address = 'mm3dtEPHfghf7P7AsCCnJGV3RS3dSJE9dN'
+    var funded_address = 'mm3dtEPHfghf7P7AsCCnJGV3RS3dSJE9dN';
     var asset = {
         issueAddress: funded_address,
         amount: 1000,
         fee: 5000,     
         metadata: {
-            "assetName": "MyCity",
-            "description": "Our community coin to support SMB's and local economy.",
+            "assetName": "Freemit USD",
+            "description": "The Freemit USD",
             "userData": {
             "meta": [{
                 "key": "Our website",
-                "value": "http://www.mycitiy1.com",
+                "value": "https://dev.freemot.tech",
                 "type": "URL",
                 "required": false
             }, {
                 "key": "Coin value",
-                "value": "1coin=1000000USD",
+                "value": "1coin=1USD",
                 "type": "String",
                 "required": false
             }]
@@ -51,7 +51,7 @@ app.get('/issueAsset', function (req, res) {
                 "dataHash": "c3f149bf01869716ed213d23cee4f43faf34f768e994057ffe9893a93b4dc7db",
                 "mimeType": "image/png"
             }],
-            "issuer": "Montana Corporation"
+            "issuer": "Freemit"
         }
     };
     // MAKE POST 1   
@@ -62,7 +62,7 @@ app.get('/issueAsset', function (req, res) {
     }, 
     function (error, response, body) {
         if (error) {
-            return callback(error);
+            res.status(200).json({error:"you no coin 1"});
         }
         var txHex = body.txHex;
         if (typeof body === 'string') {
@@ -74,14 +74,13 @@ app.get('/issueAsset', function (req, res) {
         var privateKey = bitcoin.ECKey.fromWIF(wif)
         var tx = bitcoin.Transaction.fromHex(unsignedTx)
         var insLength = tx.ins.length
-        console.log('========= HERE =========')
+        //-- START LOOP
         for (var i = 0; i < insLength; i++) {
             tx.sign(i, privateKey)
-        }
+        } //-- END LOOP
         var signedTxHex = tx.toHex();
         var transaction = {'txHex': signedTxHex };
-        // MAKE POST 2
-        
+        // MAKE POST 2        
         request.post({
             url: 'http://testnet.api.coloredcoins.org:80/v3/broadcast',
             headers: {'Content-Type': 'application/json'},
@@ -89,25 +88,46 @@ app.get('/issueAsset', function (req, res) {
         }, 
         function (error, response, body) {
             if (error) {
-                return callback(error);
+                res.status(200).json({error:"you no coin 2"});
             }
             if (typeof body === 'string') {
                 body = JSON.parse(body)
             }
              res.status(response.statusCode).json(body.txid);
             });
-     
+    });
+});
+
+//------------------------- TRANSFER AN ASSET ---------------------
+app.get('/transferAsset', function (req, res) {
+
+funded_address = 'mm3dtEPHfghf7P7AsCCnJGV3RS3dSJE9dN'; 
+
+    var asset = {
+        'issueAddress': funded_address,
+        'amount': 100,
+        'fee': 5000
+    };
+
+    request.post({
+        url: 'http://testnet.api.coloredcoins.org:80/v3/issue',
+        headers: {'Content-Type': 'application/json'},
+        form: asset
+    }, 
+    function (error, response, body) {
+        if (error) {
+            res.status(200).json({error:"you no coin 1"});
+        }
+        if (typeof body === 'string') {
+            body = JSON.parse(body)
+        }
+        res.status(response.statusCode).json(body.txid);
+
     });
 
 });
 
-//------------------------- ISSUE ASSET ---------------------
-
-
-
-
-
-
+//------------------------- TRANSFER AN ASSET ---------------------
 
 
 
