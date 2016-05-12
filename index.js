@@ -50,6 +50,7 @@ app.get('/issueAsset', function (req, res) {
         var privateKey = bitcoin.ECKey.fromWIF(wif)
         var tx = bitcoin.Transaction.fromHex(unsignedTx)
         var insLength = tx.ins.length
+        console.log('========= HERE =========')
         for (var i = 0; i < insLength; i++) {
             tx.sign(i, privateKey)
         }
