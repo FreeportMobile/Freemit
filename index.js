@@ -20,9 +20,12 @@ app.use(express.static(__dirname + '/public'));
 app.get('/', function (req, res) {
     var privateSeed = colu.hdwallet.getPrivateSeed();
     var address = colu.hdwallet.getAddress();
+    var toAddress = colu.hdwallet.getAddress();
+    
     res.status(200).json({ 
         seed: privateSeed,
         address: address,
+        toAddress: toAddress,
     });
 });
 
