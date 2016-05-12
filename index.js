@@ -11,14 +11,11 @@ var io = require('socket.io')(server);
 //-- MAKE STATIC FILES AVAILABLE
 app.use(express.static(__dirname + '/public')); 
 
-app.get('/address', function (req, res) {
-
-var key = bitcoin.ECKey.makeRandom();
-var address = key.pub.getAddress(bitcoin.networks.testnet).toString();
-var wif = key.toWIF();
-console.log('new TESTNET address: ['+address+']');
-console.log('Private Key of new address (WIF format): ['+wif+']');
-
+app.get('/newAddress', function (req, res) {
+    var key = bitcoin.ECKey.makeRandom();
+    var address = key.pub.getAddress(bitcoin.networks.testnet).toString();
+    var wif = key.toWIF();
+    res.status(200).json({ address: address, privateKey: wif });
 });
 
 
