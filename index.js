@@ -13,10 +13,8 @@ var colu = new Colu({
     privateSeed: '795bbe9bf4bcca6fbb51ae5293b6b55a9c424b02e9f05bf534114b3f4470e9d8'   
 })
 
-
-
 //-- MAKE STATIC FILES AVAILABLE
-app.use(express.static('public/www'));
+app.use(express.static('public'));
 
 //-- SERVE INDEX FILE
 app.get('/', function (req, res) {
@@ -40,48 +38,6 @@ app.get('/', function (req, res) {
       };
   }) // END COLU
   
-});
-
-//-- SERVE ASSETS FILE
-app.get('/assets.txt', function (req, res) {
-  res.sendFile(__dirname + '/public/www/assets.txt');
-});
-
-
-//-- SERVE BALANCE FILE
-app.get('/balance.html', function (req, res) {
-  res.sendFile(__dirname + '/public/www/balance.html');
-});
-
-
-//-- SERVE CARD FILE
-app.get('/card.html', function (req, res) {
-  res.sendFile(__dirname + '/public/www/card.html');
-});
-
-//-- SERVE CHAT FILE
-app.get('/chat.html', function (req, res) {
-  res.sendFile(__dirname + '/public/www/chat.html');
-});
-
-//-- SERVE PAY FILE
-app.get('/pay.html', function (req, res) {
-  res.sendFile(__dirname + '/public/www/pay.html');
-});
-
-//-- SERVE SIGNUP FILE
-app.get('/signup.html', function (req, res) {
-  res.sendFile(__dirname + '/public/www/signup.html');
-});
-
-//-- SERVE TOPUP FILE
-app.get('/topup.html', function (req, res) {
-  res.sendFile(__dirname + '/public/www/topup.html');
-});
-
-//-- SERVE VERIFY FILE
-app.get('/verify.html', function (req, res) {
-  res.sendFile(__dirname + '/public/www/verify.html');
 });
 
 //--SOCKET EVENTS
