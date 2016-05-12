@@ -12,7 +12,6 @@
   "dependencies": {
     "aes-cross": "^1.0.8",
     "bitcoinjs-lib": "^1.5.8",
-    "colu": "^0.10.17",
     "dotenv": "^2.0.0",
     "express": "^4.13.4",
     "jsonwebtoken": "^6.1.0",

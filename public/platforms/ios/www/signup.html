@@ -9,21 +9,10 @@
     
 <style>
     
-  *, *:before, *:after {
-      -webkit-user-select: none;
-      -khtml-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-     }
-     
-     input, input:before, input:after {
-      -webkit-user-select: initial;
-      -khtml-user-select: initial;
-      -moz-user-select: initial;
-      -ms-user-select: initial;
-      user-select: initial;
-     } 
+    * {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none; 
+    }
     
     body{
         font-family: Arial, Helvetica, sans-serif;
@@ -221,7 +210,6 @@ document.getElementById("country_select").addEventListener("change", countrySele
 
 //-- GET AND CHECK THE CODE AND NUMBER
 function getCode() {
-    alert('SENDING1');
     var countryCode = document.getElementById("country_code").value;
     var phoneNumber = document.getElementById("phone_number").value;
     var countrySelect = document.getElementById("country_select").text;
@@ -251,7 +239,7 @@ function getCode() {
 
 //-- IF THE CHECKS PASS THEN SEND THE NUMBER
 function sendCode(countryCode, phoneNumber, country){
-         alert('SENDING2');
+        
         socket.emit('sendVerificationCode', {country:country, countryCode:countryCode, phoneNumber:phoneNumber });
         // SAVE PHONE NUMBER AND LOC TO LOCAL STORAGE
         localStorage.setItem('phoneNumber', phoneNumber);
@@ -259,7 +247,6 @@ function sendCode(countryCode, phoneNumber, country){
         localStorage.setItem('prevloc', '/signup.html');     
         // WAIT FOR SERVER TO CONFIRM SMS HAS BEEN SENT THEN REDIRECT
         socket.on('sendVerificationCode', function (msg) {
-             alert('SENDING3');
            window.location.href = './verify.html';
         });        
 }

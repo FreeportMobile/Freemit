@@ -1,6 +1,5 @@
 'use strict';
 
-
 module.exports = function (io) {
 
 //-- CONNECT 
@@ -19,7 +18,6 @@ module.exports = function (io) {
         
 //-- SOCKET EVENTS
         socket.on('sendVerificationCode', function (msg) {
-            console.log('sendVerificationCode');
             rateLimiter(socket);
             freemit.user.sendVerificationCode(socket, io, msg);
         });
@@ -36,7 +34,7 @@ module.exports = function (io) {
         
         socket.on('getBalance', function (msg) {
             rateLimiter(socket);
-           // freemit.user.getBalance(socket, io, msg);
+            freemit.user.getBalance(socket, io, msg);
         });
         
         socket.on('topup', function (msg) {

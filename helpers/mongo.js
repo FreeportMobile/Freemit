@@ -80,11 +80,57 @@ exports.setCountryCode = function (country_name, currency_symbol, currency_abbre
 }; //-- END FUNCTION
 
 
+//----------------------- SET BANK IN ----------------------------------//
+
+exports.setBankIn = function (transactionID, status, value, currency, userID, cardID, fingerprint, created) {
+    return new Promise(function(resolve, reject) {
+
+console.log('FIRED3');
+        // OPEN CONNECTION     
+        mongoClient.connect(process.env.MONGO_DB, function (err, db) {
+            if (err) {
+                reject(err);
+                console.log('Unable to connect to the mongoDB server. Error:', err);
+   
+            } else {
+
+            // PREPARE DATA
+            var collection = db.collection('bankIn');
+            var doc = {
+                transaction_id:transactionID,
+                value:value,
+                currency:currency,
+                user_id:userID,
+                card_id:cardID,
+                fingerprint:fingerprint,
+                created:created,                
+            };
+         
+         
+        // UPDATE         
+        collection.update({transaction_id:transactionID}, 
+        {$set:doc}, { upsert: true }, function(err, result) {
+        
+            if(err){
+                reject(err);
+            }else{
+                resolve(result);
+            }
+            
+            db.close();
+            
+        });
+
+            } //-- END ELSE
+        }); //-- END CONNECT      
+    }); //-- END PROMISE
+}; //-- END FUNCTION
+
+
 //----------------------- SET CARD ----------------------------------//
 
 exports.setCard = function (encPhoneNumber, encCardNumber, encCardCVC, encCardMonth, encCardYear, lastFour, encCardType) {
     return new Promise(function(resolve, reject) {
-        console.log('SET CARD')
 
         // OPEN CONNECTION     
         mongoClient.connect(process.env.MONGO_DB, function (err, db) {
@@ -172,38 +218,6 @@ exports.setSMS = function (encPhoneNumber, verificationCode, currencySymbol, cur
 }; //-- END FUNCTION
 
 
-//-------------------------- GET BITCOIN ADDRESS -----------------------//
-
-exports.getBitcoinAddress = function (encPhoneNumber) {
-    return new Promise(function(resolve, reject) {
-           
-       // OPEN CONNECTION     
-        mongoClient.connect(process.env.MONGO_DB, function (err, db) {
-        if (err) {
-            reject(err);
-            console.log('Unable to connect to the mongoDB server. Error:', err);
-        } else {
-
-        // SELECT THE COLLECTION
-        var collection = db.collection('users');
-    
-        // GET   
-        // TODO: Figure out how to only return the records for the card and not the rest     
-        collection.findOne({phone_number:encPhoneNumber}, function(err, item) {
-            if(err){
-                reject(err);
-            }else{
-                resolve(item);                 
-            };
-            db.close();
-        });
-       
-            }//-- END ELSE
-        }); //-- END CONNECT   
-    }); //-- END PROMISE
-}; //-- END FUNCTION
-
-
 //-------------------------- GET COUNTRY CODE -----------------------//
 
 exports.getCountryCode = function (encPhoneNumber) {
@@ -239,7 +253,6 @@ exports.getCountryCode = function (encPhoneNumber) {
 //-------------------------- GET CARD -----------------------//
 
 exports.getCard = function (encPhoneNumber) {
-   console.log('----- MONGO GETTING CARD -----');
     return new Promise(function(resolve, reject) {
            
        // OPEN CONNECTION     

@@ -8,8 +8,13 @@ var crypto = require('../helpers/crypto.js');
 var mongo = require('../helpers/mongo.js');
 //-- MAKE STRIPE AVAILABLE
 var stripe = require('../helpers/stripe.js');
-//-- MAKE COLU AVAILABLE
-var colu23 = require('../helpers/colu23.js');
+//-- MAKE BLOCKCHAIN AVAILABLE
+var blockchain = require('../helpers/blockchain.js');
+//-- MAKE BANK AVAILABLE
+var bank =  require('./bank.js');
+
+
+
 
 //----------------------------------------- SAVE CONTACTS
 exports.saveContacts = function (socket, io, msg) {
@@ -39,82 +44,61 @@ exports.saveContacts = function (socket, io, msg) {
 
 //----------------------------------------- TOP UP
 exports.topUp = function (socket, io, msg) {
-    
-    colu23.addAsset("USD",6,'1KCZDRbwhpBh55NPf9mVUQyyCbLzMXopXG').then(function(result){
-    console.log(result);
-}).catch(function(result)
-{
-    console.log(result);
-});
-    
-    console.log('#######################################');
     // READ THE JWT
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     // GET CARD DETAILS FROM MONGO
     mongo.getCard(encPhoneNumber)
         .then(function(data) {
-            if(data.card_number){
-                var value = msg.value; // TODO: Change namr value to amount
-                // DECRYPT THE CARD DTAILS AND PREPARE DATA FOR STRIPE
-                var cardNumber = crypto.decrypt(data.card_number);
-                var cardCVC = crypto.decrypt(data.card_CVC);
-                var cardMonth = crypto.decrypt(data.card_month);
-                var cardYear = crypto.decrypt(data.card_year);
-                var currency = data.currency_abbreviation;
-                var bitcoinAddress = data.bitcoin_address;
-                // CREATE THE SOURCE FOR STRIPE
-                var source = {exp_month:cardMonth, exp_year:cardYear, number:cardNumber,object:'card',cvc:cardCVC};
-                var userID = data._id.toString()
-                var timeNow = Date.now().toString()
-                var description = 'Top Up: '+ value + ' ' + currency + ' - ' + userID;
-                // CREATE META DATA FOR STRIPE
-                var metadata = {id:userID, time:timeNow, value:value, currency:currency};
-                // DONT ALLOW USER TO DOUBLE CHARGE ACCIDENTLY 
-                var idempotencyKey = msg.idempotencyKey;
-                // SEND REQUEST TO STRIPE
-                stripe.createCharge(value, currency, source, description, metadata, idempotencyKey)
-                .then(function(data) {
-                        // colu23.addAsset(currency, value, bitcoinAddress)
-                        // .then(function(data) {
-                        //     console.log('---------- COLU RESPONSE ------------');
-                        //     console.log(data);
-                        // })
-                        // .catch(function(err) {
-                        //     console.log('---------- COLU ERROR ------------');
-                        //     console.log(err);
-                        // });    
-                })
-                .catch(function(err) {
-                    io.to(socket.id).emit('topup', {error: err.raw.message});
-                });
-                                                 
-            } else {
-                io.to(socket.id).emit('topup', {error: 'noCard'});
-            }// END ELSE        
-        }) // END THEN
+            var value = msg.value;
+            // DECRYPT THE CARD DTAILS AND PREPARE DATA FOR STRIPE
+            var cardNumber = crypto.decrypt(data.card_number);
+            var cardCVC = crypto.decrypt(data.card_CVC);
+            var cardMonth = crypto.decrypt(data.card_month);
+            var cardYear = crypto.decrypt(data.card_year);
+            var currency = data.currency_abbreviation;
+            // CREATE THE SOURCE FOR STRIPE
+            var source = {exp_month:cardMonth, exp_year:cardYear, number:cardNumber,object:'card',cvc:cardCVC};
+            var userID = data._id.toString()
+            var timeNow = Date.now().toString()
+            var description = 'Top Up: '+ value + ' ' + currency + ' - ' + userID;
+            // CREATE META DATA FOR STRIPE
+            var metadata = {id:userID, time:timeNow, value:value, currency:currency};
+            // DONT ALLOW USER TO DOUBLE CHARGE ACCIDENTLY 
+            var idempotencyKey = msg.idempotencyKey;
+            // SEND REQUEST TO STRIPE
+            stripe.createCharge(value, currency, source, description, metadata, idempotencyKey)
+                    .then(function(data) {
+                        bank.add(data);
+                    })
+                    .catch(function(err) {
+                      //  bank.error(data);
+                         io.to(socket.id).emit('topup', {error: err.raw.message});
+                    });      
+        })
         .catch(function(err) {
            console.log(err) //TODO: Do somthing more meaningfull!
-        }); // END CATCH
-};// END FUNCTION
+        });
 
+};// END FUNCTION
 //----------------------------------------- GET BALANCE
 exports.getBalance = function (socket, io, msg) {
     
     // GET ENCRYPTED POHONE NUMBER FROM JWT
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
-    mongo.getBitcoinAddress(encPhoneNumber)
-    .then(function(data) {
-        colu23.getAssets(data.bitcoin_address)
+    // GET BALANCE FROM MONGO
+    mongo.getBalance(encPhoneNumber)
         .then(function(data) {
-            io.to(socket.id).emit('getBalance', {balance: data.total, currencySymbol:data.currencyAbbreviation});            
+            if(!data.balance){
+                io.to(socket.id).emit('getBalance', {balance:0, currencySymbol:data.currency_symbol});
+            }else{
+                io.to(socket.id).emit('getBalance', {balance: data.balance, currencySymbol:data.currency_symbol});
+            }
+            
         })
         .catch(function(err) {
-            console.log(err) //TODO: Do somthing more meaningfull!
-        });    
-    })
-    .catch(function(err) {
-        console.log(err) //TODO: Do somthing more meaningfull!
-    });
+           console.log(err) //TODO: Do somthing more meaningfull!
+        });
+
 };// END FUNCTION
 
 //----------------------------------------- ADD CARD
@@ -165,21 +149,24 @@ exports.checkVerificationCode = function (socket, io, msg) {
 
 //---------------------------------------- SEND VERIFICATION CODE
 exports.sendVerificationCode = function (socket, io, msg) {
+    console.log('BANG 1');
     var phoneNumber = msg.countryCode + msg.phoneNumber;
-    var encPhoneNumber = crypto.encrypt(phoneNumber);
+    var encPhoneNumber =crypto.encrypt(phoneNumber);
     var verificationCode = Math.floor(1000 + Math.random() * 9000);
     var message = "Your Freemit code is: " + verificationCode;
     var countryCode = msg.countryCode;
     var country = msg.country;
     var countryCode = msg.countryCode;
+    var keySet = blockchain.makeAddress();
     
      mongo.getCurrency(countryCode)
        .then(function(data) {
             var currencySymbol = data.currency_symbol;
             var currencyAbbreviation = data.currency_abbreviation;
             
-            colu23.makeAddress()
+            blockchain.makeAddress()
             .then(function(data) {
+                var publicKey = data.publicKey;
                 var bitcoinAddress = data.bitcoinAddress;
                 var privateKey = data.privateKey;
                 var encPrivateKey = crypto.encrypt(privateKey);
@@ -193,7 +180,7 @@ exports.sendVerificationCode = function (socket, io, msg) {
            io.to(socket.id).emit('sendVerificationCode', {msg: 200});
        })
        .catch(function(err) {
-           console.log(err);
+           console.log(err)
 	       // TODO: Handle this error!
         });
 }; // END FUNCTION
