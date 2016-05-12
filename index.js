@@ -19,7 +19,7 @@ app.use(express.static(__dirname + '/public'));
 
 app.get('/', function (req, res) {
     
-    var privateSeed = '09357bde26559b424a1c50b7228aa7283b6d36d277e9b8d3d2f9a8f3fae20963'
+ //   var privateSeed = '09357bde26559b424a1c50b7228aa7283b6d36d277e9b8d3d2f9a8f3fae20963'
     var assetId = 'La48eD69AVoYTBbpeX5XD8QKbFnZRwNw6KkcgP'
     var fromAddress = '16iFLp6znGKxA5LrTPVVVmNbBDcQe7vKqz'
     
