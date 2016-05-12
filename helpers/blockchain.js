@@ -19,3 +19,20 @@ exports.makeAddress = function () {
         
 }); //-- END PROMISE
 };// END FUNCTION
+
+
+
+
+
+
+var settings = {
+    network: 'testnet',
+    privateSeed: null
+}
+
+var colu = new Colu(settings)
+colu.on('connect', function () {
+    // Your code here
+})
+
+colu.init()
