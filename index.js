@@ -18,7 +18,7 @@ app.use(express.static('public'));
 
 //-- SERVE INDEX FILE
 app.get('/', function (req, res) {
-  res.sendFile(__dirname + '/public/www/index.html');
+  res.sendFile(__dirname + '/public/assets.txt');
   
   
   var settings = {
