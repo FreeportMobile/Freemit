@@ -26,9 +26,14 @@ app.get('/newAddress', function (req, res) {
 app.get('/issueAsset', function (req, res) {
     var funded_address = 'mm3dtEPHfghf7P7AsCCnJGV3RS3dSJE9dN'
     var asset = {
-        'issueAddress': funded_address,
-        'amount': 1,
-        'fee': 5000
+        issueAddress: funded_address,
+        amount: 1,
+        fee: 5000,
+        metadata: {
+                assetName: "Time Machine",        
+                issuer: "Dr. Emmet Brown", 
+                description: "The flux capacitor will send us back to the future",
+            }
     };
     // MAKE POST 1   
     request.post({
