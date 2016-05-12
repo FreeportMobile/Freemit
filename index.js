@@ -109,7 +109,6 @@ var send_asset = {
     	'assetId': 'LKXjG9uMSFoDj2Z6NrEJ6nkcRGVtjUmC4zrtH'  // ASSET
     }]
 };
-
     request.post({
         url: 'http://testnet.api.coloredcoins.org:80/v3/sendasset',
         headers: {'Content-Type': 'application/json'},
@@ -130,10 +129,6 @@ var send_asset = {
 
 
 
-
-
-
-
 //--SOCKET EVENTS
 exports.io = require('./sockets/events.js')(io);
 
@@ -142,10 +137,3 @@ exports.io = require('./sockets/events.js')(io);
     server.listen(process.env.WEB_PORT, function () {
         console.info('--- STARTED ---');
     });
-
-
-
-
-
-
-
