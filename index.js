@@ -8,12 +8,6 @@ var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
-
-var colu = new Colu({
-    network: 'testnet',
-    privateSeed: null
-})
-
 //-- MAKE STATIC FILES AVAILABLE
 app.use(express.static(__dirname + '/public')); 
 
