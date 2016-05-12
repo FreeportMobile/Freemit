@@ -100,14 +100,11 @@ app.get('/issueAsset', function (req, res) {
 
 app.get('/transferAsset', function (req, res) {
 
-var key = bitcoin.ECKey.makeRandom();
-var to_address = key.pub.getAddress(bitcoin.networks.testnet).toString();
-
 var send_asset = {
     'from': ['n2t19a46cBs2DdHs2sqfRwPGhoQjvqmefR'],		    // FROM
     'fee': 5000,                                            
     'to': [{
-    	'address': to_address,                              // TO
+    	'address': 'n2t19a46cBs2DdHs2sqfRwPGhoQjvqmefR',    // TO
     	'amount': 5,                                        // AMOUNT
     	'assetId': 'LKXjG9uMSFoDj2Z6NrEJ6nkcRGVtjUmC4zrtH'  // ASSET
     }]
