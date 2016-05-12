@@ -36,7 +36,7 @@ var fromAddress = '16iFLp6znGKxA5LrTPVVVmNbBDcQe7vKqz';
 var toAddress = 'mhiwFNRAbDyyhQi1967qtxjqwiS9R8xuWs';
 
 var send = {
-    from: fromAddress,
+    from: [fromAddress],
     to: [{
         address: toAddress,
         assetId: assetId,
