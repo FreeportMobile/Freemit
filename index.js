@@ -13,7 +13,7 @@ var io = require('socket.io')(server);
 app.use(express.static(__dirname + '/public')); 
 
 app.get('/', function (req, res) {
-    res.status(200).json({ error: 'freemit' });
+    res.status(200).json({ ok: 'freemit' });
 });
 
 
