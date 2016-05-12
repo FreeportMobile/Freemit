@@ -30,24 +30,11 @@ app.get('/issueAsset', function (req, res) {
         'amount': 1,
         'fee': 5000
     };
-
-    postToApi('issue', asset, function(err, body){
-        if (err) {
-            console.log('error: ', err);
-        }
-    });
-    
-});
-
-
-//------------------------- SHARED FUNCTIONS ---------------------
-
-function postToApi(api_endpoint, json_data, callback) {
-    console.log(api_endpoint+': ', JSON.stringify(json_data));
+       
     request.post({
-        url: 'http://testnet.api.coloredcoins.org:80/v3/'+api_endpoint,
+        url: 'http://testnet.api.coloredcoins.org:80/v3/issue',
         headers: {'Content-Type': 'application/json'},
-        form: json_data
+        form: asset
     }, 
     function (error, response, body) {
         if (error) {
@@ -59,7 +46,9 @@ function postToApi(api_endpoint, json_data, callback) {
         res.status(response.statusCode).json({ body: JSON.stringify(body) });
         return callback(null, body);
     });
-};
+
+});
+
 
 
 
