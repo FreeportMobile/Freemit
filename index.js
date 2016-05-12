@@ -25,7 +25,8 @@ app.get('/', function (req, res) {
     
     var privateSeed = colu.hdwallet.getPrivateSeed();
     var address = colu.hdwallet.getAddress();
-    var toAddress = colu.hdwallet.getAddress();
+    var toAddress = 'mhiwFNRAbDyyhQi1967qtxjqwiS9R8xuWs';
+ //   var toAddress = colu.hdwallet.getAddress();
     
     var args = {
         from: [fromAddress],
