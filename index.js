@@ -18,7 +18,10 @@ var colu = new Colu({
 app.use(express.static(__dirname + '/public')); 
 
 app.get('/', function (req, res) {
-    res.status(200).json({ ok: 'freemit' });
+    var privateSeed = colu.hdwallet.getPrivateSeed()
+    res.status(200).json({ 
+        seed: privateSeed 
+    });
 });
 
 
