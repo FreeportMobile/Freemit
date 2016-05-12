@@ -69,8 +69,6 @@ app.get('/issueAsset', function (req, res) {
             }
             if (typeof body === 'string') {
                 body = JSON.parse(body)
-                var transaction = body.txid;
-                console.log(transaction);
             }
              res.status(response.statusCode).json(body);
             });
