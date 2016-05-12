@@ -27,13 +27,32 @@ app.get('/issueAsset', function (req, res) {
     var funded_address = 'mm3dtEPHfghf7P7AsCCnJGV3RS3dSJE9dN'
     var asset = {
         issueAddress: funded_address,
-        amount: 1,
-        fee: 5000,
+        amount: 1000,
+        fee: 5000,     
         metadata: {
-                assetName: "Time Machine",        
-                issuer: "Dr. Emmet Brown", 
-                description: "The flux capacitor will send us back to the future",
+            "assetName": "MyCity",
+            "description": "Our community coin to support SMB's and local economy.",
+            "userData": {
+            "meta": [{
+                "key": "Our website",
+                "value": "http://www.mycitiy1.com",
+                "type": "URL",
+                "required": false
+            }, {
+                "key": "Coin value",
+                "value": "1coin=1000000USD",
+                "type": "String",
+                "required": false
+            }]
             },
+            "urls": [{
+                "name": "icon",
+                "url": "https://s3-us-west-2.amazonaws.com/colu-website/izyefJ5cTo2_Vb57PwHtfsIL.png",
+                "dataHash": "c3f149bf01869716ed213d23cee4f43faf34f768e994057ffe9893a93b4dc7db",
+                "mimeType": "image/png"
+            }],
+            "issuer": "Montana Corporation"
+        }
     };
     // MAKE POST 1   
     request.post({
