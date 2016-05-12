@@ -21,12 +21,10 @@ app.get('/newAddress', function (req, res) {
     res.status(200).json({ address: address, privateKey: wif });
 });
 
-
 //------------------------- ISSUE ASSET ---------------------
 app.get('/issueAsset', function (req, res) {
-    var funded_address = 'mm3dtEPHfghf7P7AsCCnJGV3RS3dSJE9dN';
     var asset = {
-        issueAddress: funded_address,
+        issueAddress: 'mm3dtEPHfghf7P7AsCCnJGV3RS3dSJE9dN',
         amount: 1000,
         fee: 5000,     
         metadata: {
@@ -99,35 +97,39 @@ app.get('/issueAsset', function (req, res) {
 });
 
 //------------------------- TRANSFER AN ASSET ---------------------
+
 app.get('/transferAsset', function (req, res) {
 
-funded_address = 'mm3dtEPHfghf7P7AsCCnJGV3RS3dSJE9dN'; 
+var key = bitcoin.ECKey.makeRandom();
+var to_address = key.pub.getAddress(bitcoin.networks.testnet).toString();
 
-    var asset = {
-        'issueAddress': funded_address,
-        'amount': 100,
-        'fee': 5000
-    };
+var send_asset = {
+    'from': ['n2t19a46cBs2DdHs2sqfRwPGhoQjvqmefR'],		    // FROM
+    'fee': 5000,                                            
+    'to': [{
+    	'address': to_address,                              // TO
+    	'amount': 5,                                        // AMOUNT
+    	'assetId': 'LKXjG9uMSFoDj2Z6NrEJ6nkcRGVtjUmC4zrtH'  // ASSET
+    }]
+};
 
     request.post({
-        url: 'http://testnet.api.coloredcoins.org:80/v3/issue',
+        url: 'http://testnet.api.coloredcoins.org:80/v3/sendasset',
         headers: {'Content-Type': 'application/json'},
-        form: asset
+        form: send_asset
     }, 
     function (error, response, body) {
         if (error) {
-            res.status(200).json({error:"you no coin 1"});
+            res.status(200).json({error:"you no coin 2"});
         }
         if (typeof body === 'string') {
             body = JSON.parse(body)
         }
-        res.status(response.statusCode).json(body.txid);
-
+        res.status(response.statusCode).json(body);
     });
-
 });
 
-//------------------------- TRANSFER AN ASSET ---------------------
+//------------------------- QUERY AN ADDRESS ---------------------
 
 
 
