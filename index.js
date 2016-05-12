@@ -33,7 +33,7 @@ app.get('/issueAsset', function (req, res) {
                 assetName: "Time Machine",        
                 issuer: "Dr. Emmet Brown", 
                 description: "The flux capacitor will send us back to the future",
-            }
+            },
     };
     // MAKE POST 1   
     request.post({
