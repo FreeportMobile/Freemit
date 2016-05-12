@@ -13,7 +13,7 @@ app.use(express.static(__dirname + '/public'));
 
 app.get('/newAddress', function (req, res) {
     var key = bitcoin.ECKey.makeRandom();
-    var address = key.pub.getAddress(bitcoin.networks.testnet).toString();
+    var address = key.pub.getAddress(bitcoin.networks.mainnet).toString();
     var wif = key.toWIF();
     res.status(200).json({ address: address, privateKey: wif });
 });
