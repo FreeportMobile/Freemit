@@ -2,7 +2,7 @@
 
 //-- MAKE DEPENDANCIES AVAILABLE
 require('dotenv').config();
- var Colu = require('colu')
+var bitcoin = require('bitcoinjs-lib');
 var express = require('express');
 var app = express();
 var server = require('http').Server(app);
@@ -17,38 +17,10 @@ var colu = new Colu({
 //-- MAKE STATIC FILES AVAILABLE
 app.use(express.static(__dirname + '/public')); 
 
-app.get('/', function (req, res) {
-    
-    
-    
-    
-  var Colu = require('colu')
-var settings = {
-    coloredCoinsHost: 'https://testnet.api.coloredcoins.org',
-    coluHost: 'https://testnet.engine.colu.co',
-    network: 'testnet',
-  privateSeed: '09357bde26559b424a1c50b7228aa7283b6d36d277e9b8d3d2f9a8f3fae20963'
-}
-var colu = new Colu(settings)
-var asset = {
-    amount: 500,
-    metadata: {        
-        'assetName': 'WillCoin',
-        'issuer': 'Will',
-        'description': 'WillCoin'
-    }
-}
-
-colu.on('connect', function () {
-    colu.issueAsset(asset, function (err, body) {
-        if (err) return console.error(err)        
-        console.log("Body: ",body)
-    })
-})
-
-colu.init()
-    
-
+app.get('/verify', function (req, res) {
+    key = bitcoin.ECKey.makeRandom();
+    address = key.pub.getAddress().toString();
+    console.log('new bitcoin address: ['+address+']');
 });
 
 //--SOCKET EVENTS
