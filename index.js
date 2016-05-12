@@ -16,29 +16,11 @@ var colu = new Colu({
 //-- MAKE STATIC FILES AVAILABLE
 app.use(express.static(__dirname + '/public')); 
 
-//-- SERVE INDEX FILE
 app.get('/', function (req, res) {
-  res.sendFile(__dirname + 'public/assets.txt');
-  
-  
-//   var settings = {
-//       'from': fromAddress,
-//       'to':[{
-//           'address': address,
-//           'assetId': assetId,
-//           'amount': 1
-//       }]
-//   }
-  
-  colu.sendAsset(settings, function(err, res){
-      if(err){
-         console.log(err);
-      }else{
-          console.log(res);
-      };
-  }) // END COLU
-  
+    res.status(200).json({ error: 'freemit' });
 });
+
+
 
 //--SOCKET EVENTS
 exports.io = require('./sockets/events.js')(io);
