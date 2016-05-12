@@ -23,7 +23,7 @@ app.get('/newAddress', function (req, res) {
 
 //------------------------- ISSUE ASSET ---------------------
 app.get('/issueAsset', function (req, res) {
-    funded_address = 'mm3dtEPHfghf7P7AsCCnJGV3RS3dSJE9dN'
+    var funded_address = 'mm3dtEPHfghf7P7AsCCnJGV3RS3dSJE9dN'
     var asset = {
         'issueAddress': funded_address,
         'amount': 1,
