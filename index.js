@@ -2,6 +2,7 @@
 
 //-- MAKE DEPENDANCIES AVAILABLE
 require('dotenv').config();
+ var Colu = require('colu')
 var express = require('express');
 var app = express();
 var server = require('http').Server(app);
@@ -21,7 +22,7 @@ app.get('/', function (req, res) {
     
     
     
-    var Colu = require('colu')
+   
 var settings = {
     coloredCoinsHost: 'https://testnet.api.coloredcoins.org',
     coluHost: 'https://testnet.engine.colu.co',
