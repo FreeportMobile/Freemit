@@ -21,14 +21,14 @@ app.get('/', function (req, res) {
   res.sendFile(__dirname + '/public/assets.txt');
   
   
-  var settings = {
-      'from': fromAddress,
-      'to':[{
-          'address': address,
-          'assetId': assetId,
-          'amount': 1
-      }]
-  }
+//   var settings = {
+//       'from': fromAddress,
+//       'to':[{
+//           'address': address,
+//           'assetId': assetId,
+//           'amount': 1
+//       }]
+//   }
   
   colu.sendAsset(settings, function(err, res){
       if(err){
