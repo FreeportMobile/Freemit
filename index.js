@@ -27,16 +27,15 @@ var settings = {
     coloredCoinsHost: 'https://testnet.api.coloredcoins.org',
     coluHost: 'https://testnet.engine.colu.co',
     network: 'testnet',
-   // WORKING privateSeed: 'abcd4986fdac1b3a710892ef6eaa708d619d67100d0514ab996582966f927982'
   privateSeed: '09357bde26559b424a1c50b7228aa7283b6d36d277e9b8d3d2f9a8f3fae20963'
 }
 var colu = new Colu(settings)
 var asset = {
     amount: 500,
     metadata: {        
-        'assetName': 'Chicago: The Musical',
-        'issuer': 'AMBASSADOR THEATRE, 219 West 49th Street, New York, NY 10019',
-        'description': 'Tickets to the show on 1/1/2016 at 8 PM'
+        'assetName': 'WillCoin',
+        'issuer': 'Will',
+        'description': 'WillCoin'
     }
 }
 
