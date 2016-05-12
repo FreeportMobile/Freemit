@@ -14,11 +14,11 @@ var colu = new Colu({
 })
 
 //-- MAKE STATIC FILES AVAILABLE
-app.use(express.static('public'));
+app.use(express.static(__dirname + '/public')); 
 
 //-- SERVE INDEX FILE
 app.get('/', function (req, res) {
-  res.sendFile(__dirname + '/public/assets.txt');
+  res.sendFile(__dirname + 'public/assets.txt');
   
   
 //   var settings = {
