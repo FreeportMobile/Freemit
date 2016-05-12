@@ -45,10 +45,10 @@ app.get('/issueAsset', function (req, res) {
             body = JSON.parse(body);
             console.log(body);
             console.log
-            txHex = body.txHex;
+            var txHex = body.txHex;
             console.log(txHex);
         }else {
-            txHex = body.txHex;
+            var txHex = body.txHex;
             console.log(txHex);
         }
         res.status(200).json({ txHex: JSON.stringify(txHex) });
