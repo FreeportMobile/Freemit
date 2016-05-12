@@ -3,6 +3,7 @@
 //-- MAKE DEPENDANCIES AVAILABLE
 require('dotenv').config();
 var bitcoin = require('bitcoinjs-lib');
+var request = require('request');
 var express = require('express');
 var app = express();
 var server = require('http').Server(app);
