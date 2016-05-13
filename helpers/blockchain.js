@@ -13,15 +13,16 @@ exports.makeAddress = function () {
         console.log('===== NET ========');  
         console.log(net);
         var address = key.pub.getAddress(bitcoin.networks.net).toString();
+        console.log('===== ADDRESS ========');  
         console.log(address);
         var wif = key.toWIF();
         console.log('===== WIF ========');  
         console.log(wif);
-        var keySet = {bitcoinAddress:address, privateKey:wif};
+        var keySet = {'bitcoinAddress':address, 'privateKey':wif};
         console.log('===== KEY SET ========');  
-        console.log(keyset);
+        console.log(keySet);
           
-        if(key && address && wif){
+        if(address && wif){
             console.log('===== RESOLVE ========');  
             resolve(keySet);
         }else{
