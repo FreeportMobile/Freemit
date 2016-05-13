@@ -29,7 +29,7 @@ exports.makeAddress = function () {
 //------------------------- QUERY ADDRESS -------------------------
 exports.queryAddress = function (bitcoinAddress) {
      return new Promise(function(resolve, reject) {
-        request.get('http://testnet.api.coloredcoins.org:80/v3/addressinfo/'+bitcoinAddress, function (err, res, data) {
+        request.get('http://testnet.api.coloredcoins.org:80/v3/addressinfo/'+bitcoinAddress, function (err, res, body) {
             
             if (err) {
                 reject(err);
@@ -37,7 +37,7 @@ exports.queryAddress = function (bitcoinAddress) {
             if (typeof body === 'string') {
                 body = JSON.parse(body)
             }
-            resolve(data);   
+            resolve(body);   
         });    
     }); //-- END PROMISE
 };// END FUNCTION
@@ -63,7 +63,7 @@ console.log(fromAddressArray);
             headers: {'Content-Type': 'application/json'},
             form: send_asset
         }, 
-        function (err, res, data) {
+        function (err, res, body) {
             if (err) {
                 reject(err);
                 console.log('=== TRANSFER ASSET ERROR ===');
@@ -71,10 +71,35 @@ console.log(fromAddressArray);
             }
             if (typeof body === 'string') {
                 body = JSON.parse(body)
-                console.log('=== TRANSFER ASSET BODY ===');
-                console.log(body);
-            }
-            resolve(data);   
+                var txHex = body.txHex;   
+            }     
+            var unsignedTx = txHex;
+            var wif = process.env.BITCOIN_ADDRESS_KEY
+            var privateKey = bitcoin.ECKey.fromWIF(wif)
+            var tx = bitcoin.Transaction.fromHex(unsignedTx)
+            var insLength = tx.ins.length
+            //-- START LOOP
+            for (var i = 0; i < insLength; i++) {
+                tx.sign(i, privateKey)
+            } //-- END LOOP
+            var signedTxHex = tx.toHex();
+            var transaction = {'txHex': signedTxHex };
+            // MAKE POST 2        
+            request.post({
+                url: 'http://testnet.api.coloredcoins.org:80/v3/broadcast',
+                headers: {'Content-Type': 'application/json'},
+                form: transaction
+            }, 
+            function (err, res, body) {
+                if (err) {
+                reject(err);
+                }
+                if (typeof body === 'string') {
+                    body = JSON.parse(body)
+                }
+                resolve(body);   
+            });
+         
         });
     }); //-- END PROMISE
 };// END FUNCTION
