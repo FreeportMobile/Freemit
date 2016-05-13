@@ -48,10 +48,11 @@ exports.queryAddress = function (bitcoinAddress) {
 exports.transferAsset = function (amount, assetID, fromAddress, toAddress) {
      return new Promise(function(resolve, reject) {
 console.log('=== FROM ===');
-console.log(fromAddress);
+fromAddressArray = Array.from(fromAddress);
+console.log(fromAddressArray);
 
         var send_asset = {
-            'from': fromAddress,
+            'from': fromAddressArray,
             'fee': 5000,                                            
             'to': [{'address': toAddress, 'amount': amount, 'assetId': assetID }]
         };
