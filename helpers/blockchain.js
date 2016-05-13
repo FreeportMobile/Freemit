@@ -47,7 +47,9 @@ exports.queryAddress = function (bitcoinAddress) {
 
 exports.transferAsset = function (amount, assetID, fromAddress, toAddress) {
      return new Promise(function(resolve, reject) {
-console.log('=== TRANSFER ASSET ===');
+console.log('=== FROM ===');
+console.log(fromAddress);
+
         var send_asset = {
             'from': fromAddress,
             'fee': 5000,                                            
