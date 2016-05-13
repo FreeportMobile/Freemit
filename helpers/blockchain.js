@@ -5,8 +5,9 @@ var request = require('request');
 
 //------------------------- NEW BITCOIN ADDRESS -------------------------
 exports.makeAddress = function () {
+    console.log('===== BTC ADDRESS BAKING 1 ========'); 
      return new Promise(function(resolve, reject) {     
-         console.log('===== BTC ADDRESS BAKING ========');      
+         console.log('===== BTC ADDRESS BAKING 2 ========');      
         var key = bitcoin.ECKey.makeRandom();
         console.log(key);
         var net = process.env.BITCOIN_NET;

@@ -164,7 +164,7 @@ exports.sendVerificationCode = function (socket, io, msg) {
             console.log(data);
             var currencySymbol = data.currency_symbol;
             var currencyAbbreviation = data.currency_abbreviation;
-            
+            console.log('===== ABOUT TO CALL ========');
             blockchain.makeAddress()
             .then(function(data) {
                 console.log('===== BTC ADDRESS ========');
