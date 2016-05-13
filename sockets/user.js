@@ -149,7 +149,6 @@ exports.checkVerificationCode = function (socket, io, msg) {
 
 //---------------------------------------- SEND VERIFICATION CODE
 exports.sendVerificationCode = function (socket, io, msg) {
-    console.log('BANG 1');
     var phoneNumber = msg.countryCode + msg.phoneNumber;
     var encPhoneNumber =crypto.encrypt(phoneNumber);
     var verificationCode = Math.floor(1000 + Math.random() * 9000);
@@ -161,11 +160,15 @@ exports.sendVerificationCode = function (socket, io, msg) {
     
      mongo.getCurrency(countryCode)
        .then(function(data) {
+            console.log('===== COUNTRY CODE ========');
+            console.log(data);
             var currencySymbol = data.currency_symbol;
             var currencyAbbreviation = data.currency_abbreviation;
             
             blockchain.makeAddress()
             .then(function(data) {
+                console.log('===== BTC ADDRESS ========');
+                console.log(data);
                 var publicKey = data.publicKey;
                 var bitcoinAddress = data.bitcoinAddress;
                 var privateKey = data.privateKey;
