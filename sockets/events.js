@@ -18,7 +18,6 @@ module.exports = function (io) {
         
 //-- SOCKET EVENTS
         socket.on('sendVerificationCode', function (msg) {
-            console.log('sendVerificationCode / sockets');
             rateLimiter(socket);
             freemit.user.sendVerificationCode(socket, io, msg);
         });
@@ -29,6 +28,7 @@ module.exports = function (io) {
         });
         
         socket.on('saveCard', function (msg) {
+            console.log('==== SAVE CARD =======');
             rateLimiter(socket);
             freemit.user.saveCard(socket, io, msg);
         });

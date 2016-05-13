@@ -104,6 +104,7 @@ exports.getBalance = function (socket, io, msg) {
 //----------------------------------------- ADD CARD
 exports.saveCard = function (socket, io, msg) {
     
+    console.log('==== SAVE CARD 2=======');
     // GET ENCRYPTED POHONE NUMBER FROM JWT
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     // GET LAST 4 DIGITS OF CARD
@@ -117,8 +118,10 @@ exports.saveCard = function (socket, io, msg) {
     var encCardType = crypto.encrypt(msg.card_type);
     
     // SAVE TO MONGO
+    console.log('==== SAVE CARD3 =======');
     mongo.setCard(encPhoneNumber, encCardNumber, encCardCVC, encCardMonth, encCardYear, lastFour, encCardType)
         .then(function(data) {
+            console.log('==== SAVE CARD 4=======');
           io.to(socket.id).emit('saveCard', {msg: 200});
         })
         .catch(function(err) {
@@ -160,14 +163,11 @@ exports.sendVerificationCode = function (socket, io, msg) {
     
      mongo.getCurrency(countryCode)
        .then(function(data) {
-            console.log('===== COUNTRY CODE ========');
             console.log(data);
             var currencySymbol = data.currency_symbol;
             var currencyAbbreviation = data.currency_abbreviation;
-            console.log('===== ABOUT TO CALL ========');
             blockchain.makeAddress()
             .then(function(data) {
-                console.log('===== BTC ADDRESS ========');
                 console.log(data);
                 var publicKey = data.publicKey;
                 var bitcoinAddress = data.bitcoinAddress;

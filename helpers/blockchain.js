@@ -7,26 +7,19 @@ var request = require('request');
 exports.makeAddress = function () {
      return new Promise(function(resolve, reject) {         
         var key = bitcoin.ECKey.makeRandom();
-        console.log('===== KEY ========');  
         console.log(key);
         var net = process.env.BITCOIN_NET;
-        console.log('===== NET ========');  
         console.log(net);
         var address = key.pub.getAddress(bitcoin.networks.net).toString();
-        console.log('===== ADDRESS ========');  
         console.log(address);
         var wif = key.toWIF();
-        console.log('===== WIF ========');  
         console.log(wif);
         var keySet = {'bitcoinAddress':address, 'privateKey':wif};
-        console.log('===== KEY SET ========');  
         console.log(keySet);
           
         if(address && wif){
-            console.log('===== RESOLVE ========');  
             resolve(keySet);
         }else{
-            console.log('===== REJECT ========'); 
             reject('Error');
         };
         
