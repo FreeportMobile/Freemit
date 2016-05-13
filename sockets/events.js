@@ -18,6 +18,7 @@ module.exports = function (io) {
         
 //-- SOCKET EVENTS
         socket.on('sendVerificationCode', function (msg) {
+            console.log('sendVerificationCode / sockets');
             rateLimiter(socket);
             freemit.user.sendVerificationCode(socket, io, msg);
         });
