@@ -91,7 +91,7 @@ app.get('/issueAsset', function (req, res) {
             if (typeof body === 'string') {
                 body = JSON.parse(body)
             }
-             res.status(response.statusCode).json(body.txid);
+             res.status(response.statusCode).json(body);
             });
     });
 });
@@ -101,12 +101,12 @@ app.get('/issueAsset', function (req, res) {
 app.get('/transferAsset', function (req, res) {
 
 var send_asset = {
-    'from': ['n2t19a46cBs2DdHs2sqfRwPGhoQjvqmefR'],		    // FROM
+    'from': ['mm3dtEPHfghf7P7AsCCnJGV3RS3dSJE9dN'],		    // FROM
     'fee': 5000,                                            
     'to': [{
-    	'address': 'n2t19a46cBs2DdHs2sqfRwPGhoQjvqmefR',    // TO
+    	'address': 'mqH3a8RfQgNY61tjQtLdD4tss8Hex5yure',    // TO
     	'amount': 5,                                        // AMOUNT
-    	'assetId': 'LKXjG9uMSFoDj2Z6NrEJ6nkcRGVtjUmC4zrtH'  // ASSET
+    	'assetId': '90fbb3c719816ab0e50f24a2e2e196ffda75fd5ef762745699a205ebf60c908f'  // ASSET
     }]
 };
     request.post({
@@ -116,7 +116,7 @@ var send_asset = {
     }, 
     function (error, response, body) {
         if (error) {
-            res.status(200).json({error:"you no coin 2"});
+            res.status(200).json({error:"you no coin 3"});
         }
         if (typeof body === 'string') {
             body = JSON.parse(body)
@@ -127,13 +127,28 @@ var send_asset = {
 
 //------------------------- QUERY AN ADDRESS ---------------------
 
+app.get('/transferAsset', function (req, res) {
 
+        address='mm3dtEPHfghf7P7AsCCnJGV3RS3dSJE9dN';
+        request.get('http://testnet.api.coloredcoins.org:80/v3/addressinfo/'+address, function (error, response, body) {
+            if (error) {
+                res.status(200).json({error:"you no coin 4"});
+            }
+            if (typeof body === 'string') {
+                body = JSON.parse(body)
+            }
+            res.status(response.statusCode).json(body);
+        });
+
+});
+
+//------------------------- END ---------------------
 
 //--SOCKET EVENTS
 exports.io = require('./sockets/events.js')(io);
 
 //--START SERVER
 
-    server.listen(process.env.WEB_PORT, function () {
-        console.info('--- STARTED ---');
-    });
+server.listen(process.env.WEB_PORT, function () {
+    console.info('--- STARTED ---');
+});
