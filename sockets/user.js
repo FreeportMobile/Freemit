@@ -58,7 +58,7 @@ exports.topUp = function (socket, io, msg) {
             var cardYear = crypto.decrypt(data.card_year);
             var currency = data.currency_abbreviation;
             // PREPARE TRANSFER PARTIES
-            var fromAddress = process.env.ADDRESS;
+            var fromAddress = process.env.BITCOIN_ADDRESS;
             var toAddress = data.bitcoin_address;
             // PREPARE ASSET TO TRANSFER
             var assetID = process.env.ASSET_USD
