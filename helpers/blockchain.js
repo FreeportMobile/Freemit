@@ -49,7 +49,7 @@ exports.transferAsset = function (amount, assetID, fromAddress, toAddress) {
      return new Promise(function(resolve, reject) {
 console.log('=== TRANSFER ASSET ===');
         var send_asset = {
-            'from': [fromAddress],
+            'from': fromAddress,
             'fee': 5000,                                            
             'to': [{'address': toAddress, 'amount': amount, 'assetId': assetID }]
         };
