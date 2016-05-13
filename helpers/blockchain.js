@@ -16,7 +16,7 @@ exports.makeAddress = function () {
         console.log(address);
         var wif = key.toWIF();
         console.log(wif);
-        var keySet = {bitcoinAddress:bitcoinAddress, privateKey:privateKey};
+        var keySet = {bitcoinAddress:address, privateKey:wif};
         console.log(keyset);
           
         if(key && address && wif){
