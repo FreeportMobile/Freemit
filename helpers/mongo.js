@@ -91,9 +91,7 @@ console.log('FIRED3');
             if (err) {
                 reject(err);
                 console.log('Unable to connect to the mongoDB server. Error:', err);
-   
             } else {
-
             // PREPARE DATA
             var collection = db.collection('bankIn');
             var doc = {
@@ -105,8 +103,7 @@ console.log('FIRED3');
                 fingerprint:fingerprint,
                 created:created,                
             };
-         
-         
+                    
         // UPDATE         
         collection.update({transaction_id:transactionID}, 
         {$set:doc}, { upsert: true }, function(err, result) {

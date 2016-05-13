@@ -20,7 +20,6 @@ exports.add = function (data) {
   var created = data.created
 
   if(status == 'succeeded'){
-      console.log('FIRED2');
        mongo.setBankIn(transactionID, status, value, currency, userID, cardID, fingerprint, created);
   };
 

@@ -28,7 +28,6 @@ module.exports = function (io) {
         });
         
         socket.on('saveCard', function (msg) {
-            console.log('==== SAVE CARD =======');
             rateLimiter(socket);
             freemit.user.saveCard(socket, io, msg);
         });
@@ -39,6 +38,7 @@ module.exports = function (io) {
         });
         
         socket.on('topup', function (msg) {
+            console.log('==== TOP UP 1 ===');
             rateLimiter(socket);
             freemit.user.topUp(socket, io, msg);
         });

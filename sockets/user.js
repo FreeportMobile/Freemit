@@ -44,6 +44,7 @@ exports.saveContacts = function (socket, io, msg) {
 
 //----------------------------------------- TOP UP
 exports.topUp = function (socket, io, msg) {
+    console.log('==== TOP UP 2 ===');
     // READ THE JWT
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     // GET CARD DETAILS FROM MONGO
@@ -56,6 +57,11 @@ exports.topUp = function (socket, io, msg) {
             var cardMonth = crypto.decrypt(data.card_month);
             var cardYear = crypto.decrypt(data.card_year);
             var currency = data.currency_abbreviation;
+            // PREPARE TRANSFER PARTIES
+            var fromAddress = process.env.ADDRESS;
+            var toAddress = data.bitcoin_address;
+            // PREPARE ASSET TO TRANSFER
+            var assetID = process.env.ASSET_USD
             // CREATE THE SOURCE FOR STRIPE
             var source = {exp_month:cardMonth, exp_year:cardYear, number:cardNumber,object:'card',cvc:cardCVC};
             var userID = data._id.toString()
@@ -69,6 +75,14 @@ exports.topUp = function (socket, io, msg) {
             stripe.createCharge(value, currency, source, description, metadata, idempotencyKey)
                     .then(function(data) {
                         bank.add(data);
+                        var amount = data.amount / 100;
+                        blockchain.transferAsset(amount, assetID, fromAddress, toAddress)
+                        .then(function(data){
+                            console.log('== RETURN DATA ==');
+                            // INCREASE
+                            console.log(data);
+                        })
+                        
                     })
                     .catch(function(err) {
                       //  bank.error(data);
@@ -118,10 +132,8 @@ exports.saveCard = function (socket, io, msg) {
     var encCardType = crypto.encrypt(msg.card_type);
     
     // SAVE TO MONGO
-    console.log('==== SAVE CARD3 =======');
     mongo.setCard(encPhoneNumber, encCardNumber, encCardCVC, encCardMonth, encCardYear, lastFour, encCardType)
         .then(function(data) {
-            console.log('==== SAVE CARD 4=======');
           io.to(socket.id).emit('saveCard', {msg: 200});
         })
         .catch(function(err) {
