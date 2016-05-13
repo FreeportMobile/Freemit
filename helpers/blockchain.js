@@ -3,16 +3,20 @@
 var bitcoin = require('bitcoinjs-lib');
 var request = require('request');
 
-
-
 //------------------------- NEW BITCOIN ADDRESS -------------------------
 exports.makeAddress = function () {
-     return new Promise(function(resolve, reject) {           
+     return new Promise(function(resolve, reject) {     
+         console.log('===== BTC ADDRESS BAKING ========');      
         var key = bitcoin.ECKey.makeRandom();
+        console.log(key);
         var net = process.env.BITCOIN_NET;
+        console.log(net);
         var address = key.pub.getAddress(bitcoin.networks.net).toString();
+        console.log(address);
         var wif = key.toWIF();
+        console.log(wif);
         var keySet = {bitcoinAddress:bitcoinAddress, privateKey:privateKey};
+        console.log(keyset);
           
         if(key && address && wif){
             resolve(keySet);
