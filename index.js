@@ -16,7 +16,7 @@ app.use(express.static(__dirname + '/public'));
 //------------------------- NEW ADDRESS ---------------------
 app.get('/newAddress', function (req, res) {
     var key = bitcoin.ECKey.makeRandom();
-    var address = key.pub.getAddress(bitcoin.networks.testnet).toString();
+    var address = key.pub.getAddress(bitcoin.networks.mainnet).toString();
     var wif = key.toWIF();
     res.status(200).json({ address: address, privateKey: wif });
 });
@@ -54,7 +54,7 @@ app.get('/issueAsset', function (req, res) {
     };
     // MAKE POST 1   
     request.post({
-        url: 'http://testnet.api.coloredcoins.org:80/v3/issue',
+        url: 'http://mainnet.api.coloredcoins.org:80/v3/issue',
         headers: {'Content-Type': 'application/json'},
         form: asset
     }, 
@@ -80,7 +80,7 @@ app.get('/issueAsset', function (req, res) {
         var transaction = {'txHex': signedTxHex };
         // MAKE POST 2        
         request.post({
-            url: 'http://testnet.api.coloredcoins.org:80/v3/broadcast',
+            url: 'http://mainnet.api.coloredcoins.org:80/v3/broadcast',
             headers: {'Content-Type': 'application/json'},
             form: transaction
         }, 
@@ -110,7 +110,7 @@ var send_asset = {
     }]
 };
     request.post({
-        url: 'http://testnet.api.coloredcoins.org:80/v3/sendasset',
+        url: 'http://mainnet.api.coloredcoins.org:80/v3/sendasset',
         headers: {'Content-Type': 'application/json'},
         form: send_asset
     }, 
