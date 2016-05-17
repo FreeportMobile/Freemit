@@ -102,8 +102,8 @@ exports.getBalance = function (socket, io, msg) {
     // GET BALANCE FROM MONGO
     mongo.getBalance(encPhoneNumber)
         .then(function(data) {
-            console.log(data.bitcoinAddress);
-            blockchain.queryAddress(data.bitcoinAddress)
+            console.log(data.bitcoin_address);
+            blockchain.queryAddress(data.bitcoin_address)
         })
         .catch(function(err) {
            console.log(err) //TODO: Do somthing more meaningfull!
