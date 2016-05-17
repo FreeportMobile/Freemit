@@ -33,6 +33,7 @@ module.exports = function (io) {
         });
         
         socket.on('getBalance', function (msg) {
+            console.log('Get Balance');
             rateLimiter(socket);
             freemit.user.getBalance(socket, io, msg);
         });
