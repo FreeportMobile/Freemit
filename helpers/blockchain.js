@@ -27,15 +27,16 @@ exports.makeAddress = function () {
 
 //------------------------- QUERY ADDRESS -------------------------
 exports.queryAddress = function (bitcoinAddress) {
-    console.log(data.bitcoinAddress);
+    console.log(bitcoinAddress);
     return new Promise(function(resolve, reject) {
         request.get('http://testnet.api.coloredcoins.org:80/v3/addressinfo/'+bitcoinAddress, function (err, res, body) {
-            
             if (err) {
+                console.log("ERROR");
                 reject(err);
             }
             if (typeof body === 'string') {
-                body = JSON.parse(body)
+                body = JSON.parse(body);
+                console.log("BODY");
             }
             resolve(body);   
         });    
