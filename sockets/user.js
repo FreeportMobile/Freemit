@@ -96,18 +96,14 @@ exports.topUp = function (socket, io, msg) {
 };// END FUNCTION
 //----------------------------------------- GET BALANCE
 exports.getBalance = function (socket, io, msg) {
-    
+     console.log('Get Balance');
     // GET ENCRYPTED POHONE NUMBER FROM JWT
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     // GET BALANCE FROM MONGO
     mongo.getBalance(encPhoneNumber)
         .then(function(data) {
-            if(!data.balance){
-                io.to(socket.id).emit('getBalance', {balance:0, currencySymbol:data.currency_symbol});
-            }else{
-                io.to(socket.id).emit('getBalance', {balance: data.balance, currencySymbol:data.currency_symbol});
-            }
-            
+            console.log(data.bitcoinAddress);
+            blockchain.queryAddress(data.bitcoinAddress)
         })
         .catch(function(err) {
            console.log(err) //TODO: Do somthing more meaningfull!

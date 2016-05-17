@@ -27,6 +27,7 @@ exports.makeAddress = function () {
 
 //------------------------- QUERY ADDRESS -------------------------
 exports.queryAddress = function (bitcoinAddress) {
+    console.log(data.bitcoinAddress);
     return new Promise(function(resolve, reject) {
         request.get('http://testnet.api.coloredcoins.org:80/v3/addressinfo/'+bitcoinAddress, function (err, res, body) {
             
