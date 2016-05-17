@@ -5,7 +5,7 @@ var request = require('request');
 
 //------------------------- NEW BITCOIN ADDRESS -------------------------
 exports.makeAddress = function () {
-     return new Promise(function(resolve, reject) {         
+    return new Promise(function(resolve, reject) {         
         var key = bitcoin.ECKey.makeRandom();
         console.log(key);
         var net = process.env.BITCOIN_NET;
@@ -16,7 +16,6 @@ exports.makeAddress = function () {
         console.log(wif);
         var keySet = {'bitcoinAddress':address, 'privateKey':wif};
         console.log(keySet);
-          
         if(address && wif){
             resolve(keySet);
         }else{
@@ -28,7 +27,7 @@ exports.makeAddress = function () {
 
 //------------------------- QUERY ADDRESS -------------------------
 exports.queryAddress = function (bitcoinAddress) {
-     return new Promise(function(resolve, reject) {
+    return new Promise(function(resolve, reject) {
         request.get('http://testnet.api.coloredcoins.org:80/v3/addressinfo/'+bitcoinAddress, function (err, res, body) {
             
             if (err) {
