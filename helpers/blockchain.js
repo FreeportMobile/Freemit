@@ -65,12 +65,15 @@ console.log(fromAddressArray);
             form: send_asset
         }, 
         function (err, res, body) {
+              console.log('=== TRANSFER ASSET 1 ===');
             if (err) {
+                   console.log('=== TRANSFER ASSET 2 ===');
                 reject(err);
                 console.log('=== TRANSFER ASSET ERROR ===');
                 console.log(err);
             }
             if (typeof body === 'string') {
+                   console.log('=== TRANSFER ASSET 3 ===');
                 body = JSON.parse(body)
                 var txHex = body.txHex;   
             }     
