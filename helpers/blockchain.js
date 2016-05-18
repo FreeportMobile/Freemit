@@ -74,8 +74,10 @@ console.log(fromAddressArray);
             }
             if (typeof body === 'string') {
                    console.log('=== TRANSFER ASSET 3 ===');
-                body = JSON.parse(body)
+                body = JSON.parse(body);
+                 console.log('=== TRANSFER ASSET 4'+body);
                 var txHex = body.txHex;   
+                 console.log('=== TRANSFER ASSET 5'+txHex);
             }     
             var unsignedTx = txHex;
             var wif = process.env.BITCOIN_ADDRESS_KEY
