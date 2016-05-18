@@ -35,14 +35,9 @@ exports.queryAddress = function (bitcoinAddress) {
                 reject(err);
             }
             if (typeof body === 'string') {
-               console.log('=====1====');
-               console.log(body);
-               console.log('=====2====');
-               console.log(body.utxos);
-               console.log('=====3====');
-               console.log(body[utxos]);
-   console.log('=====4====');
-                var body = body.utxos;
+                var obj = JSON.parse(body);
+                console.log(obj.uxtos[1]);
+               
                 console.log("BODY");
             }
             resolve(body);   
