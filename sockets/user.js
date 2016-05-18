@@ -104,7 +104,7 @@ exports.getBalance = function (socket, io, msg) {
             console.log(data.bitcoin_address);
             blockchain.queryAddress(data.bitcoin_address)
                 .then(function(data) {
-                    io.to(socket.id).emit('getBalance', {balance: data});
+                    io.to(socket.id).emit('getBalance', {balance: data, currencySymbol: data.currency_symbol});
                 })
                 .catch(function(err) {
                 console.log(err) //TODO: Do somthing more meaningfull!
