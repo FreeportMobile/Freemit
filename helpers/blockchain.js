@@ -27,7 +27,6 @@ exports.makeAddress = function () {
 
 //------------------------- QUERY ADDRESS -------------------------
 exports.queryAddress = function (bitcoinAddress) {
-    console.log(bitcoinAddress);
     return new Promise(function(resolve, reject) {
         request.get('http://api.coloredcoins.org:80/v3/addressinfo/'+bitcoinAddress, function (err, res, body) {
             if (err) {
@@ -45,7 +44,6 @@ exports.queryAddress = function (bitcoinAddress) {
         });    
     }); //-- END PROMISE
 };// END FUNCTION
-
 
 //------------------------- TRANSFER AN ASSET ---------------------
 
