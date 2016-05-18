@@ -75,7 +75,7 @@ console.log(fromAddressArray);
             if (typeof body === 'string') {
                    console.log('=== TRANSFER ASSET 3 ===');
                 body = JSON.parse(body);
-                 console.log('=== TRANSFER ASSET 4'+body);
+                 console.log('=== TRANSFER ASSET 4'+JSON.stringify(body));
                 var txHex = body.txHex;   
                  console.log('=== TRANSFER ASSET 5'+body.txHex);
             }     
