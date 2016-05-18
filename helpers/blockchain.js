@@ -37,7 +37,7 @@ exports.queryAddress = function (bitcoinAddress) {
             if (typeof body === 'string') {
                 obj = JSON.parse(body);
                 var amount = 0;  
-                for (i = 0; i < obj.utxos.length; i++) { 
+                for (var i = 0; i < obj.utxos.length; i++) { 
                     var amount = amount + obj.utxos[i].assets[0].amount
                 }
                 console.log('AMOUNT: '+amount);
