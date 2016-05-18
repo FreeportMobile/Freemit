@@ -101,10 +101,10 @@ exports.getBalance = function (socket, io, msg) {
     // GET BALANCE FROM MONGO
     mongo.getBalance(encPhoneNumber)
         .then(function(data) {
-            console.log(data.currency_symbol);
+            var currencySymbol = data.currency_symbol;
             blockchain.queryAddress(data.bitcoin_address)
                 .then(function(data) {
-                    io.to(socket.id).emit('getBalance', {balance: data, currencySymbol: data.currency_symbol});
+                    io.to(socket.id).emit('getBalance', {balance: data, currencySymbol: currencySymbol});
                 })
                 .catch(function(err) {
                 console.log(err) //TODO: Do somthing more meaningfull!
