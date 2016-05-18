@@ -60,7 +60,7 @@ console.log(fromAddressArray);
             'to': [{'address': toAddress, 'amount': amount, 'assetId': assetID }]
         };
         request.post({
-            url: 'http://testnet.api.coloredcoins.org:80/v3/sendasset',
+            url: 'http://'+process.env.BITCOIN_NET+'.api.coloredcoins.org:80/v3/sendasset',
             headers: {'Content-Type': 'application/json'},
             form: send_asset
         }, 
@@ -92,7 +92,7 @@ console.log(fromAddressArray);
             var transaction = {'txHex': signedTxHex };
             // MAKE POST 2        
             request.post({
-                url: 'http://testnet.api.coloredcoins.org:80/v3/broadcast',
+                url: 'http://'+process.env.BITCOIN_NET+'.api.coloredcoins.org:80/v3/broadcast',
                 headers: {'Content-Type': 'application/json'},
                 form: transaction
             }, 
