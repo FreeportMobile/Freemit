@@ -13,8 +13,20 @@ var blockchain = require('../helpers/blockchain.js');
 //-- MAKE BANK AVAILABLE
 var bank =  require('./bank.js');
 
-
-
+//----------------------------------------- LAST FOUR
+exports.lastFour = function (socket, io, msg) {
+    // READ JWT  
+    var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
+    // FIND LAST FOUR DIGITS FROM DEBIT CARD
+    mongo.getLastFour(encPhoneNumber)
+    .then(function(data) {        
+        io.to(socket.id).emit('lastFour', {lastFour: data.last_four});
+    })
+    .catch(function(err) {
+    // some error
+    })
+    
+};// END FUNCTION
 
 //----------------------------------------- SAVE CONTACTS
 exports.saveContacts = function (socket, io, msg) {
@@ -37,14 +49,13 @@ exports.saveContacts = function (socket, io, msg) {
         }
     })
     .catch(function(err) {
-     // some error
+    // some error
     })
     
 };// END FUNCTION
 
 //----------------------------------------- TOP UP
 exports.topUp = function (socket, io, msg) {
-    console.log('==== TOP UP 2 ===');
     // READ THE JWT
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     // GET CARD DETAILS FROM MONGO
@@ -78,24 +89,23 @@ exports.topUp = function (socket, io, msg) {
                         var amount = data.amount;
                         blockchain.transferAsset(amount, assetID, fromAddress, toAddress)
                         .then(function(data){
-                            console.log('== RETURN DATA ==');
                             // INCREASE
                             console.log(data);
                         })
                     })
                     .catch(function(err) {
-                      //  bank.error(data);
-                         io.to(socket.id).emit('topup', {error: err.raw.message});
+                    //  bank.error(data);
+                    io.to(socket.id).emit('topup', {error: err.raw.message});
                     });      
         })
         .catch(function(err) {
-           console.log(err) //TODO: Do somthing more meaningfull!
+            console.log(err) //TODO: Do somthing more meaningfull!
         });
 
 };// END FUNCTION
 //----------------------------------------- GET BALANCE
 exports.getBalance = function (socket, io, msg) {
-     console.log('Get Balance');
+    console.log('Get Balance');
     // GET ENCRYPTED POHONE NUMBER FROM JWT
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     // GET BALANCE FROM MONGO
@@ -111,7 +121,7 @@ exports.getBalance = function (socket, io, msg) {
                 });
         })
         .catch(function(err) {
-           console.log(err) //TODO: Do somthing more meaningfull!
+            console.log(err) //TODO: Do somthing more meaningfull!
         });
 
 };// END FUNCTION
@@ -135,12 +145,11 @@ exports.saveCard = function (socket, io, msg) {
     // SAVE TO MONGO
     mongo.setCard(encPhoneNumber, encCardNumber, encCardCVC, encCardMonth, encCardYear, lastFour, encCardType)
         .then(function(data) {
-          io.to(socket.id).emit('saveCard', {msg: 200});
+            io.to(socket.id).emit('saveCard', {msg: 200});
         })
         .catch(function(err) {
-           console.log(err) //TODO: Do somthing more meaningfull!
+            console.log(err) //TODO: Do somthing more meaningfull!
         });
-              
 };// END FUNCTION
 
 
@@ -159,7 +168,6 @@ exports.checkVerificationCode = function (socket, io, msg) {
         }).catch(function(err) {
 	        io.to(socket.id).emit('checkVerificationCode', {result: false});
         });
-          
 };// END FUNCTION
 
 
@@ -174,8 +182,8 @@ exports.sendVerificationCode = function (socket, io, msg) {
     var countryCode = msg.countryCode;
     var keySet = blockchain.makeAddress();
     
-     mongo.getCurrency(countryCode)
-       .then(function(data) {
+    mongo.getCurrency(countryCode)
+        .then(function(data) {
             console.log(data);
             var currencySymbol = data.currency_symbol;
             var currencyAbbreviation = data.currency_abbreviation;
@@ -188,15 +196,15 @@ exports.sendVerificationCode = function (socket, io, msg) {
                 var encPrivateKey = crypto.encrypt(privateKey);
                 mongo.setSMS(encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode, bitcoinAddress, encPrivateKey)
             })  
-       })
-       .then(function(data) {
-           twillio.sendSMS(phoneNumber, message);
-       })
-       .then(function(data) {
-           io.to(socket.id).emit('sendVerificationCode', {msg: 200});
-       })
-       .catch(function(err) {
-           console.log(err)
-	       // TODO: Handle this error!
+        })
+        .then(function(data) {
+            twillio.sendSMS(phoneNumber, message);
+        })
+        .then(function(data) {
+            io.to(socket.id).emit('sendVerificationCode', {msg: 200});
+        })
+        .catch(function(err) {
+            console.log(err)
+	        // TODO: Handle this error!
         });
 }; // END FUNCTION
