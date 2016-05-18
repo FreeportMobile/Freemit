@@ -28,6 +28,7 @@ module.exports = function (io) {
         });
         
         socket.on('saveCard', function (msg) {
+            console.log('save card socket');
             rateLimiter(socket);
             freemit.user.saveCard(socket, io, msg);
         });
