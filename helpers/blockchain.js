@@ -40,16 +40,8 @@ exports.queryAddress = function (bitcoinAddress) {
                 for (var i = 0; i < obj.utxos.length; i++) { 
                     var amount = amount + obj.utxos[i].assets[0].amount
                 }
-                console.log('AMOUNT: '+amount);
-
-
-
-                var obj = JSON.parse(body);
-                console.log(obj.uxtos);
-               
-                console.log("BODY");
             }
-            resolve(body);   
+            resolve(amount/100);   
         });    
     }); //-- END PROMISE
 };// END FUNCTION
