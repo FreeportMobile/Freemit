@@ -29,7 +29,7 @@ exports.makeAddress = function () {
 exports.queryAddress = function (bitcoinAddress) {
     console.log(bitcoinAddress);
     return new Promise(function(resolve, reject) {
-        request.get('http://testnet.api.coloredcoins.org:80/v3/addressinfo/'+bitcoinAddress, function (err, res, body) {
+        request.get('http://api.coloredcoins.org:80/v3/addressinfo/'+bitcoinAddress, function (err, res, body) {
             if (err) {
                 console.log("ERROR");
                 reject(err);

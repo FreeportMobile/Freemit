@@ -82,7 +82,6 @@ exports.topUp = function (socket, io, msg) {
                             // INCREASE
                             console.log(data);
                         })
-                        
                     })
                     .catch(function(err) {
                       //  bank.error(data);
