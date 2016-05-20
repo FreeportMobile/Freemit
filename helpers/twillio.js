@@ -15,10 +15,8 @@ exports.sendSMS = function (phoneNumber, message) {
         body: message,   
     }, function(err, message) { 
         if(err){
-            console.log(err);
             reject(err);
         } else {
-            console.log(message.sid);
             resolve(message);
         }  
     });

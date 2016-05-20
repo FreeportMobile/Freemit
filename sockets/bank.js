@@ -9,7 +9,6 @@ var mongo = require('../helpers/mongo.js');
 
 //--- TOP UP
 exports.add = function (data) {
-    console.log('FIRED1');
   var transactionID = data.id;
   var status = data.status;
   var value = data.amount / 100;

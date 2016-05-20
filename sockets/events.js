@@ -10,13 +10,11 @@ module.exports = function (io) {
         socket.emit('connected', { msg: "--- CONNECTED" })
     //-- SOCKET EVENTS
         socket.on('sendVerificationCode', function (msg) {
-           console.log('sendVerificationCode');
             rateLimiter(socket);
             freemit.user.sendVerificationCode(socket, io, msg);
         });
         
         socket.on('checkVerificationCode', function (msg) {
-            console.log('checkVerificationCode');
             rateLimiter(socket);
             freemit.user.checkVerificationCode(socket, io, msg);
         });
@@ -32,7 +30,6 @@ module.exports = function (io) {
         });
         
         socket.on('topup', function (msg) {
-            console.log('==== TOP UP 1 ===');
             rateLimiter(socket);
             freemit.user.topUp(socket, io, msg);
         });
@@ -59,7 +56,6 @@ module.exports = function (io) {
         
     //-- DISCONNECT
         socket.on('disconnect', function(socket) {
-            console.log('--- DISCONECTED');
         });
     });     //-- END CONNECT
 };  //-- END EXPORT

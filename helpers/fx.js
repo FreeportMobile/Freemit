@@ -12,10 +12,7 @@ exports.fxNow = function (fromCurrency, toCurrency, amount) {
             else {
                 reject("Not Found");
             }
-//            console.log(result.rates[toCurrency]);
-            //console.log(result.rates);
         });
-        // fulfill(result);
     });
 };
 //------------------------------------------------- END --------------------------

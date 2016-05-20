@@ -16,8 +16,8 @@ var bank =  require('./bank.js');
 //----------------------------------------- SEND
 exports.request = function (socket, io, msg) {
     console.log('request');
-    // // READ JWT  
-    // var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
+    // READ JWT  
+    var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     // // FIND LAST FOUR DIGITS FROM DEBIT CARD
     // mongo.getLastFour(encPhoneNumber)
     // .then(function(data) {        
@@ -31,9 +31,9 @@ exports.request = function (socket, io, msg) {
 
 //----------------------------------------- REQUEST
 exports.send = function (socket, io, msg) {
-    console.log('send');
-    // // READ JWT  
-    // var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
+
+    // READ JWT  
+    var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     // // FIND LAST FOUR DIGITS FROM DEBIT CARD
     // mongo.getLastFour(encPhoneNumber)
     // .then(function(data) {        
