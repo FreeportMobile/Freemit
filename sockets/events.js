@@ -46,6 +46,18 @@ module.exports = function (io) {
             freemit.user.lastFour(socket, io, msg);
         });
         
+        socket.on('request', function (msg) {
+            console.log('request');
+            rateLimiter(socket);
+            freemit.user.request(socket, io, msg);
+        });
+        
+        socket.on('send', function (msg) {
+            console.log('send');
+            rateLimiter(socket);
+            freemit.user.send(socket, io, msg);
+        });
+        
     //-- DISCONNECT
         socket.on('disconnect', function(socket) {
             console.log('--- DISCONECTED');

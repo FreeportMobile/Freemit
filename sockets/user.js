@@ -13,6 +13,38 @@ var blockchain = require('../helpers/blockchain.js');
 //-- MAKE BANK AVAILABLE
 var bank =  require('./bank.js');
 
+//----------------------------------------- SEND
+exports.request = function (socket, io, msg) {
+    console.log('request');
+    // // READ JWT  
+    // var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
+    // // FIND LAST FOUR DIGITS FROM DEBIT CARD
+    // mongo.getLastFour(encPhoneNumber)
+    // .then(function(data) {        
+    //     io.to(socket.id).emit('lastFour', {lastFour: data.last_four});
+    // })
+    // .catch(function(err) {
+    // // some error
+    // })
+    
+};// END FUNCTION
+
+//----------------------------------------- REQUEST
+exports.request = function (socket, io, msg) {
+    console.log('send');
+    // // READ JWT  
+    // var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
+    // // FIND LAST FOUR DIGITS FROM DEBIT CARD
+    // mongo.getLastFour(encPhoneNumber)
+    // .then(function(data) {        
+    //     io.to(socket.id).emit('lastFour', {lastFour: data.last_four});
+    // })
+    // .catch(function(err) {
+    // // some error
+    // })
+    
+};// END FUNCTION
+
 //----------------------------------------- LAST FOUR
 exports.lastFour = function (socket, io, msg) {
     // READ JWT  
