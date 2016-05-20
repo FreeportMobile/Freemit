@@ -30,7 +30,7 @@ exports.request = function (socket, io, msg) {
 };// END FUNCTION
 
 //----------------------------------------- REQUEST
-exports.request = function (socket, io, msg) {
+exports.send = function (socket, io, msg) {
     console.log('send');
     // // READ JWT  
     // var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
