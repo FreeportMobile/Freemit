@@ -13,11 +13,18 @@ var blockchain = require('../helpers/blockchain.js');
 //-- MAKE BANK AVAILABLE
 var bank =  require('./bank.js');
 
-//----------------------------------------- SEND
+//----------------------------------------- REQUEST
 exports.request = function (socket, io, msg) {
     console.log('request');
     // READ JWT  
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
+    var amount = 1;
+    var toPhoneNumber = 234234;
+        // FIND WHAT CURRENCY THEY NEED
+            // CONVERT THE AMOUNT TO THE CURRENCY 
+                // TRANSFR THE AMOUNT IN FROM CURENCY BACK TO HOT WALLET
+                    // ISSUE NEW ASSET TO THE TO ADDRESS
+    //CANCEELED
     // // FIND LAST FOUR DIGITS FROM DEBIT CARD
     // mongo.getLastFour(encPhoneNumber)
     // .then(function(data) {        
@@ -29,11 +36,20 @@ exports.request = function (socket, io, msg) {
     
 };// END FUNCTION
 
-//----------------------------------------- REQUEST
+//----------------------------------------- SEND
 exports.send = function (socket, io, msg) {
 
     // READ JWT  
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
+    var amount = 1;
+    var toPhoneNumber = 234234;
+        // FIND WHAT CURRENCY THEY NEED
+            // CONVERT THE AMOUNT TO THE CURRENCY 
+                // TRANSFR THE AMOUNT IN FROM CURENCY BACK TO HOT WALLET
+                    // ISSUE NEW ASSET TO THE TO ADDRESS
+    
+    
+    
     // // FIND LAST FOUR DIGITS FROM DEBIT CARD
     // mongo.getLastFour(encPhoneNumber)
     // .then(function(data) {        

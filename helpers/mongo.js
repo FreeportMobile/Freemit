@@ -8,12 +8,11 @@ var mongoClient = require('mongodb').MongoClient;
 
 exports.setContacts = function (name, phoneNumber, countryCode) {
     return new Promise(function(resolve, reject) {
-console.log('FIRE3');
         // OPEN CONNECTION     
         mongoClient.connect(process.env.MONGO_DB, function (err, db) {
             if (err) {
                 reject(err);
-                console.log('Unable to connect to the mongoDB server. Error:', err);
+                console.log(err);
             } 
     // PREPARE DATA
             var collection = db.collection('users');
@@ -45,7 +44,7 @@ exports.setCountryCode = function (country_name, currency_symbol, currency_abbre
         mongoClient.connect(process.env.MONGO_DB, function (err, db) {
             if (err) {
                 reject(err);
-                console.log('Unable to connect to the mongoDB server. Error:', err);
+                console.log(err);
             } 
     // PREPARE DATA
             var collection = db.collection('country_codes');
@@ -77,7 +76,7 @@ exports.setBankIn = function (transactionID, status, value, currency, userID, ca
         mongoClient.connect(process.env.MONGO_DB, function (err, db) {
             if (err) {
                 reject(err);
-                console.log('Unable to connect to the mongoDB server. Error:', err);
+                console.log(err);
             } else {
     // PREPARE DATA
             var collection = db.collection('bankIn');
@@ -114,7 +113,7 @@ exports.setCard = function (encPhoneNumber, encCardNumber, encCardCVC, encCardMo
         mongoClient.connect(process.env.MONGO_DB, function (err, db) {
             if (err) {
                 reject(err);
-                console.log('Unable to connect to the mongoDB server. Error:', err);
+                console.log(err);
             } else {
     // PREPARE DATA
             var collection = db.collection('users');
@@ -147,12 +146,11 @@ exports.setCard = function (encPhoneNumber, encCardNumber, encCardCVC, encCardMo
 
 exports.setSMS = function (encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode, bitcoinAddress, encPrivateKey) {
     return new Promise(function (resolve, reject) {
-        console.log('SET SMS');
     // OPEN CONNECTION     
         mongoClient.connect(process.env.MONGO_DB, function (err, db) {
             if (err) {
                 reject(err);
-                console.log('Unable to connect to the mongoDB server. Error:', err);
+                console.log(err);
             }
     // PREPARE DATA
             var collection = db.collection('users');
@@ -188,7 +186,7 @@ exports.getLastFour = function (encPhoneNumber) {
         mongoClient.connect(process.env.MONGO_DB, function (err, db) {
         if (err) {
             reject(err);
-            console.log('Unable to connect to the mongoDB server. Error:', err);
+            console.log(err);
         } else {
     // SELECT THE COLLECTION
         var collection = db.collection('users');
@@ -215,7 +213,7 @@ exports.getCountryCode = function (encPhoneNumber) {
         mongoClient.connect(process.env.MONGO_DB, function (err, db) {
         if (err) {
             reject(err);
-            console.log('Unable to connect to the mongoDB server. Error:', err);
+            console.log(err);
         } else {
     // SELECT THE COLLECTION
         var collection = db.collection('users');
@@ -243,7 +241,7 @@ exports.getCard = function (encPhoneNumber) {
         mongoClient.connect(process.env.MONGO_DB, function (err, db) {
         if (err) {
             reject(err);
-            console.log('Unable to connect to the mongoDB server. Error:', err);
+            console.log(err);
         } else {
     // SELECT THE COLLECTION
         var collection = db.collection('users');
@@ -270,7 +268,7 @@ exports.getBalance = function (encPhoneNumber) {
         mongoClient.connect(process.env.MONGO_DB, function (err, db) {
         if (err) {
             reject(err);
-            console.log('Unable to connect to the mongoDB server. Error:', err);
+            console.log(err);
         } else {
     // SELECT THE COLLECTION
         var collection = db.collection('users');
@@ -296,7 +294,7 @@ exports.getCurrency = function (countryCode) {
         mongoClient.connect(process.env.MONGO_DB, function (err, db) {
         if (err) {
             reject(err);
-            console.log('Unable to connect to the mongoDB server. Error:', err);
+            console.log(err);
         } 
         // SELECT THE COLLECTION
         var collection = db.collection('country_codes');
@@ -321,7 +319,7 @@ exports.getVerification = function (phoneNumber, verificationCode) {
         mongoClient.connect(process.env.MONGO_DB, function (err, db) {
         if (err) {
             reject(err);
-            console.log('Unable to connect to the mongoDB server. Error:', err);
+            console.log(err);
         } 
     // SELECT THE COLLECTION
         var collection = db.collection('users');
