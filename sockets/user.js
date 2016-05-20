@@ -120,10 +120,6 @@ exports.topUp = function (socket, io, msg) {
                         bank.add(data);
                         var amount = data.amount;
                         blockchain.transferAsset(amount, assetID, fromAddress, toAddress)
-                        .then(function(data){
-                            // INCREASE
-                            console.log(data);
-                        })
                     })
                     .catch(function(err) {
                     //  bank.error(data);
@@ -137,7 +133,6 @@ exports.topUp = function (socket, io, msg) {
 };// END FUNCTION
 //----------------------------------------- GET BALANCE
 exports.getBalance = function (socket, io, msg) {
-    console.log('Get Balance');
     // GET ENCRYPTED POHONE NUMBER FROM JWT
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     // GET BALANCE FROM MONGO
@@ -161,7 +156,6 @@ exports.getBalance = function (socket, io, msg) {
 //----------------------------------------- ADD CARD
 exports.saveCard = function (socket, io, msg) {
     
-    console.log('==== SAVE CARD 2=======');
     // GET ENCRYPTED POHONE NUMBER FROM JWT
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     // GET LAST 4 DIGITS OF CARD
@@ -192,7 +186,6 @@ exports.checkVerificationCode = function (socket, io, msg) {
     var phoneNumber = msg.countryCode + msg.phoneNumber;
     var encPhoneNumber =crypto.encrypt(phoneNumber);
     var jwt = crypto.makeJWT(encPhoneNumber);
-    console.log(jwt);
     
     mongo.getVerification(encPhoneNumber, verificationCode)
         .then(function(data) {
@@ -206,7 +199,6 @@ exports.checkVerificationCode = function (socket, io, msg) {
 //---------------------------------------- SEND VERIFICATION CODE
 exports.sendVerificationCode = function (socket, io, msg) {
     var phoneNumber = msg.countryCode + msg.phoneNumber;
-    console.log(phoneNumber);
     var encPhoneNumber =crypto.encrypt(phoneNumber);
     var verificationCode = Math.floor(1000 + Math.random() * 9000);
     var message = "Your Freemit code is: " + verificationCode;
@@ -217,12 +209,10 @@ exports.sendVerificationCode = function (socket, io, msg) {
     
     mongo.getCurrency(countryCode)
         .then(function(data) {
-            console.log(data);
             var currencySymbol = data.currency_symbol;
             var currencyAbbreviation = data.currency_abbreviation;
             blockchain.makeAddress()
             .then(function(data) {
-                console.log(data);
                 var publicKey = data.publicKey;
                 var bitcoinAddress = data.bitcoinAddress;
                 var privateKey = data.privateKey;
