@@ -10,17 +10,18 @@ module.exports = function (io) {
         socket.emit('connected', { msg: "--- CONNECTED" })
     //-- SOCKET EVENTS
         socket.on('sendVerificationCode', function (msg) {
+           console.log('sendVerificationCode');
             rateLimiter(socket);
             freemit.user.sendVerificationCode(socket, io, msg);
         });
         
         socket.on('checkVerificationCode', function (msg) {
+            console.log('checkVerificationCode');
             rateLimiter(socket);
             freemit.user.checkVerificationCode(socket, io, msg);
         });
         
         socket.on('saveCard', function (msg) {
-            console.log('save card socket');
             rateLimiter(socket);
             freemit.user.saveCard(socket, io, msg);
         });
@@ -47,13 +48,11 @@ module.exports = function (io) {
         });
         
         socket.on('request', function (msg) {
-            console.log('request');
             rateLimiter(socket);
             freemit.user.request(socket, io, msg);
         });
         
         socket.on('send', function (msg) {
-            console.log('send');
             rateLimiter(socket);
             freemit.user.send(socket, io, msg);
         });
