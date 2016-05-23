@@ -68,6 +68,7 @@ exports.saveContacts = function (socket, io, msg) {
         var allContacts = msg.contacts;
         //LOOP OVER CONTACTS
         for (var i = 0; i < allContacts.length; i++) {
+             console.log('ADD');
             // TODO: Review this assumption carefully!!!
             var phoneNumber = countryCode + allContacts[i].phoneNumber;
             var encPhoneNumber =crypto.encrypt(phoneNumber);
@@ -79,6 +80,13 @@ exports.saveContacts = function (socket, io, msg) {
                 var privateKey = data.privateKey;
                 var encPrivateKey = crypto.encrypt(privateKey);
                 // SEND EACH CONTACT TO MONGO
+                
+                console.log(allContacts[i].name);
+                console.log(encPhoneNumber);
+                console.log(countryCode);
+                console.log(bitcoinAddress);
+                console.log(encPrivateKey);
+
                 mongo.setContacts(allContacts[i].name, encPhoneNumber, countryCode, bitcoinAddress, encPrivateKey);  
             })  
 
