@@ -87,7 +87,11 @@ exports.saveContacts = function (socket, io, msg) {
                 console.log(encPrivateKey);
 
                 mongo.setContacts(allContacts[i].name, encPhoneNumber, countryCode, bitcoinAddress, encPrivateKey);  
-            })  
+            }) 
+            .catch(function(err) {
+            // some error
+            console.log(err);
+            })
 
             // ENCRYPT EACH NUMBER WITH THE COUNTRY CODE                   
             // TODO: CHECK THE NUMBER DOESNT ALREADY HAVE A COUNTRY CODE (IMPORTANT)
