@@ -56,6 +56,7 @@ exports.lastFour = function (socket, io, msg) {
 
 //----------------------------------------- SAVE CONTACTS
 exports.saveContacts = function (socket, io, msg) {
+    consoloe.log('SAVING CONACTS');
     // READ JWT  
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     // FIND COUNTRY THE USER IS IN

@@ -35,6 +35,7 @@ module.exports = function (io) {
         });
         
         socket.on('saveContacts', function (msg) {
+            consoloe.log('SAVING CONACTS SOCKET');
             rateLimiter(socket);
             freemit.user.saveContacts(socket, io, msg);
         });
