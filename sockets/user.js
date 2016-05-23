@@ -113,7 +113,6 @@ exports.saveContacts = function (socket, io, msg) {
 exports.setoneContact = function(name, encPhoneNumber, countryCode){
         blockchain.makeAddress()
         .then(function(data) {
-            console.log(data);
             var bitcoinAddress = data.bitcoinAddress;
             var privateKey = data.privateKey;
             var encPrivateKey = crypto.encrypt(privateKey);
