@@ -61,14 +61,17 @@ exports.saveContacts = function (socket, io, msg) {
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     // FIND COUNTRY THE USER IS IN
     mongo.getCountryCode(encPhoneNumber)
-    .then(function(data) {        
+    .then(function(data) {  
+        console.log('*******************'); 
+        console.log(data);     
+        console.log('*******************');
         var currencySymbol = data.currency_symbol;
         var currencyAbbreviation = data.currency_abbreviation;
         var countryCode = data.country_code;   
         var allContacts = msg.contacts;
         //LOOP OVER CONTACTS
         for (var i = 0; i < allContacts.length; i++) {
-             console.log('ADD');
+            console.log('ADD');
             // TODO: Review this assumption carefully!!!
             var name = allContacts[i].name;
             var phoneNumber = countryCode + allContacts[i].phoneNumber;
@@ -91,7 +94,8 @@ exports.setoneContact = function(name, encPhoneNumber, countryCode){
             console.log(data);
             var bitcoinAddress = data.bitcoinAddress;
             var privateKey = data.privateKey;
-            mongo.setContacts(name, encPhoneNumber, countryCode, bitcoinAddress, privateKey); 
+            var encPrivateKey = crypto.encrypt(privateKey);
+            mongo.setContacts(name, encPhoneNumber, countryCode, bitcoinAddress, encPrivateKey); 
         })
         .catch(function(err) {
         console.log(err);
