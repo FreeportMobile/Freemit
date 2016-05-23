@@ -7,13 +7,7 @@ var mongoClient = require('mongodb').MongoClient;
 //----------------------- SET CONTACTS ----------------------------------//
 
 exports.setContacts = function (name, phoneNumber, countryCode, bitcoinAddress, encPrivateKey) {
-    // console.log('*******************');
-    // console.log(name);
-    // console.log(phoneNumber);
-    // console.log(countryCode);
-    // console.log(bitcoinAddress);
-    // console.log(encPrivateKey);
-    // console.log('*******************');
+
     return new Promise(function(resolve, reject) {
         // OPEN CONNECTION     
         mongoClient.connect(process.env.MONGO_DB, function (err, db) {

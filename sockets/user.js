@@ -69,7 +69,6 @@ exports.saveContacts = function (socket, io, msg) {
         var allContacts = msg.contacts;
         //LOOP OVER CONTACTS
         for (var i = 0; i < allContacts.length; i++) {
-            console.log('ADD');
             // TODO: Review this assumption carefully!!!
             var name = allContacts[i].name;
             // GET THE NUMBER OF THE CONTACTS THAT WAS SENT
@@ -87,6 +86,7 @@ exports.saveContacts = function (socket, io, msg) {
                 var phoneNumber = '+'+trimmedNumber;
             };
             // IF THE NUMBER STARTS WITH +
+            // TODO: If the number does start with +XX should we force the next number be a 0 ???
             if(firstOne == "+"){
                 var phoneNumber = sentNumber;
             };
@@ -111,7 +111,6 @@ exports.saveContacts = function (socket, io, msg) {
 //------------------------------------------ SET ONE CONTACT
 
 exports.setoneContact = function(name, encPhoneNumber, countryCode){
-    console.log(name);
         blockchain.makeAddress()
         .then(function(data) {
             console.log(data);
