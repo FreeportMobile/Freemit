@@ -86,7 +86,7 @@ exports.saveContacts = function (socket, io, msg) {
                 var phoneNumber = '+'+trimmedNumber;
             };
             // IF THE NUMBER STARTS WITH +
-            // TODO: If the number does start with +XX should we force the next number be a 0 ???
+            // TODO: If the number does start with +XX should we force the next number be a 0 or remove the 0???
             if(firstOne == "+"){
                 var phoneNumber = sentNumber;
             };
