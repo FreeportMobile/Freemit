@@ -77,17 +77,17 @@ exports.saveContacts = function (socket, io, msg) {
             
             blockchain.makeAddress()
             .then(function(data) {
-                var bitcoinAddress = data.bitcoinAddress;
-                var privateKey = data.privateKey;
-                var encPrivateKey = crypto.encrypt(privateKey);
+                // var bitcoinAddress = data.bitcoinAddress;
+                // var privateKey = data.privateKey;
+                // var encPrivateKey = crypto.encrypt(data.privateKey);
                 // SEND EACH CONTACT TO MONGO
                 
-                console.log(name);
-                console.log(encPhoneNumber);
-                console.log(bitcoinAddress);
-                console.log(encPrivateKey);
+                // console.log(name);
+                // console.log(encPhoneNumber);
+                // console.log(bitcoinAddress);
+                // console.log(encPrivateKey);
 
-            //    mongo.setContacts(name, encPhoneNumber, countryCode, bitcoinAddress, encPrivateKey);  
+                mongo.setContacts(name, encPhoneNumber, countryCode, data.bitcoinAddress, crypto.encrypt(data.privateKey));  
             }) 
             .catch(function(err) {
             // some error
