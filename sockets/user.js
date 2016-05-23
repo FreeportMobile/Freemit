@@ -71,6 +71,7 @@ exports.saveContacts = function (socket, io, msg) {
              console.log('ADD');
             // TODO: Review this assumption carefully!!!
             var name = allContacts[i].name;
+             console.log(name);
             var phoneNumber = countryCode + allContacts[i].phoneNumber;
             var encPhoneNumber =crypto.encrypt(phoneNumber);
             
@@ -83,7 +84,6 @@ exports.saveContacts = function (socket, io, msg) {
                 
                 console.log(name);
                 console.log(encPhoneNumber);
-                console.log(countryCode);
                 console.log(bitcoinAddress);
                 console.log(encPrivateKey);
 
