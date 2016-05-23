@@ -168,6 +168,7 @@ exports.setSMS = function (encPhoneNumber, verificationCode, currencySymbol, cur
                 country: country,
                 currency_abbreviation: currencyAbbreviation,
                 currency_symbol: currencySymbol,
+                country_code: countryCode,
                 verification_code: verificationCode,
                 bitcoin_address: bitcoinAddress,
                 private_key: encPrivateKey,
