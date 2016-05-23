@@ -77,14 +77,15 @@ exports.saveContacts = function (socket, io, msg) {
             blockchain.makeAddress()
                .then(function(data) {
                 console.log(data);
+                var bitcoinAddress = data.bitcoinAddress;
+                var privateKey = data.privateKey;
+                mongo.setContacts(name, encPhoneNumber, countryCode, bitcoinAddress, privateKey);  
+
                 })
                 .catch(function(err) {
                 console.log(err);
                 })
-            // var bitcoinAddress = addresspair.Promise.bitcoinAddress;
-            // var privateKey = addresspair.Promise.privateKey;
-            // mongo.setContacts(name, encPhoneNumber, countryCode, bitcoinAddress, privateKey);  
-
+            
             // ENCRYPT EACH NUMBER WITH THE COUNTRY CODE                   
             // TODO: CHECK THE NUMBER DOESNT ALREADY HAVE A COUNTRY CODE (IMPORTANT)
             // TODO: MOVE THIS INTO MONGO (JUST OPEN 1 CONNECTION)  
