@@ -73,7 +73,7 @@ exports.saveContacts = function (socket, io, msg) {
             var name = allContacts[i].name;
             var phoneNumber = countryCode + allContacts[i].phoneNumber;
             var encPhoneNumber =crypto.encrypt(phoneNumber);
-            setoneContact(name);
+            exports.setoneContact(name);
         }
     })
     .catch(function(err) {
@@ -84,7 +84,7 @@ exports.saveContacts = function (socket, io, msg) {
 
 //------------------------------------------ SET ONE CONTACT
 
-setoneContact = function(name){
+exports.setoneContact = function(name){
     console.log(name);
             //    blockchain.makeAddress()
             //    .then(function(data) {
