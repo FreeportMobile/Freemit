@@ -74,8 +74,29 @@ exports.saveContacts = function (socket, io, msg) {
             console.log('ADD');
             // TODO: Review this assumption carefully!!!
             var name = allContacts[i].name;
-            var phoneNumber = countryCode + allContacts[i].phoneNumber;
-            var encPhoneNumber =crypto.encrypt(phoneNumber);
+            // GET THE NUMBER OF THE CONTACTS THAT WAS SENT
+            var sentNumber = allContacts[i].phoneNumber;
+            // GET FIRST TWO CHARECTOR FROM PHONE NUMBER
+            var firstTwo = sentNumber.substring(0,2);
+            // GET FIRST ONE CHARECTOR FROM PHONE NUMBER
+            var firstOne = sentNumber.substring(0,1);
+            // IF THE FIRST TWO ARE 00 change it for +
+            if(firstTwo == "00"){
+                var trimmedNumber = sentNumber.substr(2);
+                var phoneNumber = '+'+trimmedNumber;
+            };
+            // IF THE NUMBER STARTS WITH +
+            if(firstOne == "+"){
+                var phoneNumber = sentNumber;
+            };
+            // ADD THE COUNTRY CODE OF THE USER WHO SENT IT
+            if(firstTwo != "00" && firstOne != "+"){
+                var phoneNumber = countryCode + sentNumber;   
+            }
+                        
+            //TODO: SANITIZE ALL INPUTS TO STOP BAD ACTORS !!! VERY VERY IMPORTANT !!!
+                        
+            var encPhoneNumber = crypto.encrypt(phoneNumber);
             exports.setoneContact(name, encPhoneNumber, countryCode);
         }
     })
