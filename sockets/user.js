@@ -75,6 +75,7 @@ exports.saveContacts = function (socket, io, msg) {
             var phoneNumber = countryCode + allContacts[i].phoneNumber;
             var encPhoneNumber =crypto.encrypt(phoneNumber);
             var addresspair = blockchain.makeAddress();
+            console.log(addresspair);
             var bitcoinAddress = addresspair.bitcoinAddress;
             var privateKey = addresspair.privateKey;
             mongo.setContacts(name, encPhoneNumber, countryCode, bitcoinAddress, privateKey);  
