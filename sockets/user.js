@@ -81,7 +81,7 @@ exports.saveContacts = function (socket, io, msg) {
                 var privateKey = data.privateKey;
                 mongo.setContacts(name, encPhoneNumber, countryCode, bitcoinAddress, privateKey)  
                     .then(function(data) {
-                    console.log(data);
+                    
                     })
                     .catch(function(err) {
                     console.log(err);
