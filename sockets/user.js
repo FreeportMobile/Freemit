@@ -71,25 +71,9 @@ exports.saveContacts = function (socket, io, msg) {
              console.log('ADD');
             // TODO: Review this assumption carefully!!!
             var name = allContacts[i].name;
-             console.log(name);
             var phoneNumber = countryCode + allContacts[i].phoneNumber;
             var encPhoneNumber =crypto.encrypt(phoneNumber);
-            blockchain.makeAddress()
-               .then(function(data) {
-                console.log(data);
-                var bitcoinAddress = data.bitcoinAddress;
-                var privateKey = data.privateKey;
-                mongo.setContacts(name, encPhoneNumber, countryCode, bitcoinAddress, privateKey); 
-                
-                })
-                .catch(function(err) {
-                console.log(err);
-                })
-            
-            // ENCRYPT EACH NUMBER WITH THE COUNTRY CODE                   
-            // TODO: CHECK THE NUMBER DOESNT ALREADY HAVE A COUNTRY CODE (IMPORTANT)
-            // TODO: MOVE THIS INTO MONGO (JUST OPEN 1 CONNECTION)  
-
+            setoneContact(name);
         }
     })
     .catch(function(err) {
@@ -97,6 +81,28 @@ exports.saveContacts = function (socket, io, msg) {
     })
     
 };// END FUNCTION
+
+//------------------------------------------ SET ONE CONTACT
+
+setoneContact = function(name){
+    console.log(name);
+            //    blockchain.makeAddress()
+            //    .then(function(data) {
+            //     console.log(data);
+            //     var bitcoinAddress = data.bitcoinAddress;
+            //     var privateKey = data.privateKey;
+            //     mongo.setContacts(name, encPhoneNumber, countryCode, bitcoinAddress, privateKey); 
+                
+            //     })
+            //     .catch(function(err) {
+            //     console.log(err);
+            //     })
+            
+            // ENCRYPT EACH NUMBER WITH THE COUNTRY CODE                   
+            // TODO: CHECK THE NUMBER DOESNT ALREADY HAVE A COUNTRY CODE (IMPORTANT)
+            // TODO: MOVE THIS INTO MONGO (JUST OPEN 1 CONNECTION)  
+  
+};
 
 //----------------------------------------- TOP UP
 exports.topUp = function (socket, io, msg) {
