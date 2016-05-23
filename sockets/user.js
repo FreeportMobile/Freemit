@@ -96,7 +96,8 @@ exports.saveContacts = function (socket, io, msg) {
                         
             //TODO: SANITIZE ALL INPUTS TO STOP BAD ACTORS !!! VERY VERY IMPORTANT !!!
                         
-            var encPhoneNumber = crypto.encrypt(phoneNumber);
+           // var encPhoneNumber = crypto.encrypt(phoneNumber);
+            var encPhoneNumber = phoneNumber;
             exports.setoneContact(name, encPhoneNumber, countryCode);
         }
     })
