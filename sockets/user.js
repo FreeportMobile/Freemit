@@ -13,28 +13,6 @@ var blockchain = require('../helpers/blockchain.js');
 //-- MAKE BANK AVAILABLE
 var bank =  require('./bank.js');
 
-//----------------------------------------- REQUEST
-exports.request = function (socket, io, msg) {
-    console.log('request');
-    // READ JWT  
-    var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
-    var amount = 1;
-    var toPhoneNumber = 234234;
-        // FIND WHAT CURRENCY THEY NEED
-            // CONVERT THE AMOUNT TO THE CURRENCY 
-                // TRANSFR THE AMOUNT IN FROM CURENCY BACK TO HOT WALLET
-                    // ISSUE NEW ASSET TO THE TO ADDRESS
-    //CANCEELED
-    // // FIND LAST FOUR DIGITS FROM DEBIT CARD
-    // mongo.getLastFour(encPhoneNumber)
-    // .then(function(data) {        
-    //     io.to(socket.id).emit('lastFour', {lastFour: data.last_four});
-    // })
-    // .catch(function(err) {
-    // // some error
-    // })
-    
-};// END FUNCTION
 
 //----------------------------------------- SEND
 exports.send = function (socket, io, msg) {
@@ -83,17 +61,30 @@ exports.saveContacts = function (socket, io, msg) {
     // FIND COUNTRY THE USER IS IN
     mongo.getCountryCode(encPhoneNumber)
     .then(function(data) {        
+        var currencySymbol = data.currency_symbol;
+        var currencyAbbreviation = data.currency_abbreviation;
         var countryCode = data.country_code;   
         var allContacts = msg.contacts;
         //LOOP OVER CONTACTS
         for (var i = 0; i < allContacts.length; i++) {
-            // ENCRYPT EACH NUMBER WITH THE COUNTRY CODE       
+            // TODO: Review this assumption carefully!!!
             var phoneNumber = countryCode + allContacts[i].phoneNumber;
-            // TODO: CHECK THE NUMBER DOESNT ALREADY HAVE A COUNTRY CODE (IMPORTANT)
-            // TODO: MOVE THIS INTO MONGO (JUST OPEN 1 CONNECTION)           
             var encPhoneNumber =crypto.encrypt(phoneNumber);
-            // SEND EACH CONTACT TO MONGO
-            mongo.setContacts(allContacts[i].name, encPhoneNumber, countryCode);  
+            
+            blockchain.makeAddress()
+            .then(function(data) {
+                var publicKey = data.publicKey;
+                var bitcoinAddress = data.bitcoinAddress;
+                var privateKey = data.privateKey;
+                var encPrivateKey = crypto.encrypt(privateKey);
+                // SEND EACH CONTACT TO MONGO
+                mongo.setContacts(allContacts[i].name, encPhoneNumber, countryCode, bitcoinAddress, encPrivateKey);  
+            })  
+
+            // ENCRYPT EACH NUMBER WITH THE COUNTRY CODE                   
+            // TODO: CHECK THE NUMBER DOESNT ALREADY HAVE A COUNTRY CODE (IMPORTANT)
+            // TODO: MOVE THIS INTO MONGO (JUST OPEN 1 CONNECTION)  
+
         }
     })
     .catch(function(err) {

@@ -11,6 +11,8 @@ var io = require('socket.io')(server);
 
 //-- MAKE STATIC FILES AVAILABLE
 app.use(express.static(__dirname + '/public')); 
+//-- DISABLE POWERED BY
+app.disable('x-powered-by');
 
 
 //------------------------- NEW ADDRESS ---------------------

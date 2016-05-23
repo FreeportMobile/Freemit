@@ -44,10 +44,6 @@ module.exports = function (io) {
             freemit.user.lastFour(socket, io, msg);
         });
         
-        socket.on('request', function (msg) {
-            rateLimiter(socket);
-            freemit.user.request(socket, io, msg);
-        });
         
         socket.on('send', function (msg) {
             rateLimiter(socket);
