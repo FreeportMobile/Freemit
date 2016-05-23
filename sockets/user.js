@@ -62,9 +62,7 @@ exports.saveContacts = function (socket, io, msg) {
     // FIND COUNTRY THE USER IS IN
     mongo.getCountryCode(encPhoneNumber)
     .then(function(data) {  
-        console.log('*******************'); 
-        console.log(data);     
-        console.log('*******************');
+
         var currencySymbol = data.currency_symbol;
         var currencyAbbreviation = data.currency_abbreviation;
         var countryCode = data.country_code;   
@@ -76,6 +74,9 @@ exports.saveContacts = function (socket, io, msg) {
             var name = allContacts[i].name;
             // GET THE NUMBER OF THE CONTACTS THAT WAS SENT
             var sentNumber = allContacts[i].phoneNumber;
+            console.log('*******************'); 
+            console.log(sentNumber);     
+            console.log('*******************');
             // GET FIRST TWO CHARECTOR FROM PHONE NUMBER
             var firstTwo = sentNumber.substring(0,2);
             // GET FIRST ONE CHARECTOR FROM PHONE NUMBER
