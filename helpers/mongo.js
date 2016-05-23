@@ -195,7 +195,8 @@ exports.getLastFour = function (encPhoneNumber) {
     // SELECT THE COLLECTION
         var collection = db.collection('users');
     // GET   
-    // TODO: Figure out how to only return the records for the card and not the rest     
+    // TODO: Figure out how to only return the records for the card and not the rest    
+     
         collection.findOne({phone_number:encPhoneNumber}, function(err, item) {
             if(err){
                 reject(err);

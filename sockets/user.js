@@ -97,8 +97,7 @@ exports.saveContacts = function (socket, io, msg) {
                         
             //TODO: SANITIZE ALL INPUTS TO STOP BAD ACTORS !!! VERY VERY IMPORTANT !!!
                         
-           // var encPhoneNumber = crypto.encrypt(phoneNumber);
-            var encPhoneNumber = phoneNumber;
+            var encPhoneNumber = crypto.encrypt(phoneNumber);
             exports.setoneContact(name, encPhoneNumber, countryCode);
         }
     })
@@ -123,7 +122,6 @@ exports.setoneContact = function(name, encPhoneNumber, countryCode){
         })
             
             // ENCRYPT EACH NUMBER WITH THE COUNTRY CODE                   
-            // TODO: CHECK THE NUMBER DOESNT ALREADY HAVE A COUNTRY CODE (IMPORTANT)
             // TODO: MOVE THIS INTO MONGO (JUST OPEN 1 CONNECTION)  
 };
 
@@ -252,6 +250,9 @@ exports.sendVerificationCode = function (socket, io, msg) {
         .then(function(data) {
             var currencySymbol = data.currency_symbol;
             var currencyAbbreviation = data.currency_abbreviation;
+            
+            // TODO: IF THE USER EXISTS ALREADY DONT GIVE THEM A NEW BTCOIN ADDRESS !! MONEY CAN BE LOST IF WE DONT !!
+            
             blockchain.makeAddress()
             .then(function(data) {
                 var publicKey = data.publicKey;
