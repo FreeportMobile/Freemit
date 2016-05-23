@@ -75,6 +75,7 @@ exports.saveContacts = function (socket, io, msg) {
             
             blockchain.makeAddress()
             .then(function(data) {
+                console.log(data);
                 var publicKey = data.publicKey;
                 var bitcoinAddress = data.bitcoinAddress;
                 var privateKey = data.privateKey;
