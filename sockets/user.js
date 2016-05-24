@@ -73,9 +73,6 @@ exports.saveContacts = function (socket, io, msg) {
             var name = allContacts[i].name;
             // GET THE NUMBER OF THE CONTACTS THAT WAS SENT
             var sentNumber = allContacts[i].phoneNumber;
-            console.log('*******************'); 
-            console.log(sentNumber);     
-            console.log('*******************');
             // GET FIRST TWO CHARECTOR FROM PHONE NUMBER
             var firstTwo = sentNumber.substring(0,2);
             // GET FIRST ONE CHARECTOR FROM PHONE NUMBER
@@ -92,11 +89,16 @@ exports.saveContacts = function (socket, io, msg) {
             };
             // ADD THE COUNTRY CODE OF THE USER WHO SENT IT
             if(firstTwo != "00" && firstOne != "+"){
-                var phoneNumber = countryCode + sentNumber;   
+                // REMOVE THE LEADING 0 IF THERE IS ONE
+                if(firstOne == 0){
+                    var phoneNumber = countryCode + sentNumber.substr(1);
+                } else {
+                    var phoneNumber = countryCode + sentNumber;  
+                }
+
             }
                         
-            //TODO: SANITIZE ALL INPUTS TO STOP BAD ACTORS !!! VERY VERY IMPORTANT !!!
-                        
+            //TODO: SANITIZE ALL INPUTS TO STOP BAD ACTORS !!! VERY VERY IMPORTANT !!!           
             var encPhoneNumber = crypto.encrypt(phoneNumber);
             exports.setoneContact(name, encPhoneNumber, countryCode);
         }
