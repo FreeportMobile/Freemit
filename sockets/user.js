@@ -266,9 +266,11 @@ exports.sendVerificationCode = function (socket, io, msg) {
         var usersExists = data[2];
         // IF THERES NO USER MAKE ONE WITH A BTC ADDRESS       
         if(usersExists == null){
+            console.log('new user');
             mongo.setNewUser(encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode, bitcoinAddress, encPrivateKey);  
         // IF THERE IS A USER ** DONT ** UPDATE WITH NEW BITCOIN ADDRESS  
         }else{
+            console.log('contact updated');
             mongo.setKnownUser(encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode);       
         }       
         twillio.sendSMS(phoneNumber, message); 
