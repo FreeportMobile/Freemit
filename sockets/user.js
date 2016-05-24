@@ -273,5 +273,6 @@ exports.sendVerificationCode = function (socket, io, msg) {
     }).catch(function(err){
         // IF ANY OF THE ABOVE FAIL
         console.log("Fail!!");
+        console.log(err);
     });
 };// END FUNCTION
