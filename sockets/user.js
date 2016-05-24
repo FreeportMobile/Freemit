@@ -247,7 +247,7 @@ exports.sendVerificationCode = function (socket, io, msg) {
     var country = msg.country;
     var countryCode = msg.countryCode;
     var keySet = blockchain.makeAddress();
-    
+    console.log('Pont 1');
     // GET THE CURRENCY SYMBOL FOR THE COUNTRY CODE THE USER SELECTED
     mongo.getCurrency(countryCode)
         .then(function(data) {
@@ -255,13 +255,16 @@ exports.sendVerificationCode = function (socket, io, msg) {
             var currencyAbbreviation = data.currency_abbreviation;
         })
         .then(function(data) {
+             console.log('Pont 2');
             // SEE IF WE KNOW THIS PHONE NUMBER
             mongo.getOneUser()
             .then(function(data) {
+                 console.log('Pont 3');
                 // IF WE DONT KNOW THIS NUMBR MAKE A BIT COIN ADDRESS
                 if(data == null){
                     blockchain.makeAddress()
                     .then(function(data) {
+                         console.log('Pont 4');
                         var publicKey = data.publicKey;
                         var bitcoinAddress = data.bitcoinAddress;
                         var privateKey = data.privateKey;
