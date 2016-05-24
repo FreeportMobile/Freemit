@@ -242,7 +242,11 @@ exports.checkVerificationCode = function (socket, io, msg) {
 //---------------------------------------- SEND VERIFICATION CODE
 
 exports.sendVerificationCode = function (socket, io, msg) {
-    var phoneNumber = clean.num(msg.countryCode + msg.phoneNumber)
+    var phoneNumber = clean.num(msg.countryCode + msg.phoneNumber);
+    if (phoneNumber == ""){
+        io.to(socket.id).emit('sendVerificationCode', {msg: 404});  
+        break; 
+    }
     console.log(phoneNumber);
     var encPhoneNumber =crypto.encrypt(phoneNumber);
     var verificationCode = Math.floor(1000 + Math.random() * 9000);
