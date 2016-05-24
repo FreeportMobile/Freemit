@@ -8,7 +8,7 @@ var phone = require('phone');
 //----------------------- CLEAN ME ----------------------------------//
 exports.me = function (item) {
     return new Promise(function (resolve, reject) {
-        cleanedResult = xss(item);
+        var cleanedResult = xss(item);
         resolve(cleanedResult);  
     }); //-- END PROMISE
 }; //-- END FUNCTION
@@ -16,7 +16,7 @@ exports.me = function (item) {
 //----------------------- CLEAN NUMBER ----------------------------------//
 exports.num = function (num) {
     return new Promise(function (resolve, reject) {
-        cleanedPhone = phone(num);
+        var cleanedPhone = phone(num);
         resolve(cleanedPhone); 
     }); //-- END PROMISE
 }; //-- END FUNCTION
