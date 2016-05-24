@@ -240,9 +240,6 @@ exports.checkVerificationCode = function (socket, io, msg) {
 //---------------------------------------- SEND VERIFICATION CODE
 
 exports.sendVerificationCode = function (socket, io, msg) {
-    
-    console.log('sendVerificationCode');
-    
     var phoneNumber = msg.countryCode + msg.phoneNumber;
     var encPhoneNumber =crypto.encrypt(phoneNumber);
     var verificationCode = Math.floor(1000 + Math.random() * 9000);
@@ -251,34 +248,30 @@ exports.sendVerificationCode = function (socket, io, msg) {
     var country = msg.country;
     var countryCode = msg.countryCode;
     var keySet = blockchain.makeAddress();
-
-// GET ALL THESE VALUES    
+    // GET ALL THESE VALUES    
     Promise.all([
         mongo.getCurrency(countryCode),
         mongo.getOneUser(encPhoneNumber),
         blockchain.makeAddress(),
         ]) 
     .then(function(data){
-// IF ALL THE ABOVE RESOLVE
-        console.log(data[0]);
-        console.log(data[1]);
-        console.log(data[2]);
-        
-        // mongo.setSMS(
-        //     encPhoneNumber, 
-        //     verificationCode, 
-        //     currencySymbol,
-        //     currencyAbbreviation, 
-        //     country, countryCode, 
-        //     bitcoinAddress, 
-        //     encPrivateKey
-        // );
-            
-        // twillio.sendSMS(phoneNumber, message); 
-        // io.to(socket.id).emit('sendVerificationCode', {msg: 200});   
+        // IF ALL THE ABOVE RESOLVE
+        var currencySymbol = data[0].currency_symbol;
+        var currencyAbbreviation = data[0].currency_abbreviation;
+        var bitcoinAddress = data[1].bitcoinAddress;
+        var encPrivateKey = crypto.encrypt(data[1].privateKey);
+        var usersExists = data[2];
+        // IF THERES NO USER MAKE ONE        
+        if(usersExists == null){
+            mongo.setNewUser(encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode, bitcoinAddress, encPrivateKey);  
+        // IF THERE IS A USER DONT DELET THERE BITCOIN ADDRESS  
+        }else{
+            mongo.setKnownUser(encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode);       
+        }       
+        twillio.sendSMS(phoneNumber, message); 
+        io.to(socket.id).emit('sendVerificationCode', {msg: 200});   
     }).catch(function(err){
-// IF ANY OF THE ABOVE FAIL
+        // IF ANY OF THE ABOVE FAIL
         console.log("Fail!!");
     });
-    
 };// END FUNCTION

@@ -3,7 +3,6 @@
 //-- SETUP MONGO
 var mongoClient = require('mongodb').MongoClient;
 
-
 //----------------------- SET CONTACTS ----------------------------------//
 
 exports.setContacts = function (name, phoneNumber, countryCode, bitcoinAddress, encPrivateKey) {
@@ -145,12 +144,45 @@ exports.setCard = function (encPhoneNumber, encCardNumber, encCardCVC, encCardMo
     }); //-- END PROMISE
 }; //-- END FUNCTION
 
-//----------------------- SET SMS ----------------------------------//
 
-exports.setSMS = function (encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode, bitcoinAddress, encPrivateKey) {
-   
-      console.log('Pont 5');
-   
+//----------------------- SET KNOWN USER ----------------------------------//
+
+exports.setKnownUser = function (encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode) {
+    return new Promise(function (resolve, reject) {
+    // OPEN CONNECTION     
+        mongoClient.connect(process.env.MONGO_DB, function (err, db) {
+            if (err) {
+                reject(err);
+                console.log(err);
+            }
+    // PREPARE DATA
+            var collection = db.collection('users');
+            var doc = {
+                first_seen: Date.now().toString(),
+                country: country,
+                currency_abbreviation: currencyAbbreviation,
+                currency_symbol: currencySymbol,
+                country_code: countryCode,
+                verification_code: verificationCode,
+            };
+    // UPDATE         
+            collection.update({ phone_number: encPhoneNumber },
+                { $set: doc }, { upsert: true }, function (err, result) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(result);
+                    }
+                    db.close();
+                });
+        }); //-- END CONNECT      
+    }); //-- END PROMISE
+}; //-- END FUNCTION
+
+
+//----------------------- SET NEW USER ----------------------------------//
+
+exports.setNewUser = function (encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode, bitcoinAddress, encPrivateKey) {
     return new Promise(function (resolve, reject) {
     // OPEN CONNECTION     
         mongoClient.connect(process.env.MONGO_DB, function (err, db) {
