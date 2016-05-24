@@ -238,6 +238,7 @@ exports.checkVerificationCode = function (socket, io, msg) {
 
 
 //---------------------------------------- SEND VERIFICATION CODE
+
 exports.sendVerificationCode = function (socket, io, msg) {
     var phoneNumber = msg.countryCode + msg.phoneNumber;
     var encPhoneNumber =crypto.encrypt(phoneNumber);
@@ -247,62 +248,34 @@ exports.sendVerificationCode = function (socket, io, msg) {
     var country = msg.country;
     var countryCode = msg.countryCode;
     var keySet = blockchain.makeAddress();
-    console.log('Pont 1');
-    // GET THE CURRENCY SYMBOL FOR THE COUNTRY CODE THE USER SELECTED
-    mongo.getCurrency(countryCode)
-        .then(function(data) {
-            var currencySymbol = data.currency_symbol;
-            var currencyAbbreviation = data.currency_abbreviation;
-        })
-        .then(function(data) {
-            console.log('Pont 2');
-            // SEE IF WE KNOW THIS PHONE NUMBER
-            mongo.getOneUser()
-            .then(function(data) {
-                console.log('Pont 3');
-                // IF WE DONT KNOW THIS NUMBR MAKE A BIT COIN ADDRESS
-                if(data == null){
-                    blockchain.makeAddress()
-                    .then(function(data) {
-                        console.log(data);
-                        console.log('Pont 4');
-                        var bitcoinAddress = data.bitcoinAddress;
-                        console.log('Pont 4.1');
-                        var privateKey = data.privateKey;
-                        console.log('Pont 4.2');
-                        var encPrivateKey = crypto.encrypt(privateKey);
-                        console.log('Pont 4.3');
-                        mongo.setSMS(encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode, bitcoinAddress, encPrivateKey)
-                            .then(function(data) {
-                            })
-                            .catch(function(err) {
-                                console.log('err with making a new user')
-                                console.log(err)
-                            });
-                    })            
-                    .catch(function(err) {
-                    console.log('err with making a bitcoin address')
-                    console.log(err)
-                    });
-                } else {
-                    // IF WE DO KNOW THIS USR
-                    console.log('We know who you are!');
-                }
-            })
-            .catch(function(err) {
-            console.log('err wth checking one user')
-            console.log(err)
-        });
-            // TODO: IF THE USER EXISTS ALREADY DONT GIVE THEM A NEW BTCOIN ADDRESS !! MONEY CAN BE LOST IF WE DONT !!
-        })
-        .then(function(data) {
-            twillio.sendSMS(phoneNumber, message);
-        })
-        .then(function(data) {
-            io.to(socket.id).emit('sendVerificationCode', {msg: 200});
-        })
-        .catch(function(err) {
-            console.log(err)
-	        // TODO: Handle this error!
-        });
-}; // END FUNCTION
+
+// GET ALL THESE VALUES    
+    Promise.all([
+        mongo.getCurrency(countryCode),
+        mongo.getOneUser(encPhoneNumber),
+        blockchain.makeAddress(),
+        ]) 
+    .then(function(data){
+// IF ALL THE ABOVE RESOLVE
+        console.log(data[0]);
+        console.log(data[1]);
+        console.log(data[2]);
+        
+        // mongo.setSMS(
+        //     encPhoneNumber, 
+        //     verificationCode, 
+        //     currencySymbol,
+        //     currencyAbbreviation, 
+        //     country, countryCode, 
+        //     bitcoinAddress, 
+        //     encPrivateKey
+        // );
+            
+        // twillio.sendSMS(phoneNumber, message); 
+        // io.to(socket.id).emit('sendVerificationCode', {msg: 200});   
+    }).catch(function(err){
+// IF ANY OF THE ABOVE FAIL
+        console.log("Fail!!");
+    });
+    
+};// END FUNCTION
