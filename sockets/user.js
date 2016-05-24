@@ -252,17 +252,28 @@ exports.sendVerificationCode = function (socket, io, msg) {
         .then(function(data) {
             var currencySymbol = data.currency_symbol;
             var currencyAbbreviation = data.currency_abbreviation;
-            
-            // TODO: IF THE USER EXISTS ALREADY DONT GIVE THEM A NEW BTCOIN ADDRESS !! MONEY CAN BE LOST IF WE DONT !!
-            
-            blockchain.makeAddress()
+        })
+        .then(function(data) {
+            console.log('getting one user');
+            mongo.getOneUser()
             .then(function(data) {
-                var publicKey = data.publicKey;
-                var bitcoinAddress = data.bitcoinAddress;
-                var privateKey = data.privateKey;
-                var encPrivateKey = crypto.encrypt(privateKey);
-                mongo.setSMS(encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode, bitcoinAddress, encPrivateKey)
-            })  
+                console.log('data');
+                console.log(data);
+                blockchain.makeAddress()
+                    // .then(function(data) {
+                    //     blockchain.makeAddress()
+                    //     var publicKey = data.publicKey;
+                    //     var bitcoinAddress = data.bitcoinAddress;
+                    //     var privateKey = data.privateKey;
+                    //     var encPrivateKey = crypto.encrypt(privateKey);
+                    //     mongo.setSMS(encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode, bitcoinAddress, encPrivateKey)
+                    // })  
+            })
+            .catch(function(err) {
+            console.log('err')
+            console.log(err)
+        });
+            // TODO: IF THE USER EXISTS ALREADY DONT GIVE THEM A NEW BTCOIN ADDRESS !! MONEY CAN BE LOST IF WE DONT !!
         })
         .then(function(data) {
             twillio.sendSMS(phoneNumber, message);
