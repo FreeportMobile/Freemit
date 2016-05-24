@@ -248,26 +248,29 @@ exports.sendVerificationCode = function (socket, io, msg) {
     var countryCode = msg.countryCode;
     var keySet = blockchain.makeAddress();
     
+    // GET THE CURRENCY SYMBOL FOR THE COUNTRY CODE THE USER SELECTED
     mongo.getCurrency(countryCode)
         .then(function(data) {
             var currencySymbol = data.currency_symbol;
             var currencyAbbreviation = data.currency_abbreviation;
         })
         .then(function(data) {
-            console.log('getting one user');
+            // SEE IF WE KNOW THIS PHONE NUMBER
             mongo.getOneUser()
             .then(function(data) {
+                // IF WE DONT KNOW THIS NUMBR MAKE A BIT COIN ADDRESS
                 if(data == null){
-                    console.log('you are new');
-                //blockchain.makeAddress()
-                    // .then(function(data) {
-                    //     blockchain.makeAddress()
-                    //     var publicKey = data.publicKey;
-                    //     var bitcoinAddress = data.bitcoinAddress;
-                    //     var privateKey = data.privateKey;
-                    //     var encPrivateKey = crypto.encrypt(privateKey);
-                    //     mongo.setSMS(encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode, bitcoinAddress, encPrivateKey)
-                    // })  
+                    blockchain.makeAddress()
+                    .then(function(data) {
+                        var publicKey = data.publicKey;
+                        var bitcoinAddress = data.bitcoinAddress;
+                        var privateKey = data.privateKey;
+                        var encPrivateKey = crypto.encrypt(privateKey);
+                        mongo.setSMS(encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode, bitcoinAddress, encPrivateKey)
+                    })  
+                } else {
+                    // IF WE DO KNOW THIS USR
+                    console.log('We know who you are!');
                 }
             })
             .catch(function(err) {
