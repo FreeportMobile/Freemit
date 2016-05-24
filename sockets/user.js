@@ -265,10 +265,12 @@ exports.sendVerificationCode = function (socket, io, msg) {
                     blockchain.makeAddress()
                     .then(function(data) {
                          console.log('Pont 4');
-                        var publicKey = data.publicKey;
                         var bitcoinAddress = data.bitcoinAddress;
+                        console.log('Pont 4.1');
                         var privateKey = data.privateKey;
+                        console.log('Pont 4.2');
                         var encPrivateKey = crypto.encrypt(privateKey);
+                        console.log('Pont 4.3');
                         mongo.setSMS(encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode, bitcoinAddress, encPrivateKey)
                     })  
                 } else {
