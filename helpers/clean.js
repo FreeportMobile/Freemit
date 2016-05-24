@@ -17,7 +17,7 @@ exports.me = function (item) {
 exports.num = function (num) {
     return new Promise(function (resolve, reject) {
         var cleanedPhone = phone(num);
-        resolve(cleanedPhone); 
+        resolve(cleanedPhone[0]); 
     }); //-- END PROMISE
 }; //-- END FUNCTION
 
