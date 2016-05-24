@@ -257,9 +257,9 @@ exports.sendVerificationCode = function (socket, io, msg) {
             console.log('getting one user');
             mongo.getOneUser()
             .then(function(data) {
-                console.log('data');
-                console.log(data);
-                blockchain.makeAddress()
+                if(data == null){
+                    console.log('you are new');
+                //blockchain.makeAddress()
                     // .then(function(data) {
                     //     blockchain.makeAddress()
                     //     var publicKey = data.publicKey;
@@ -268,6 +268,7 @@ exports.sendVerificationCode = function (socket, io, msg) {
                     //     var encPrivateKey = crypto.encrypt(privateKey);
                     //     mongo.setSMS(encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode, bitcoinAddress, encPrivateKey)
                     // })  
+                }
             })
             .catch(function(err) {
             console.log('err')
