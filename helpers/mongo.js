@@ -148,6 +148,9 @@ exports.setCard = function (encPhoneNumber, encCardNumber, encCardCVC, encCardMo
 //----------------------- SET SMS ----------------------------------//
 
 exports.setSMS = function (encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode, bitcoinAddress, encPrivateKey) {
+   
+      console.log('Pont 5');
+   
     return new Promise(function (resolve, reject) {
     // OPEN CONNECTION     
         mongoClient.connect(process.env.MONGO_DB, function (err, db) {
