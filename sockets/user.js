@@ -255,23 +255,23 @@ exports.sendVerificationCode = function (socket, io, msg) {
             var currencyAbbreviation = data.currency_abbreviation;
         })
         .then(function(data) {
-             console.log('Pont 2');
+            console.log('Pont 2');
             // SEE IF WE KNOW THIS PHONE NUMBER
             mongo.getOneUser()
             .then(function(data) {
-                 console.log('Pont 3');
+                console.log('Pont 3');
                 // IF WE DONT KNOW THIS NUMBR MAKE A BIT COIN ADDRESS
                 if(data == null){
                     blockchain.makeAddress()
                     .then(function(data) {
-                         console.log('Pont 4');
+                        console.log('Pont 4');
                         var bitcoinAddress = data.bitcoinAddress;
                         console.log('Pont 4.1');
                         var privateKey = data.privateKey;
                         console.log('Pont 4.2');
                         var encPrivateKey = crypto.encrypt(privateKey);
                         console.log('Pont 4.3');
-                        mongo.setSMS(encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode, bitcoinAddress, encPrivateKey)
+                        mongo.setSMS(encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode, bitcoinAddress, encPrivateKey);
                     })  
                 } else {
                     // IF WE DO KNOW THIS USR
