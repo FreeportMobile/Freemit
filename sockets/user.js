@@ -251,8 +251,8 @@ exports.sendVerificationCode = function (socket, io, msg) {
     // GET ALL THESE VALUES    
     Promise.all([
         mongo.getCurrency(countryCode),
-        mongo.getOneUser(encPhoneNumber),
         blockchain.makeAddress(),
+        mongo.getOneUser(encPhoneNumber),
         ]) 
     .then(function(data){
         // IF ALL THE ABOVE RESOLVE
