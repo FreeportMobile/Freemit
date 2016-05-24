@@ -271,8 +271,14 @@ exports.sendVerificationCode = function (socket, io, msg) {
                         console.log('Pont 4.2');
                         var encPrivateKey = crypto.encrypt(privateKey);
                         console.log('Pont 4.3');
-                        mongo.setSMS(encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode, bitcoinAddress, encPrivateKey);
-                    })  
+                        mongo.setSMS(encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode, bitcoinAddress, encPrivateKey)
+                            .then(function(data) {
+                            });
+                    })            
+                    .catch(function(err) {
+                    console.log('err')
+                    console.log(err)
+                    });
                 } else {
                     // IF WE DO KNOW THIS USR
                     console.log('We know who you are!');
