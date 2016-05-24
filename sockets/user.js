@@ -264,6 +264,7 @@ exports.sendVerificationCode = function (socket, io, msg) {
                 if(data == null){
                     blockchain.makeAddress()
                     .then(function(data) {
+                        console.log(data);
                         console.log('Pont 4');
                         var bitcoinAddress = data.bitcoinAddress;
                         console.log('Pont 4.1');
@@ -273,10 +274,14 @@ exports.sendVerificationCode = function (socket, io, msg) {
                         console.log('Pont 4.3');
                         mongo.setSMS(encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode, bitcoinAddress, encPrivateKey)
                             .then(function(data) {
+                            })
+                            .catch(function(err) {
+                                console.log('err with making a new user')
+                                console.log(err)
                             });
                     })            
                     .catch(function(err) {
-                    console.log('err')
+                    console.log('err with making a bitcoin address')
                     console.log(err)
                     });
                 } else {
@@ -285,7 +290,7 @@ exports.sendVerificationCode = function (socket, io, msg) {
                 }
             })
             .catch(function(err) {
-            console.log('err')
+            console.log('err wth checking one user')
             console.log(err)
         });
             // TODO: IF THE USER EXISTS ALREADY DONT GIVE THEM A NEW BTCOIN ADDRESS !! MONEY CAN BE LOST IF WE DONT !!
