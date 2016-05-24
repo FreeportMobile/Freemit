@@ -261,10 +261,10 @@ exports.sendVerificationCode = function (socket, io, msg) {
         var bitcoinAddress = data[1].bitcoinAddress;
         var encPrivateKey = crypto.encrypt(data[1].privateKey);
         var usersExists = data[2];
-        // IF THERES NO USER MAKE ONE        
+        // IF THERES NO USER MAKE ONE WITH A BTC ADDRESS       
         if(usersExists == null){
             mongo.setNewUser(encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode, bitcoinAddress, encPrivateKey);  
-        // IF THERE IS A USER DONT DELET THERE BITCOIN ADDRESS  
+        // IF THERE IS A USER ** DONT ** UPDATE WITH NEW BITCOIN ADDRESS  
         }else{
             mongo.setKnownUser(encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode);       
         }       
