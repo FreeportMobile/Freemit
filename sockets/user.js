@@ -240,6 +240,9 @@ exports.checkVerificationCode = function (socket, io, msg) {
 //---------------------------------------- SEND VERIFICATION CODE
 
 exports.sendVerificationCode = function (socket, io, msg) {
+    
+    console.log('sendVerificationCode');
+    
     var phoneNumber = msg.countryCode + msg.phoneNumber;
     var encPhoneNumber =crypto.encrypt(phoneNumber);
     var verificationCode = Math.floor(1000 + Math.random() * 9000);
