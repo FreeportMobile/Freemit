@@ -244,9 +244,9 @@ exports.checkVerificationCode = function (socket, io, msg) {
 exports.sendVerificationCode = function (socket, io, msg) {
     var phoneNumber = clean.num(msg.countryCode + msg.phoneNumber);
     if (phoneNumber == ""){
+        // REFLECT THIS TO THE APPLICATOIN SO THE USER CAN TRY AGAIN
         io.to(socket.id).emit('sendVerificationCode', {msg: 404}); 
         return; 
-        
     }
     console.log(phoneNumber);
     var encPhoneNumber =crypto.encrypt(phoneNumber);
