@@ -244,7 +244,8 @@ exports.checkVerificationCode = function (socket, io, msg) {
 exports.sendVerificationCode = function (socket, io, msg) {
     var phoneNumber = clean.num(msg.countryCode + msg.phoneNumber);
     if (phoneNumber == ""){
-        io.to(socket.id).emit('sendVerificationCode', {msg: 404});  
+        io.to(socket.id).emit('sendVerificationCode', {msg: 404}); 
+        return; 
         
     }
     console.log(phoneNumber);
