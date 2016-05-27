@@ -94,10 +94,8 @@ exports.saveContacts = function (socket, io, msg) {
                 // REMOVE THE LEADING 0 IF THERE IS ONE
                 if(firstOne == 0){
                     var phoneNumber = countryCode + sentNumber.substr(1);
-                    console.log(phoneNumber);
                 } else {
                     var phoneNumber = countryCode + sentNumber;  
-                    console.log(phoneNumber);
                 }
 
             }
