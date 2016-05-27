@@ -146,10 +146,13 @@ exports.topUp = function (socket, io, msg) {
                 console.log(toAddress);
             // PREPARE ASSET TO TRANSFER
             // TODO: Make an asset helper to retern these values
+            console.log(currency);
             if (currency == 'USD'){
                 var assetID = process.env.ASSET_USD
             }
+            console.log(currency);
             if (currency == 'CNY'){
+                console.log('-----CNY------');
                 var assetID = process.env.ASSET_CNY
             }
             if (currency == 'INR'){
