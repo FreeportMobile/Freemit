@@ -142,8 +142,11 @@ exports.topUp = function (socket, io, msg) {
             // PREPARE TRANSFER PARTIES
             var fromAddress = process.env.BITCOIN_ADDRESS;
             var toAddress = data.bitcoin_address;
+                console.log(fromAddress);
+                console.log(toAddress);
             // PREPARE ASSET TO TRANSFER
             var assetID = process.env.ASSET_USD
+                console.log(assetID);
             // CREATE THE SOURCE FOR STRIPE
             var source = {exp_month:cardMonth, exp_year:cardYear, number:cardNumber,object:'card',cvc:cardCVC};
             var userID = data._id.toString()
@@ -154,6 +157,10 @@ exports.topUp = function (socket, io, msg) {
             // DONT ALLOW USER TO DOUBLE CHARGE ACCIDENTLY 
             var idempotencyKey = msg.idempotencyKey;
             // SEND REQUEST TO STRIPE
+            console.log(source);
+            console.log(userID);
+            console.log(timeNow);
+            console.log(description);
             stripe.createCharge(value, currency, source, description, metadata, idempotencyKey)
                     .then(function(data) {
                         bank.add(data);
@@ -161,7 +168,7 @@ exports.topUp = function (socket, io, msg) {
                         blockchain.transferAsset(amount, assetID, fromAddress, toAddress)
                     })
                     .catch(function(err) {
-                    //  bank.error(data);
+                    console.log(err);
                     io.to(socket.id).emit('topup', {error: err.raw.message});
                     });      
         })
