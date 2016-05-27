@@ -65,6 +65,8 @@ exports.saveContacts = function (socket, io, msg) {
     mongo.getCountryCode(encPhoneNumber)
     .then(function(data) {  
 
+
+
         var currencySymbol = data.currency_symbol;
         var currencyAbbreviation = data.currency_abbreviation;
         var countryCode = data.country_code;   
@@ -102,7 +104,7 @@ exports.saveContacts = function (socket, io, msg) {
                         
             //TODO: SANITIZE ALL INPUTS TO STOP BAD ACTORS !!! VERY VERY IMPORTANT !!!           
             var encPhoneNumber = crypto.encrypt(phoneNumber);
-            exports.setoneContact(name, encPhoneNumber, countryCode);
+            exports.setOneContact(name, encPhoneNumber, countryCode);
         }
     })
     .catch(function(err) {
@@ -113,17 +115,35 @@ exports.saveContacts = function (socket, io, msg) {
 
 //------------------------------------------ SET ONE CONTACT
 
-exports.setoneContact = function(name, encPhoneNumber, countryCode){
-        blockchain.makeAddress()
+exports.setOneContact = function(name, encPhoneNumber, countryCode){
+    
+    // DOES THE PHONE NUMBER ALREADY EXISTS?
+    mongo.getOneUser(encPhoneNumber)
         .then(function(data) {
-            var bitcoinAddress = data.bitcoinAddress;
-            var privateKey = data.privateKey;
-            var encPrivateKey = crypto.encrypt(privateKey);
-            mongo.setContacts(name, encPhoneNumber, countryCode, bitcoinAddress, encPrivateKey); 
+            if(data == null){
+                blockchain.makeAddress()
+                .then(function(data) {
+                var bitcoinAddress = data.bitcoinAddress;
+                var privateKey = data.privateKey;
+                var encPrivateKey = crypto.encrypt(privateKey);
+                mongo.setContacts(name, encPhoneNumber, countryCode, bitcoinAddress, encPrivateKey); 
+                })
+                .catch(function(err) {
+                    console.log(err);
+                })
+            } else {
+                return;
+            }
         })
         .catch(function(err) {
-        console.log(err);
+        // some error
         })
+    
+    // IF IT DOES RETURN
+    // IF IT DOESNT MAKE BTC ADDRESS AND INSERT IT
+    
+    
+
             
             // ENCRYPT EACH NUMBER WITH THE COUNTRY CODE                   
             // TODO: MOVE THIS INTO MONGO (JUST OPEN 1 CONNECTION)  
