@@ -169,6 +169,10 @@ exports.topUp = function (socket, io, msg) {
             var description = 'Top Up: '+ value + ' ' + currency + ' - ' + userID;
             // CREATE META DATA FOR STRIPE
             var metadata = {id:userID, time:timeNow, value:value, currency:currency};
+            console.log(userID);
+             console.log(timeNow);
+              console.log(value);
+               console.log(currency);
             console.log(metadata);
             // DONT ALLOW USER TO DOUBLE CHARGE ACCIDENTLY 
             var idempotencyKey = msg.idempotencyKey;
