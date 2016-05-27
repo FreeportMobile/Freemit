@@ -18,7 +18,7 @@ var clean = require('../helpers/clean.js');
 
 //----------------------------------------- SEND
 exports.send = function (socket, io, msg) {
-
+console.log(msg);
     // READ JWT  
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     var amount = 1;
@@ -58,14 +58,11 @@ exports.lastFour = function (socket, io, msg) {
 
 //----------------------------------------- SAVE CONTACTS
 exports.saveContacts = function (socket, io, msg) {
-    console.log('SAVING CONACTS');
     // READ JWT  
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     // FIND COUNTRY THE USER IS IN
     mongo.getCountryCode(encPhoneNumber)
     .then(function(data) {  
-
-
 
         var currencySymbol = data.currency_symbol;
         var currencyAbbreviation = data.currency_abbreviation;
@@ -121,6 +118,7 @@ exports.setOneContact = function(name, encPhoneNumber, countryCode){
     mongo.getOneUser(encPhoneNumber)
         .then(function(data) {
             if(data == null){
+                // IF IT DOENST EXIST MAKE A BTC ADDRESS AND ADD IT
                 blockchain.makeAddress()
                 .then(function(data) {
                 var bitcoinAddress = data.bitcoinAddress;
@@ -136,16 +134,9 @@ exports.setOneContact = function(name, encPhoneNumber, countryCode){
             }
         })
         .catch(function(err) {
-        // some error
+            console.log(err);
         })
-    
-    // IF IT DOES RETURN
-    // IF IT DOESNT MAKE BTC ADDRESS AND INSERT IT
-    
-    
-
-            
-            // ENCRYPT EACH NUMBER WITH THE COUNTRY CODE                   
+                    
             // TODO: MOVE THIS INTO MONGO (JUST OPEN 1 CONNECTION)  
 };
 

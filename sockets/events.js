@@ -10,7 +10,6 @@ module.exports = function (io) {
         socket.emit('connected', { msg: "--- CONNECTED" })
     //-- SOCKET EVENTS
         socket.on('sendVerificationCode', function (msg) {
-            console.log('sendVerificationCode');
             rateLimiter(socket);
             freemit.user.sendVerificationCode(socket, io, msg);
         });
@@ -36,7 +35,6 @@ module.exports = function (io) {
         });
         
         socket.on('saveContacts', function (msg) {
-            console.log('SAVING CONACTS SOCKET');
             rateLimiter(socket);
             freemit.user.saveContacts(socket, io, msg);
         });
