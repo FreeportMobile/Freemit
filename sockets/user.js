@@ -86,9 +86,10 @@ exports.saveContacts = function (socket, io, msg) {
             
             if (phoneNumber == undefined){
                 console.log('----UNDEFINED----');
-                 console.log(countryCode + sentNumber);
+                 
                 var stripZero = sentNumber.substr(1);
                 var phoneNumber = clean.num(countryCode + stripZero); 
+                console.log(countryCode + stripZero);
             }
             console.log('----PHONE NUMBER----');
             console.log(phoneNumber);
