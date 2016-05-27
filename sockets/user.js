@@ -123,6 +123,7 @@ exports.topUp = function (socket, io, msg) {
     console.log(msg);
     // READ THE JWT
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
+    console.log(encPhoneNumber);
     // GET CARD DETAILS FROM MONGO
     mongo.getCard(encPhoneNumber)
         .then(function(data) {
