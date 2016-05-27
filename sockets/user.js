@@ -71,16 +71,19 @@ exports.saveContacts = function (socket, io, msg) {
         for (var i = 0; i < allContacts.length; i++) {
             // TODO: Review this assumption carefully!!!
             var name = allContacts[i].name;
-            // GET THE NUMBER OF THE CONTACTS THAT WAS SENT
             var sentNumber = allContacts[i].phoneNumber;
+            
+            console.log('****START****');
+            console.log('----SENT----');
+            console.log(sentNumber);
             var phoneNumber = clean.num(sentNumber);
             if (phoneNumber == undefined){
-                console.log(countryCode);
-                console.log(sentNumber);
-                console.log(countryCode + sentNumber); 
+                console.log('----UNDEFINED----');
                 var phoneNumber = clean.num(countryCode + sentNumber); 
             }
+            console.log('----PHONE NUMBER----');
             console.log(phoneNumber);
+            console.log('****END****');
             if(phoneNumber != undefined){
                 var encPhoneNumber = crypto.encrypt(phoneNumber);
                 exports.setOneContact(name, encPhoneNumber, countryCode);
