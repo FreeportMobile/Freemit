@@ -72,28 +72,10 @@ exports.saveContacts = function (socket, io, msg) {
             // TODO: Review this assumption carefully!!!
             var name = allContacts[i].name;
             var sentNumber = allContacts[i].phoneNumber;
-            
-            console.log('****START****');
-            console.log(name);
-            console.log('----SENT----');
-            console.log(sentNumber);
             var phoneNumber = clean.num(sentNumber);
             if (phoneNumber == undefined){
-                console.log('----UNDEFINED----');
-                 console.log(countryCode + sentNumber);
                 var phoneNumber = clean.num(countryCode + sentNumber); 
-            }
-            
-            if (phoneNumber == undefined){
-                console.log('----UNDEFINED----');
-                 
-                var stripZero = sentNumber.substr(1);
-                var phoneNumber = clean.num(countryCode + stripZero); 
-                console.log(countryCode + stripZero);
-            }
-            console.log('----PHONE NUMBER----');
-            console.log(phoneNumber);
-            console.log('****END****');
+            } 
             if(phoneNumber != undefined){
                 var encPhoneNumber = crypto.encrypt(phoneNumber);
                 exports.setOneContact(name, encPhoneNumber, countryCode);
@@ -138,6 +120,7 @@ exports.setOneContact = function(name, encPhoneNumber, countryCode){
 
 //----------------------------------------- TOP UP
 exports.topUp = function (socket, io, msg) {
+    console.log(msg);
     // READ THE JWT
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     // GET CARD DETAILS FROM MONGO
