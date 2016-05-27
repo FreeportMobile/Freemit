@@ -75,43 +75,22 @@ exports.saveContacts = function (socket, io, msg) {
             var sentNumber = allContacts[i].phoneNumber;
             var phoneNumber = clean.num(sentNumber);
             if (phoneNumber == undefined){
-               var phoneNumber = clean.num(countryCode + sentNumber); 
+                console.log(countryCode);
+                console.log(sentNumber);
+                console.log(countryCode + sentNumber); 
+                var phoneNumber = clean.num(countryCode + sentNumber); 
             }
             console.log(phoneNumber);
-            // GET FIRST TWO CHARECTOR FROM PHONE NUMBER
-            //var firstTwo = sentNumber.substring(0,2);
-            // GET FIRST ONE CHARECTOR FROM PHONE NUMBER
-            //var firstOne = sentNumber.substring(0,1);
-            // IF THE FIRST TWO ARE 00 change it for +
-            // if(firstTwo == "00"){
-            //     var trimmedNumber = sentNumber.substr(2);
-            //     var phoneNumber = '+'+trimmedNumber;
-            // };
-            // IF THE NUMBER STARTS WITH +
-            // TODO: If the number does start with +XX should we force the next number be a 0 or remove the 0???
-            // if(firstOne == "+"){
-            //     var phoneNumber = sentNumber;
-            // };
-            // ADD THE COUNTRY CODE OF THE USER WHO SENT IT
-            // if(firstTwo != "00" && firstOne != "+"){
-            //     // REMOVE THE LEADING 0 IF THERE IS ONE
-            //     if(firstOne == 0){
-            //         var phoneNumber = countryCode + sentNumber.substr(1);
-            //     } else {
-            //         var phoneNumber = countryCode + sentNumber;  
-            //     }
-
-            // }
-                        
-            //TODO: SANITIZE ALL INPUTS TO STOP BAD ACTORS !!! VERY VERY IMPORTANT !!!           
-            var encPhoneNumber = crypto.encrypt(phoneNumber);
-            exports.setOneContact(name, encPhoneNumber, countryCode);
+            if(phoneNumber != undefined){
+                var encPhoneNumber = crypto.encrypt(phoneNumber);
+                exports.setOneContact(name, encPhoneNumber, countryCode);
+            }
         }
     })
     .catch(function(err) {
     // some error
     })
-    
+    //TODO: SANITIZE ALL INPUTS TO STOP BAD ACTORS !!! VERY VERY IMPORTANT !!! 
 };// END FUNCTION
 
 //------------------------------------------ SET ONE CONTACT
