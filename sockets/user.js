@@ -145,7 +145,19 @@ exports.topUp = function (socket, io, msg) {
                 console.log(fromAddress);
                 console.log(toAddress);
             // PREPARE ASSET TO TRANSFER
-            var assetID = process.env.ASSET_USD
+            // TODO: Make an asset helper to retern these values
+            if (currency == USD){
+                var assetID = process.env.ASSET_USD
+            }
+            if (currency == CNY){
+                var assetID = process.env.ASSET_CNY
+            }
+            if (currency == INR){
+                var assetID = process.env.ASSET_CNY
+            }
+            if (currency == EUR){
+                var assetID = process.env.ASSET_CNY
+            }
                 console.log(assetID);
             // CREATE THE SOURCE FOR STRIPE
             var source = {exp_month:cardMonth, exp_year:cardYear, number:cardNumber,object:'card',cvc:cardCVC};
@@ -157,10 +169,10 @@ exports.topUp = function (socket, io, msg) {
             // DONT ALLOW USER TO DOUBLE CHARGE ACCIDENTLY 
             var idempotencyKey = msg.idempotencyKey;
             // SEND REQUEST TO STRIPE
-            console.log(source);
-            console.log(userID);
-            console.log(timeNow);
-            console.log(description);
+                console.log(source);
+                console.log(userID);
+                console.log(timeNow);
+                console.log(description);
             stripe.createCharge(value, currency, source, description, metadata, idempotencyKey)
                     .then(function(data) {
                         bank.add(data);

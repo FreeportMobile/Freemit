@@ -51,7 +51,8 @@ fromAddressArray.push(fromAddress);
 
         var send_asset = {
             'from': fromAddressArray,
-            'fee': 5000,                                            
+            'fee': 6000,  
+            'value': 10000,                                           
             'to': [{'address': toAddress, 'amount': amount, 'assetId': assetID }]
         };
         request.post({
