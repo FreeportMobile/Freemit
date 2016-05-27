@@ -161,7 +161,6 @@ exports.topUp = function (socket, io, msg) {
             if (currency == 'EUR'){
                 var assetID = process.env.ASSET_EUR
             }
-   
                 console.log(assetID);
             // CREATE THE SOURCE FOR STRIPE
             var source = {exp_month:cardMonth, exp_year:cardYear, number:cardNumber,object:'card',cvc:cardCVC};
@@ -170,8 +169,10 @@ exports.topUp = function (socket, io, msg) {
             var description = 'Top Up: '+ value + ' ' + currency + ' - ' + userID;
             // CREATE META DATA FOR STRIPE
             var metadata = {id:userID, time:timeNow, value:value, currency:currency};
+            console.log(metadata);
             // DONT ALLOW USER TO DOUBLE CHARGE ACCIDENTLY 
             var idempotencyKey = msg.idempotencyKey;
+            console.log(idempotencyKey);
             // SEND REQUEST TO STRIPE
                 console.log(source);
                 console.log(userID);
