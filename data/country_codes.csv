@@ -1,10 +1,11 @@
-"_id",country_name,currency_symbol,currency_abbreviation,dialing_code
-57217d98b03df4376abfcae2,Australia,$,AUD,+61
-57217e70454a37606a303aca,Canada,$,USD,+1
-57217ee12849ae9b6a010f44,Denmark,kr.,DKK,+45
-57217f7c1bd25ebf6a31bd0c,Finland,€,EUR,+358
-57217fd0ecc414d46ac732be,Ireland,€,EUR,+353
-572180698e1829076b61bbb4,Norway,kr.,NOK,+47
-572180c4fafce31a6b1d6c14,Sweden,kr.,SEK,+46
-572181356e83b43e6b923991,United Kingdom,£,GBP,+44
-57218163432902626b2727e1,United States,$,USD,+1
+"_id",country_name,currency_symbol,currency_abbreviation,dialing_code,ISO,UN
+57217d98b03df4376abfcae2,Australia,$,AUD,+61,AU,AUS
+57217e70454a37606a303aca,Canada,$,USD,+1,CA,CAN
+57217ee12849ae9b6a010f44,Denmark,kr.,DKK,+45,DK,DNK
+57217f7c1bd25ebf6a31bd0c,Finland,€,EUR,+358,FI,FIN
+57217fd0ecc414d46ac732be,Ireland,€,EUR,+353,IE,IRL
+572180698e1829076b61bbb4,Norway,kr.,NOK,+47,NO,NOR
+572180c4fafce31a6b1d6c14,Sweden,kr.,SEK,+46,SE,SWE
+572181356e83b43e6b923991,United Kingdom,£,GBP,+44,GB,GBR
+57218163432902626b2727e1,United States,$,USD,+1,US,USA
+5745838dd6161603760602ed,India,₹,INR,+91,IN,IND

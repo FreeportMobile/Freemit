@@ -147,7 +147,7 @@ exports.setCard = function (encPhoneNumber, encCardNumber, encCardCVC, encCardMo
 
 //----------------------- SET KNOWN USER ----------------------------------//
 
-exports.setKnownUser = function (encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode) {
+exports.setKnownUser = function (encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode, un) {
     return new Promise(function (resolve, reject) {
     // OPEN CONNECTION     
         mongoClient.connect(process.env.MONGO_DB, function (err, db) {
@@ -164,6 +164,7 @@ exports.setKnownUser = function (encPhoneNumber, verificationCode, currencySymbo
                 currency_symbol: currencySymbol,
                 country_code: countryCode,
                 verification_code: verificationCode,
+                un: un,
             };
     // UPDATE         
             collection.update({ phone_number: encPhoneNumber },
@@ -182,7 +183,7 @@ exports.setKnownUser = function (encPhoneNumber, verificationCode, currencySymbo
 
 //----------------------- SET NEW USER ----------------------------------//
 
-exports.setNewUser = function (encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode, bitcoinAddress, encPrivateKey) {
+exports.setNewUser = function (encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode, bitcoinAddress, encPrivateKey, un) {
     return new Promise(function (resolve, reject) {
     // OPEN CONNECTION     
         mongoClient.connect(process.env.MONGO_DB, function (err, db) {
@@ -201,6 +202,7 @@ exports.setNewUser = function (encPhoneNumber, verificationCode, currencySymbol,
                 verification_code: verificationCode,
                 bitcoin_address: bitcoinAddress,
                 private_key: encPrivateKey,
+                un: un,
             };
     // UPDATE         
             collection.update({ phone_number: encPhoneNumber },

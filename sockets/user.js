@@ -22,7 +22,7 @@ console.log(msg);
     // READ JWT  
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     var amount = 1;
-    var toPhoneNumber = 234234;
+    var toPhoneNumber = msg.phoneNumber;
         // FIND WHAT CURRENCY THEY NEED
             // CONVERT THE AMOUNT TO THE CURRENCY 
                 // TRANSFR THE AMOUNT IN FROM CURENCY BACK TO HOT WALLET
@@ -235,20 +235,25 @@ exports.saveCard = function (socket, io, msg) {
 
 //------------------------------------------ CHECK VERIFICATION CODE
 exports.checkVerificationCode = function (socket, io, msg) {
-    
+    // GET UN THEN
     var verificationCode = msg.verificationCode;
     var phoneNumber = msg.countryCode + msg.phoneNumber;
     var encPhoneNumber =crypto.encrypt(phoneNumber);
-    var jwt = crypto.makeJWT(encPhoneNumber);
-    
-    mongo.getVerification(encPhoneNumber, verificationCode)
+        mongo.getOneUser(encPhoneNumber)
         .then(function(data) {
-            io.to(socket.id).emit('checkVerificationCode', {result: true, jwt:jwt});
-        }).catch(function(err) {
-	        io.to(socket.id).emit('checkVerificationCode', {result: false});
-        });
+            var un = data.un;
+            var jwt = crypto.makeJWT(encPhoneNumber, un);
+            mongo.getVerification(encPhoneNumber, verificationCode)
+                .then(function(data) {
+                    io.to(socket.id).emit('checkVerificationCode', {result: true, jwt:jwt});
+                }).catch(function(err) {
+	                io.to(socket.id).emit('checkVerificationCode', {result: false});
+                });
+        })
+        .catch(function(err) {
+            console.log(err);
+        })
 };// END FUNCTION
-
 
 //---------------------------------------- SEND VERIFICATION CODE
 
@@ -275,6 +280,7 @@ exports.sendVerificationCode = function (socket, io, msg) {
         ]) 
     .then(function(data){
         // IF ALL THE ABOVE RESOLVE
+        var un = data[0].un;
         var currencySymbol = data[0].currency_symbol;
         var currencyAbbreviation = data[0].currency_abbreviation;
         var bitcoinAddress = data[1].bitcoinAddress;
@@ -283,11 +289,11 @@ exports.sendVerificationCode = function (socket, io, msg) {
         // IF THERES NO USER MAKE ONE WITH A BTC ADDRESS       
         if(usersExists == null){
             console.log('new user');
-            mongo.setNewUser(encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode, bitcoinAddress, encPrivateKey);  
+            mongo.setNewUser(encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode, bitcoinAddress, encPrivateKey, un);  
         // IF THERE IS A USER ** DONT ** UPDATE WITH NEW BITCOIN ADDRESS  
         }else{
             console.log('contact updated');
-            mongo.setKnownUser(encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode);       
+            mongo.setKnownUser(encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode, un);       
         }       
         twillio.sendSMS(phoneNumber, message); 
         io.to(socket.id).emit('sendVerificationCode', {msg: 200});   

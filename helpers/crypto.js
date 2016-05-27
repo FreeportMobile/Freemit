@@ -24,8 +24,9 @@ exports.decrypt = function (text) {
 };
 
 //----------------------------- MAKE TOKEN
-exports.makeJWT = function (phoneNumber) {
-        return jwt.sign({ phone_number: phoneNumber }, process.env.AUTH_SECRET);
+exports.makeJWT = function (phoneNumber, un) {
+        // UN IS A 3 LETTER COUNTRY ABREVATION 
+        return jwt.sign({ phone_number: phoneNumber, un:un }, process.env.AUTH_SECRET);
     };
 
 //----------------------------- READ TOKEN
