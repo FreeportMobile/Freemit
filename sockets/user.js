@@ -74,11 +74,13 @@ exports.saveContacts = function (socket, io, msg) {
             var sentNumber = allContacts[i].phoneNumber;
             
             console.log('****START****');
+            console.log(name);
             console.log('----SENT----');
             console.log(sentNumber);
             var phoneNumber = clean.num(sentNumber);
             if (phoneNumber == undefined){
                 console.log('----UNDEFINED----');
+                 console.log(countryCode + sentNumber);
                 var phoneNumber = clean.num(countryCode + sentNumber); 
             }
             console.log('----PHONE NUMBER----');
