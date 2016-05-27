@@ -83,6 +83,13 @@ exports.saveContacts = function (socket, io, msg) {
                  console.log(countryCode + sentNumber);
                 var phoneNumber = clean.num(countryCode + sentNumber); 
             }
+            
+            if (phoneNumber == undefined){
+                console.log('----UNDEFINED----');
+                 console.log(countryCode + sentNumber);
+                var stripZero = sentNumber.substr(1);
+                var phoneNumber = clean.num(countryCode + stripZero); 
+            }
             console.log('----PHONE NUMBER----');
             console.log(phoneNumber);
             console.log('****END****');
