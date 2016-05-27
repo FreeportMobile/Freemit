@@ -60,10 +60,11 @@ exports.lastFour = function (socket, io, msg) {
 exports.saveContacts = function (socket, io, msg) {
     // READ JWT  
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
+    var un = crypto.readJWT(msg.jwt).un;
+    console.log(un);
     // FIND COUNTRY THE USER IS IN
     mongo.getCountryCode(encPhoneNumber)
     .then(function(data) {  
-
         var currencySymbol = data.currency_symbol;
         var currencyAbbreviation = data.currency_abbreviation;
         var countryCode = data.country_code;   
@@ -238,7 +239,7 @@ exports.checkVerificationCode = function (socket, io, msg) {
     // GET UN THEN
     var verificationCode = msg.verificationCode;
     var phoneNumber = msg.countryCode + msg.phoneNumber;
-    var encPhoneNumber =crypto.encrypt(phoneNumber);
+    var encPhoneNumber = crypto.encrypt(phoneNumber);
         mongo.getOneUser(encPhoneNumber)
         .then(function(data) {
             var un = data.un;
@@ -280,7 +281,8 @@ exports.sendVerificationCode = function (socket, io, msg) {
         ]) 
     .then(function(data){
         // IF ALL THE ABOVE RESOLVE
-        var un = data[0].un;
+        var un = data[0].un; // THIS IS THE 3 LETTER COUNTRY ABREVIATOIN
+        // TODO: SOLVE THE USA AND CANADA CONFUSION THEY HAVE THE SAME DIALING CODE
         var currencySymbol = data[0].currency_symbol;
         var currencyAbbreviation = data[0].currency_abbreviation;
         var bitcoinAddress = data[1].bitcoinAddress;
