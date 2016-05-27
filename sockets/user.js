@@ -73,38 +73,38 @@ exports.saveContacts = function (socket, io, msg) {
             var name = allContacts[i].name;
             // GET THE NUMBER OF THE CONTACTS THAT WAS SENT
             var sentNumber = allContacts[i].phoneNumber;
-            var phoneNumber = clean.num(sentNumber);
-            console.log(phoneNumber);
-            // // GET FIRST TWO CHARECTOR FROM PHONE NUMBER
-            // var firstTwo = sentNumber.substring(0,2);
-            // // GET FIRST ONE CHARECTOR FROM PHONE NUMBER
-            // var firstOne = sentNumber.substring(0,1);
-            // // IF THE FIRST TWO ARE 00 change it for +
-            // if(firstTwo == "00"){
-            //     var trimmedNumber = sentNumber.substr(2);
-            //     var phoneNumber = '+'+trimmedNumber;
-            // };
-            // // IF THE NUMBER STARTS WITH +
-            // // TODO: If the number does start with +XX should we force the next number be a 0 or remove the 0???
-            // if(firstOne == "+"){
-            //     var phoneNumber = sentNumber;
-            // };
-            // // ADD THE COUNTRY CODE OF THE USER WHO SENT IT
-            // if(firstTwo != "00" && firstOne != "+"){
-            //     // REMOVE THE LEADING 0 IF THERE IS ONE
-            //     if(firstOne == 0){
-            //         var phoneNumber = countryCode + sentNumber.substr(1);
-            //         console.log(phoneNumber);
-            //     } else {
-            //         var phoneNumber = countryCode + sentNumber;  
-            //         console.log(phoneNumber);
-            //     }
+            var AphoneNumber = clean.num(sentNumber);
+            console.log(AphoneNumber);
+            // GET FIRST TWO CHARECTOR FROM PHONE NUMBER
+            var firstTwo = sentNumber.substring(0,2);
+            // GET FIRST ONE CHARECTOR FROM PHONE NUMBER
+            var firstOne = sentNumber.substring(0,1);
+            // IF THE FIRST TWO ARE 00 change it for +
+            if(firstTwo == "00"){
+                var trimmedNumber = sentNumber.substr(2);
+                var phoneNumber = '+'+trimmedNumber;
+            };
+            // IF THE NUMBER STARTS WITH +
+            // TODO: If the number does start with +XX should we force the next number be a 0 or remove the 0???
+            if(firstOne == "+"){
+                var phoneNumber = sentNumber;
+            };
+            // ADD THE COUNTRY CODE OF THE USER WHO SENT IT
+            if(firstTwo != "00" && firstOne != "+"){
+                // REMOVE THE LEADING 0 IF THERE IS ONE
+                if(firstOne == 0){
+                    var phoneNumber = countryCode + sentNumber.substr(1);
+                    console.log(phoneNumber);
+                } else {
+                    var phoneNumber = countryCode + sentNumber;  
+                    console.log(phoneNumber);
+                }
 
             }
                         
             //TODO: SANITIZE ALL INPUTS TO STOP BAD ACTORS !!! VERY VERY IMPORTANT !!!           
             var encPhoneNumber = crypto.encrypt(phoneNumber);
-           // exports.setOneContact(name, encPhoneNumber, countryCode);
+            exports.setOneContact(name, encPhoneNumber, countryCode);
         }
     })
     .catch(function(err) {
