@@ -161,6 +161,7 @@ exports.topUp = function (socket, io, msg) {
             if (currency == 'EUR'){
                 var assetID = process.env.ASSET_EUR
             }
+                 console.log('----- ASSET ID------');
                 console.log(assetID);
             // CREATE THE SOURCE FOR STRIPE
             var source = {exp_month:cardMonth, exp_year:cardYear, number:cardNumber,object:'card',cvc:cardCVC};
@@ -185,7 +186,7 @@ exports.topUp = function (socket, io, msg) {
             stripe.createCharge(value, currency, source, description, metadata, idempotencyKey)
                     .then(function(data) {
                         bank.add(data);
-                        var amount = data.amount;
+                        var amount = data.amount/100;
                         blockchain.transferAsset(amount, assetID, fromAddress, toAddress)
                     })
                     .catch(function(err) {
