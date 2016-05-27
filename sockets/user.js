@@ -148,7 +148,8 @@ exports.topUp = function (socket, io, msg) {
             console.log(currency);
             if (currency == 'CNY'){
                 console.log('-----CNY------');
-                var assetID = process.env.ASSET_USD /// ERRORRRR!!!!!!
+                var assetID = process.env.ASSET_USD 
+                // TODO: CHANGE THIS TO CNY ONCE CONFIRMED  !!!!!!!!
             }
             if (currency == 'INR'){
                 var assetID = process.env.ASSET_INR
@@ -156,8 +157,7 @@ exports.topUp = function (socket, io, msg) {
             if (currency == 'EUR'){
                 var assetID = process.env.ASSET_EUR
             }
-         
-          
+
             // CREATE THE SOURCE FOR STRIPE
             var source = {exp_month:cardMonth, exp_year:cardYear, number:cardNumber,object:'card',cvc:cardCVC};
             var userID = data._id.toString()
