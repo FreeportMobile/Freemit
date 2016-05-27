@@ -104,7 +104,7 @@ exports.saveContacts = function (socket, io, msg) {
                         
             //TODO: SANITIZE ALL INPUTS TO STOP BAD ACTORS !!! VERY VERY IMPORTANT !!!           
             var encPhoneNumber = crypto.encrypt(phoneNumber);
-            exports.setOneContact(name, encPhoneNumber, countryCode);
+           // exports.setOneContact(name, encPhoneNumber, countryCode);
         }
     })
     .catch(function(err) {
