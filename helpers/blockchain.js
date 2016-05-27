@@ -61,6 +61,8 @@ fromAddressArray.push(fromAddress);
             form: send_asset
         }, 
         function (err, res, body) {
+             console.log('-----BODY WITH TX HEX------');
+            console.log(body);
             if (err) {
                 console.log(body);
                 console.log(err);
