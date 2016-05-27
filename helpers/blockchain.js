@@ -60,6 +60,7 @@ fromAddressArray.push(fromAddress);
             form: send_asset
         }, 
         function (err, res, body) {
+            console.log(body);
             if (err) {
                 reject(err);
                 console.log(err);
