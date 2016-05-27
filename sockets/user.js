@@ -153,11 +153,12 @@ exports.topUp = function (socket, io, msg) {
                 var assetID = process.env.ASSET_CNY
             }
             if (currency == INR){
-                var assetID = process.env.ASSET_CNY
+                var assetID = process.env.ASSET_INR
             }
             if (currency == EUR){
-                var assetID = process.env.ASSET_CNY
+                var assetID = process.env.ASSET_EUR
             }
+   
                 console.log(assetID);
             // CREATE THE SOURCE FOR STRIPE
             var source = {exp_month:cardMonth, exp_year:cardYear, number:cardNumber,object:'card',cvc:cardCVC};
