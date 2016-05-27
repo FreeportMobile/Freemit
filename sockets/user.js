@@ -200,6 +200,7 @@ exports.getBalance = function (socket, io, msg) {
     // GET BALANCE FROM MONGO
     mongo.getBalance(encPhoneNumber)
         .then(function(data) {
+            console.log(data);
             var currencySymbol = data.currency_symbol;
             blockchain.queryAddress(data.bitcoin_address)
                 .then(function(data) {
