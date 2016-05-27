@@ -54,16 +54,17 @@ fromAddressArray.push(fromAddress);
             'fee': 5000,                                        
             'to': [{'address': toAddress, 'amount': amount, 'assetId': assetID }]
         };
+        console.log(send_asset);
         request.post({
             url: 'http://api.coloredcoins.org:80/v3/sendasset',
             headers: {'Content-Type': 'application/json'},
             form: send_asset
         }, 
         function (err, res, body) {
-            console.log(body);
             if (err) {
-                reject(err);
+                console.log(body);
                 console.log(err);
+                reject(err);
             }
             if (typeof body === 'string') {
                 body = JSON.parse(body);
