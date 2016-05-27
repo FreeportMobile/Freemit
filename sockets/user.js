@@ -120,13 +120,15 @@ exports.setOneContact = function(name, encPhoneNumber, countryCode){
 
 //----------------------------------------- TOP UP
 exports.topUp = function (socket, io, msg) {
-    console.log(msg);
+  
     // READ THE JWT
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
-    console.log(encPhoneNumber);
+  
     // GET CARD DETAILS FROM MONGO
     mongo.getCard(encPhoneNumber)
         .then(function(data) {
+            console.log('data');
+            console.log(data);
             var value = msg.value;
             // DECRYPT THE CARD DTAILS AND PREPARE DATA FOR STRIPE
             var cardNumber = crypto.decrypt(data.card_number);
@@ -134,16 +136,9 @@ exports.topUp = function (socket, io, msg) {
             var cardMonth = crypto.decrypt(data.card_month);
             var cardYear = crypto.decrypt(data.card_year);
             var currency = data.currency_abbreviation;
-                console.log(cardNumber);
-                console.log(cardCVC);
-                console.log(cardMonth);
-                console.log(cardYear);
-                console.log(currency);
             // PREPARE TRANSFER PARTIES
             var fromAddress = process.env.BITCOIN_ADDRESS;
             var toAddress = data.bitcoin_address;
-                console.log(fromAddress);
-                console.log(toAddress);
             // PREPARE ASSET TO TRANSFER
             // TODO: Make an asset helper to retern these values
             console.log(currency);
@@ -161,8 +156,8 @@ exports.topUp = function (socket, io, msg) {
             if (currency == 'EUR'){
                 var assetID = process.env.ASSET_EUR
             }
-                 console.log('----- ASSET ID------');
-                console.log(assetID);
+         
+          
             // CREATE THE SOURCE FOR STRIPE
             var source = {exp_month:cardMonth, exp_year:cardYear, number:cardNumber,object:'card',cvc:cardCVC};
             var userID = data._id.toString()
@@ -170,25 +165,14 @@ exports.topUp = function (socket, io, msg) {
             var description = 'Top Up: '+ value + ' ' + currency + ' - ' + userID;
             // CREATE META DATA FOR STRIPE
             var metadata = {id:userID, time:timeNow, value:value, currency:currency};
-            console.log(userID);
-             console.log(timeNow);
-              console.log(value);
-               console.log(currency);
-            console.log(metadata);
             // DONT ALLOW USER TO DOUBLE CHARGE ACCIDENTLY 
             var idempotencyKey = msg.idempotencyKey;
             console.log(idempotencyKey);
             // SEND REQUEST TO STRIPE
-                console.log(source);
-                console.log(userID);
-                console.log(timeNow);
-                console.log(description);
             stripe.createCharge(value, currency, source, description, metadata, idempotencyKey)
                     .then(function(data) {
                         bank.add(data);
                         var amount = data.amount/100;
-                        console.log('-------> amount');
-                        console.log(amount);
                         blockchain.transferAsset(amount, assetID, fromAddress, toAddress)
                     })
                     .catch(function(err) {
