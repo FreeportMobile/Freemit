@@ -59,7 +59,7 @@ console.log(assetID);
         var send_asset = {
             'from': fromAddressArray,
             'fee': 5000,                                        
-            'to': [{'address': toAddress, 'amount': 1, 'assetId': assetID }]
+            'to': [{'address': toAddress, 'amount': amount, 'assetId': assetID }]
         };
         console.log(send_asset);
         request.post({
