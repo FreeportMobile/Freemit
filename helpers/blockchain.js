@@ -49,6 +49,13 @@ exports.transferAsset = function (amount, assetID, fromAddress, toAddress) {
 var fromAddressArray = [];
 fromAddressArray.push(fromAddress);
 
+console.log('-----SNEDING------');
+console.log(toAddress);
+console.log(amount);
+console.log(assetID);
+
+
+
         var send_asset = {
             'from': fromAddressArray,
             'fee': 6000,                                        
