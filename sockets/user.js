@@ -186,7 +186,7 @@ exports.topUp = function (socket, io, msg) {
             stripe.createCharge(value, currency, source, description, metadata, idempotencyKey)
                     .then(function(data) {
                         bank.add(data);
-                        var amount = data.amount;
+                        var amount = data.amount/100;
                         console.log('-------> amount');
                         console.log(amount);
                         blockchain.transferAsset(amount, assetID, fromAddress, toAddress)
