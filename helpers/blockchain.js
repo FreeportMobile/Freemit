@@ -12,8 +12,9 @@ exports.sendMessage = function (fromAddress, fromKey, toAddress, message) {
         console.log('SEND MSG 3');
         var wif = process.env.BITCOIN_ADDRESS_KEY;
         console.log(wif);
-        var key = bitcoin.ECKey.fromWIF(wif);
-        console.log(key);
+        var privateKey = bitcoin.ECKey.fromWIF(wif);
+        console.log(privateKey.pub.getAddress().toString());
+
         
         
         // var message = "Blockchain Chat"
