@@ -148,8 +148,7 @@ exports.topUp = function (socket, io, msg) {
             console.log(currency);
             if (currency == 'CNY'){
                 console.log('-----CNY------');
-                var assetID = process.env.ASSET_USD 
-                // TODO: CHANGE THIS TO CNY ONCE CONFIRMED  !!!!!!!!
+                var assetID = process.env.ASSET_CNY 
             }
             if (currency == 'INR'){
                 var assetID = process.env.ASSET_INR
