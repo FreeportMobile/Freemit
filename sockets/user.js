@@ -18,7 +18,13 @@ var clean = require('../helpers/clean.js');
 //----------------------------------------- SEND MESSAGE
 exports.sendMsg = function (socket, io, msg) {
     console.log('SEND MSG 2');
-    blockchain.sendMessage();
+    blockchain.sendMessage()
+        .then(function(data) {        
+            console.log(data);
+        })
+        .catch(function(err) {
+            console.log(err);
+        })
 };// END FUNCTION
 
 

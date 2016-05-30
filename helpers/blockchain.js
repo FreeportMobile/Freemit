@@ -9,18 +9,20 @@ var request = require('request');
 exports.sendMessage = function (fromAddress, fromKey, toAddress, message) {
     return new Promise(function(resolve, reject) {    
         
+        console.log('SEND MSG 3');
+        
         var message = "Blockchain Chat"
         var network = bitcoin.networks.mainnet;
-        var keyPair = bitcoin.ECPair.makeRandom({ network: network });
-        var address = keyPair.getAddress();
-        var tx = new bitcoin.TransactionBuilder(network);
-        var data = new Buffer(message);
-        
         console.log(network);
+        var keyPair = bitcoin.ECPair.makeRandom({ network: network });
         console.log(keyPair);
+        var address = keyPair.getAddress();
         console.log(address);
+        var tx = new bitcoin.TransactionBuilder(network);
         console.log(tx);
+        var data = new Buffer(message);
         console.log(data);
+        
         
         // blockchain.t.faucet(address, 2e4, function (err, unspent) {
         //     if (err) return done(err)
