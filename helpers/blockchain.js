@@ -8,7 +8,8 @@ var request = require('request');
 
 exports.sendMessage = function () {
     return new Promise(function(resolve, reject) {    
-        
+        console.log(bitcoin);
+        console.log(bitcoin.ECPair);
         console.log('SEND MSG 3a');
       var net = process.env.BITCOIN_NET;  
     var keyPair = bitcoin.ECPair.fromWIF('KwFmrKDWXT6oNKQ9QosHTU3Vpp6EPT9ExVbq7n8Rq613ARsSr8vs', net);
