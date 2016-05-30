@@ -72,7 +72,7 @@ exports.transferAsset = function (amount, assetID, fromAddress, toAddress) {
 
 var fromAddressArray = [];
 fromAddressArray.push(fromAddress);
-
+  console.log('----- FIRED------');
         var send_asset = {
             "from": fromAddressArray,
             "fee": 5000,                                        
