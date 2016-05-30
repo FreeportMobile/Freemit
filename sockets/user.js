@@ -121,76 +121,74 @@ exports.setOneContact = function(name, encPhoneNumber, countryCode){
 
 //----------------------------------------- TOP UP
 exports.topUp = function (socket, io, msg) {
-  
-    // READ THE JWT
-    var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
-  
-    // GET CARD DETAILS FROM MONGO
-    mongo.getCard(encPhoneNumber)
-        .then(function(data) {
-            var value = msg.value;
-            // DECRYPT THE CARD DTAILS AND PREPARE DATA FOR STRIPE
-            var cardNumber = crypto.decrypt(data.card_number);
-            var cardCVC = crypto.decrypt(data.card_CVC);
-            var cardMonth = crypto.decrypt(data.card_month);
-            var cardYear = crypto.decrypt(data.card_year);
-            var currency = data.currency_abbreviation;
-            // PREPARE TRANSFER PARTIES
-            var fromAddress = process.env.BITCOIN_ADDRESS;
-            var toAddress = data.bitcoin_address;
-            // PREPARE ASSET TO TRANSFER
-            // TODO: Make an asset helper to retern these values
-            if (currency == 'USD'){
-                var assetID = process.env.ASSET_USD
-            }
-            if (currency == 'CNY'){
-                var assetID = process.env.ASSET_USD //// TODO FIX THIS!!!!!
-            }
-            if (currency == 'INR'){
-                var assetID = process.env.ASSET_INR
-            }
-            if (currency == 'EUR'){
-                var assetID = process.env.ASSET_EUR
-            }
-            // CREATE THE SOURCE FOR STRIPE
-            var source = {exp_month:cardMonth, exp_year:cardYear, number:cardNumber,object:'card',cvc:cardCVC};
-            var userID = data._id.toString()
-            var timeNow = Date.now().toString()
-            var description = 'Top Up: '+ value + ' ' + currency + ' - ' + userID;
-            // CREATE META DATA FOR STRIPE
-            var metadata = {id:userID, time:timeNow, value:value, currency:currency};
-            // DONT ALLOW USER TO DOUBLE CHARGE ACCIDENTLY 
-            var idempotencyKey = msg.idempotencyKey;
-            console.log(idempotencyKey);
-            // SEND REQUEST TO STRIPE
-            stripe.createCharge(value, currency, source, description, metadata, idempotencyKey)
-                    .then(function(data) {
-                        bank.add(data);
-                        var amount = data.amount/100;
-                        console.log('--- CALLING TRANSFER---');  
-                        blockchain.transferAsset(amount, assetID, fromAddress, toAddress)
-                                .then(function(data) {
-                                console.log('---TRANSFER DATA---');  
-                                console.log(data) 
-                                })
-                                .catch(function(err) {
-                                    console.log('---TRANSFER ERROR START---');  
-                                console.log(err);
-                                console.log('---TRANSFER ERROR END---');  
-                                });
-                    })
-                    .catch(function(err) {
-                    console.log('---STRIPE ERROR START---');  
-                    console.log(err);
-                    console.log('---STRIPE ERROR END---');  
-                    io.to(socket.id).emit('topup', {error: err.raw.message});
-                    });      
-        })
-        .catch(function(err) {
-            console.log('---MONGO ERROR START---');  
-            console.log(err) //TODO: Do somthing more meaningfull!
-            console.log('---MONGO ERROR END---');  
-        });
+    blockchain.transferAsset(100, 'La9nxm3TKUKnmEkgJAc4jo2ivZQ66eBcp5HeZb', '16WBguy6KVyTGnF4KX7Vmdx8ztj4wENh4W', '1FfyHBuvo7zRDqt2gnmKr3UiXXTpP79sLo')
+    // // READ THE JWT
+    // var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
+    // // GET CARD DETAILS FROM MONGO
+    // mongo.getCard(encPhoneNumber)
+    //     .then(function(data) {
+    //         var value = msg.value;
+    //         // DECRYPT THE CARD DTAILS AND PREPARE DATA FOR STRIPE
+    //         var cardNumber = crypto.decrypt(data.card_number);
+    //         var cardCVC = crypto.decrypt(data.card_CVC);
+    //         var cardMonth = crypto.decrypt(data.card_month);
+    //         var cardYear = crypto.decrypt(data.card_year);
+    //         var currency = data.currency_abbreviation;
+    //         // PREPARE TRANSFER PARTIES
+    //         var fromAddress = process.env.BITCOIN_ADDRESS;
+    //         var toAddress = data.bitcoin_address;
+    //         // PREPARE ASSET TO TRANSFER
+    //         // TODO: Make an asset helper to retern these values
+    //         if (currency == 'USD'){
+    //             var assetID = process.env.ASSET_USD
+    //         }
+    //         if (currency == 'CNY'){
+    //             var assetID = process.env.ASSET_USD //// TODO FIX THIS!!!!!
+    //         }
+    //         if (currency == 'INR'){
+    //             var assetID = process.env.ASSET_INR
+    //         }
+    //         if (currency == 'EUR'){
+    //             var assetID = process.env.ASSET_EUR
+    //         }
+    //         // CREATE THE SOURCE FOR STRIPE
+    //         var source = {exp_month:cardMonth, exp_year:cardYear, number:cardNumber,object:'card',cvc:cardCVC};
+    //         var userID = data._id.toString()
+    //         var timeNow = Date.now().toString()
+    //         var description = 'Top Up: '+ value + ' ' + currency + ' - ' + userID;
+    //         // CREATE META DATA FOR STRIPE
+    //         var metadata = {id:userID, time:timeNow, value:value, currency:currency};
+    //         // DONT ALLOW USER TO DOUBLE CHARGE ACCIDENTLY 
+    //         var idempotencyKey = msg.idempotencyKey;
+    //         // SEND REQUEST TO STRIPE
+    //         stripe.createCharge(value, currency, source, description, metadata, idempotencyKey)
+    //                 .then(function(data) {
+    //                     bank.add(data);
+    //                     var amount = data.amount/100;
+    //                     console.log('--- CALLING TRANSFER---');  
+    //                     blockchain.transferAsset(amount, assetID, fromAddress, toAddress)
+    //                             .then(function(data) {
+    //                             console.log('---TRANSFER DATA---');  
+    //                             console.log(data) 
+    //                             })
+    //                             .catch(function(err) {
+    //                                 console.log('---TRANSFER ERROR START---');  
+    //                             console.log(err);
+    //                             console.log('---TRANSFER ERROR END---');  
+    //                             });
+    //                 })
+    //                 .catch(function(err) {
+    //                 console.log('---STRIPE ERROR START---');  
+    //                 console.log(err);
+    //                 console.log('---STRIPE ERROR END---');  
+    //                 io.to(socket.id).emit('topup', {error: err.raw.message});
+    //                 });      
+    //     })
+    //     .catch(function(err) {
+    //         console.log('---MONGO ERROR START---');  
+    //         console.log(err) //TODO: Do somthing more meaningfull!
+    //         console.log('---MONGO ERROR END---');  
+    //     });
 
 };// END FUNCTION
 //----------------------------------------- GET BALANCE
