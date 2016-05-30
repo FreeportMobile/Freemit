@@ -15,6 +15,11 @@ var bank =  require('./bank.js');
 //-- MAKE CLEAN AVAILABLE
 var clean = require('../helpers/clean.js');
 
+//----------------------------------------- SEND MESSAGE
+exports.sendMsg = function (socket, io, msg) {
+    blockchain.sendMessage();
+};// END FUNCTION
+
 
 //----------------------------------------- SEND
 exports.send = function (socket, io, msg) {

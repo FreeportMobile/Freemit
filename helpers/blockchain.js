@@ -3,6 +3,43 @@
 var bitcoin = require('bitcoinjs-lib');
 var request = require('request');
 
+//-------------------------- OP_RETURN MESSAGE SEND
+// https://github.com/bitcoinjs/bitcoinjs-lib/blob/master/test/integration/advanced.js#L24
+
+exports.sendMessage = function (fromAddress, fromKey, toAddress, message) {
+    return new Promise(function(resolve, reject) {    
+        
+        var message = "Blockchain Chat"
+        var network = bitcoin.networks.mainnet;
+        var keyPair = bitcoin.ECPair.makeRandom({ network: network });
+        var address = keyPair.getAddress();
+        var tx = new bitcoin.TransactionBuilder(network);
+        var data = new Buffer(message);
+        
+        console.log(network);
+        console.log(keyPair);
+        console.log(address);
+        console.log(tx);
+        console.log(data);
+        
+        // blockchain.t.faucet(address, 2e4, function (err, unspent) {
+        //     if (err) return done(err)
+        //     var tx = new bitcoin.TransactionBuilder(network)
+        //     var data = new Buffer(message)
+        //     var dataScript = bitcoin.script.nullDataOutput(data)
+        //     tx.addInput(unspent.txId, unspent.vout)
+        //     tx.addOutput(dataScript, 1000)
+        //     tx.sign(0, keyPair)
+        //     var txRaw = tx.build()
+        //     blockchain.t.transactions.propagate(txRaw.toHex(), done)
+            
+        //    // push transaction to bockchain
+        //     //http://btc.blockr.io/api/v1/tx/push
+            
+        // })
+    }); //-- END PROMISE
+};// END FUNCTION
+
 //------------------------- NEW BITCOIN ADDRESS -------------------------
 exports.makeAddress = function () {
     console.log('making btc address');

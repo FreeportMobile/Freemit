@@ -8,12 +8,19 @@ var express = require('express');
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
+var freemit = require('./freemit');
 
 //-- MAKE STATIC FILES AVAILABLE
 app.use(express.static(__dirname + '/public')); 
 //-- DISABLE POWERED BY
 app.disable('x-powered-by');
 
+
+
+//------------------------- NEW ADDRESS ---------------------
+app.get('/sendMsg', function (req, res) {
+    freemit.user.sendMsg();
+});
 
 //------------------------- NEW ADDRESS ---------------------
 app.get('/newAddress', function (req, res) {
@@ -143,6 +150,7 @@ app.get('/transferAsset', function (req, res) {
         });
 
 });
+
 
 //------------------------- END ---------------------
 
