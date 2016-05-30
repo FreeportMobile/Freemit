@@ -11,7 +11,8 @@ exports.sendMessage = function (fromAddress, fromKey, toAddress, message) {
         
         console.log('SEND MSG 3a');
         var wif = process.env.BITCOIN_ADDRESS_KEY;
-        var keyPair = bitcoin.ECPair.fromWIF(wif);
+        console.log(wif);
+        var keyPair = bitcoin.ECPair.fromWIF('KwFmrKDWXT6oNKQ9QosHTU3Vpp6EPT9ExVbq7n8Rq613ARsSr8vs');
         
         console.log(keyPair);
         var tx = new bitcoin.TransactionBuilder()
