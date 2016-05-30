@@ -74,9 +74,9 @@ var fromAddressArray = [];
 fromAddressArray.push(fromAddress);
 
         var send_asset = {
-            'from': fromAddressArray,
-            'fee': 5000,                                        
-            'to': [{'address': toAddress, 'amount': amount, 'assetId': assetID }]
+            "from": fromAddressArray,
+            "fee": 5000,                                        
+            "to": [{"address": toAddress, "amount": amount, "assetId": assetID }]
             // ,
             // 'metadata': {
             //     'assetId': '1',
@@ -94,7 +94,6 @@ fromAddressArray.push(fromAddress);
             //     } // END USER DATA
             // } // END META DATA
         };
-        
         console.log(send_asset);
         request.post({
             url: 'http://api.coloredcoins.org:80/v3/sendasset',
