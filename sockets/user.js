@@ -177,7 +177,7 @@ exports.topUp = function (socket, io, msg) {
                                 .then(function(data) {
                                 console.log('---TRANSFER DATA---');  
                                 console.log(data) 
-                                });
+                                })
                                 .catch(function(err) {
                                     console.log('---TRANSFER ERROR---');  
                                 console.log(err) 
