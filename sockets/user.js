@@ -174,18 +174,22 @@ exports.topUp = function (socket, io, msg) {
                                 console.log(data) 
                                 })
                                 .catch(function(err) {
-                                    console.log('---TRANSFER ERROR---');  
-                                console.log(err) 
+                                    console.log('---TRANSFER ERROR START---');  
+                                console.log(err);
+                                console.log('---TRANSFER ERROR END---');  
                                 });
                     })
                     .catch(function(err) {
-                    console.log('---STRIPE ERROR---');  
+                    console.log('---STRIPE ERROR START---');  
                     console.log(err);
+                    console.log('---STRIPE ERROR END---');  
                     io.to(socket.id).emit('topup', {error: err.raw.message});
                     });      
         })
         .catch(function(err) {
+            console.log('---MONGO ERROR START---');  
             console.log(err) //TODO: Do somthing more meaningfull!
+            console.log('---MONGO ERROR END---');  
         });
 
 };// END FUNCTION
