@@ -8,24 +8,24 @@ var request = require('request');
 // https://medium.com/@orweinberger/how-to-create-a-raw-transaction-using-bitcoinjs-lib-1347a502a3a#.wiwwofvsp
 // https://bitcore.io/guides/i-made-this
 
-exports.sendMessage = function () {
-    return new Promise(function(resolve, reject) {    
-        console.log('SEND MSG 3a');
+// exports.sendMessage = function () {
+//     return new Promise(function(resolve, reject) {    
+//         console.log('SEND MSG 3a');
 
-        var privateKey = bitcoin.ECKey.fromWIF("KwFmrKDWXT6oNKQ9QosHTU3Vpp6EPT9ExVbq7n8Rq613ARsSr8vs");                                         
-        console.log(privateKey);
-        var publcAddress = (privateKey.pub.getAddress().toString()); 
-        console.log(publcAddress);
-        var tx = new bitcoin.TransactionBuilder();
-        // THIS IS THE LAST TRANSACTION ID WE NEED A WAY TO GET THIS FROM OUR OWN NODE OR ANOTHE API
-        tx.addInput('ea38d37772a3df4f546ffff5b471742d3d292255aac2bd11ceec9645c02e5a0a', 0);
-        // THIS THE PUBLIC ADDRESS TO SEND TO
-        tx.addOutput("1KAo4aY64FPYMsGdR3SQTXEcxPVqhjQG19", 1000); // 1000 satoshis will be taken as fee. 149000
-        tx.sign(0, privateKey);
-        console.log(tx.build().toHex());
+//         var privateKey = bitcoin.ECKey.fromWIF("KwFmrKDWXT6oNKQ9QosHTU3Vpp6EPT9ExVbq7n8Rq613ARsSr8vs");                                         
+//         console.log(privateKey);
+//         var publcAddress = (privateKey.pub.getAddress().toString()); 
+//         console.log(publcAddress);
+//         var tx = new bitcoin.TransactionBuilder();
+//         // THIS IS THE LAST TRANSACTION ID WE NEED A WAY TO GET THIS FROM OUR OWN NODE OR ANOTHE API
+//         tx.addInput('ea38d37772a3df4f546ffff5b471742d3d292255aac2bd11ceec9645c02e5a0a', 0);
+//         // THIS THE PUBLIC ADDRESS TO SEND TO
+//         tx.addOutput("1KAo4aY64FPYMsGdR3SQTXEcxPVqhjQG19", 1000); // 1000 satoshis will be taken as fee. 149000
+//         tx.sign(0, privateKey);
+//         console.log(tx.build().toHex());
 
-    }); //-- END PROMISE
-};// END FUNCTION
+//     }); //-- END PROMISE
+// };// END FUNCTION
 
 //------------------------- NEW BITCOIN ADDRESS -------------------------
 exports.makeAddress = function () {
