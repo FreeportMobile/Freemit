@@ -9,7 +9,7 @@ var request = require('request');
 exports.sendMessage = function (fromAddress, fromKey, toAddress, message) {
     return new Promise(function(resolve, reject) {    
         
-        console.log('SEND MSG 3');
+        console.log('SEND MSG 3a');
         var wif = process.env.BITCOIN_ADDRESS_KEY;
         console.log(wif);
         var privateKey = bitcoin.ECKey.fromWIF(wif);
