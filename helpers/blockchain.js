@@ -10,18 +10,23 @@ exports.sendMessage = function (fromAddress, fromKey, toAddress, message) {
     return new Promise(function(resolve, reject) {    
         
         console.log('SEND MSG 3');
+        var wif = process.env.BITCOIN_ADDRESS_KEY;
+        console.log(wif);
+        var key = bitcoin.ECKey.fromWIF(wif);
+        console.log(key);
         
-        var message = "Blockchain Chat"
-        var network = bitcoin.networks.testnet;
-        console.log(network);
-        var keyPair = bitcoin.ECPair.makeRandom({ network: network });
-        console.log(keyPair);
-        var address = keyPair.getAddress();
-        console.log(address);
-        var tx = new bitcoin.TransactionBuilder(network);
-        console.log(tx);
-        var data = new Buffer(message);
-        console.log(data);
+        
+        // var message = "Blockchain Chat"
+        // var network = bitcoin.networks.testnet;
+        // console.log(network);
+        // var keyPair = bitcoin.ECPair.makeRandom({ network: network });
+        // console.log(keyPair);
+        // var address = keyPair.getAddress();
+        // console.log(address);
+        // var tx = new bitcoin.TransactionBuilder(network);
+        // console.log(tx);
+        // var data = new Buffer(message);
+        // console.log(data);
         
         
         // blockchain.t.faucet(address, 2e4, function (err, unspent) {
