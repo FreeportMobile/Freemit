@@ -12,7 +12,7 @@ exports.sendMessage = function (fromAddress, fromKey, toAddress, message) {
         console.log('SEND MSG 3');
         
         var message = "Blockchain Chat"
-        var network = bitcoin.networks.mainnet;
+        var network = bitcoin.networks.testnet;
         console.log(network);
         var keyPair = bitcoin.ECPair.makeRandom({ network: network });
         console.log(keyPair);
@@ -107,7 +107,7 @@ console.log(assetID);
             form: send_asset
         }, 
         function (err, res, body) {
-             console.log('-----BODY WITH TX HEX------');
+            console.log('-----BODY WITH TX HEX------');
             console.log(body);
             if (err) {
                 console.log(body);
