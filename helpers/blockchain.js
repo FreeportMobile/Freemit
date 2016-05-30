@@ -111,12 +111,15 @@ fromAddressArray.push(fromAddress);
             }
             if (typeof body === 'string') {
                 body = JSON.parse(body);
+                console.log('----- BODY START------');
+                console.log(body);
+                console.log('----- BODY END------');
                 var txHex = body.txHex;   
             }     
             var unsignedTx = txHex;
             var wif = process.env.BITCOIN_ADDRESS_KEY;
             var privateKey = bitcoin.ECKey.fromWIF(wif);
-            console.log(unsignedTx);
+
             var tx = bitcoin.Transaction.fromHex(unsignedTx);
             var insLength = tx.ins.length;
             //-- START LOOP
