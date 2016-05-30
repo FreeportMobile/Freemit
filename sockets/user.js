@@ -121,7 +121,7 @@ exports.setOneContact = function(name, encPhoneNumber, countryCode){
 
 //----------------------------------------- TOP UP
 exports.topUp = function (socket, io, msg) {
-    blockchain.transferAsset(100, 'La9nxm3TKUKnmEkgJAc4jo2ivZQ66eBcp5HeZb', '16WBguy6KVyTGnF4KX7Vmdx8ztj4wENh4W', '1FfyHBuvo7zRDqt2gnmKr3UiXXTpP79sLo')
+    blockchain.transferAsset(1, 'La9nxm3TKUKnmEkgJAc4jo2ivZQ66eBcp5HeZb', '16WBguy6KVyTGnF4KX7Vmdx8ztj4wENh4W', '1FfyHBuvo7zRDqt2gnmKr3UiXXTpP79sLo')
     // // READ THE JWT
     // var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     // // GET CARD DETAILS FROM MONGO
