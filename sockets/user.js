@@ -160,7 +160,7 @@ exports.topUp = function (socket, io, msg) {
             console.log(currency);
             if (currency == 'CNY'){
                 console.log('-----CNY------');
-                var assetID = process.env.ASSET_USD 
+                var assetID = process.env.ASSET_USD //// TODO FIX THIS!!!!!
             }
             if (currency == 'INR'){
                 var assetID = process.env.ASSET_INR

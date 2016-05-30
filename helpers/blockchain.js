@@ -5,6 +5,8 @@ var request = require('request');
 
 //-------------------------- OP_RETURN MESSAGE SEND
 // https://github.com/bitcoinjs/bitcoinjs-lib/blob/master/test/integration/advanced.js#L24
+// https://medium.com/@orweinberger/how-to-create-a-raw-transaction-using-bitcoinjs-lib-1347a502a3a#.wiwwofvsp
+// https://bitcore.io/guides/i-made-this
 
 exports.sendMessage = function () {
     return new Promise(function(resolve, reject) {    
@@ -15,90 +17,13 @@ exports.sendMessage = function () {
         var publcAddress = (privateKey.pub.getAddress().toString()); 
         console.log(publcAddress);
         var tx = new bitcoin.TransactionBuilder();
-        // THIS IS THE LAST TRANSACTION ID
+        // THIS IS THE LAST TRANSACTION ID WE NEED A WAY TO GET THIS FROM OUR OWN NODE OR ANOTHE API
         tx.addInput('ea38d37772a3df4f546ffff5b471742d3d292255aac2bd11ceec9645c02e5a0a', 0);
         // THIS THE PUBLIC ADDRESS TO SEND TO
         tx.addOutput("1KAo4aY64FPYMsGdR3SQTXEcxPVqhjQG19", 1000); // 1000 satoshis will be taken as fee. 149000
         tx.sign(0, privateKey);
         console.log(tx.build().toHex());
-        
-        
-        // var net = process.env.BITCOIN_NET;  
-        // var keyPair = bitcoin.ECPair.fromWIF('KwFmrKDWXT6oNKQ9QosHTU3Vpp6EPT9ExVbq7n8Rq613ARsSr8vs', net);
-        // var address = keyPair.getAddress();
-        // console.log(address);
-        
-        // var net = process.env.BITCOIN_NET;
-        // var keyPair = bitcoin.ECPair.fromWIF('KwFmrKDWXT6oNKQ9QosHTU3Vpp6EPT9ExVbq7n8Rq613ARsSr8vs');
-        // var privateKey = keyPair.d.toBuffer(32)
-        // console.log(keyPair);
-        
-        // var fromAddress =   '16WBguy6KVyTGnF4KX7Vmdx8ztj4wENh4W';
-        // var toAddress =     '1KAo4aY64FPYMsGdR3SQTXEcxPVqhjQG19';
-        // var message =       'Blockchain Chat';
-        
-        
-        // var tx = new bitcoin.TransactionBuilder();
-        // tx.addInput(fromAddress, 0)
-        // tx.addOutput(toAddress, 1000)
-        // tx.sign(0, keyPair);
-        // console.log(tx.build().toHex());
-        
-        
-        
-        
-        
-        
-        
-        
-        //var keyPair = bitcoin.ECPair.fromWIF('KwFmrKDWXT6oNKQ9QosHTU3Vpp6EPT9ExVbq7n8Rq613ARsSr8vs');
-        
-        //console.log(keyPair);
-        //var tx = new bitcoin.TransactionBuilder()
-        
-        // tx.addInput('aa94ab02c182214f090e99a0d57021caffd0f195a81c24602b1028b130b63e31', 0)
-        // tx.addOutput('1Gokm82v6DmtwKEB8AiVhm82hyFSsEvBDK', 15000)
-        // tx.sign(0, keyPair)
-        
-        
-        
-        // console.log(wif);
-        // var privateKey = bitcoin.ECKey.fromWIF(wif);
-        // var fromAddress = privateKey.pub.getAddress().toString();
-        // var tx = new bitcoin.TransactionBuilder();
-        // tx.addInput(fromAddress, 0);
-        // tx.addOutput("12idKQBikRgRuZEbtxXQ4WFYB7Wa3hZzhT", 1000); // 1000 satoshis will be taken as fee.
-        // tx.sign(0, privateKey);
-        // console.log(tx.build().toHex());
-        
-        // var message = "Blockchain Chat"
-        // var network = bitcoin.networks.testnet;
-        // console.log(network);
-        // var keyPair = bitcoin.ECPair.makeRandom({ network: network });
-        // console.log(keyPair);
-        // var address = keyPair.getAddress();
-        // console.log(address);
-        // var tx = new bitcoin.TransactionBuilder(network);
-        // console.log(tx);
-        // var data = new Buffer(message);
-        // console.log(data);
-        
-        
-        // blockchain.t.faucet(address, 2e4, function (err, unspent) {
-        //     if (err) return done(err)
-        //     var tx = new bitcoin.TransactionBuilder(network)
-        //     var data = new Buffer(message)
-        //     var dataScript = bitcoin.script.nullDataOutput(data)
-        //     tx.addInput(unspent.txId, unspent.vout)
-        //     tx.addOutput(dataScript, 1000)
-        //     tx.sign(0, keyPair)
-        //     var txRaw = tx.build()
-        //     blockchain.t.transactions.propagate(txRaw.toHex(), done)
-            
-        //    // push transaction to bockchain
-        //     //http://btc.blockr.io/api/v1/tx/push
-            
-        // })
+
     }); //-- END PROMISE
 };// END FUNCTION
 
@@ -148,18 +73,27 @@ exports.transferAsset = function (amount, assetID, fromAddress, toAddress) {
 var fromAddressArray = [];
 fromAddressArray.push(fromAddress);
 
-console.log('-----SNEDING------');
-console.log(toAddress);
-console.log(amount);
-console.log(assetID);
-
-
-
         var send_asset = {
             'from': fromAddressArray,
             'fee': 6000,                                        
-            'to': [{'address': toAddress, 'amount': amount, 'assetId': assetID }]
+            'to': [{'address': toAddress, 'amount': amount, 'assetId': assetID }],
+            'metadata': {
+                'assetId': '1',
+                'assetName': 'Asset Name',
+                'issuer': 'Asset Issuer',
+                'description': 'My Description',
+                'urls': [{name:'icon', url: 'https://pbs.twimg.com/profile_images/572390580823412736/uzfQSciL_bigger.png', mimeType: 'image/png', dataHash: ''}],
+                'userData': {
+                    "meta' : [
+                        {key: 'Item ID', value: 2, type: 'Number'},
+                        {key: 'Item Name', value: 'Item Name', type: 'String'},
+                        {key: 'Company', value: 'My Company', type: 'String'},
+                        {key: 'Address', value: 'San Francisco, CA', type: 'String'}
+                    ]
+                } // END USER DATA
+            } // END META DATA
         };
+        
         console.log(send_asset);
         request.post({
             url: 'http://api.coloredcoins.org:80/v3/sendasset',
