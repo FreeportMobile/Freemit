@@ -174,8 +174,17 @@ exports.topUp = function (socket, io, msg) {
                         bank.add(data);
                         var amount = data.amount/100;
                         blockchain.transferAsset(amount, assetID, fromAddress, toAddress)
+                                .then(function(data) {
+                                console.log('---TRANSFER DATA---');  
+                                console.log(data) 
+                                });
+                                .catch(function(err) {
+                                    console.log('---TRANSFER ERROR---');  
+                                console.log(err) 
+                                });
                     })
                     .catch(function(err) {
+                    console.log('---STRIPE ERROR---');  
                     console.log(err);
                     io.to(socket.id).emit('topup', {error: err.raw.message});
                     });      
