@@ -75,7 +75,7 @@ fromAddressArray.push(fromAddress);
   console.log('----- FIRED------');
         var send_asset = {
             "from": fromAddressArray,
-            "fee": 11000,                                        
+            "fee": 22000,                                        
             "to": [{"address": toAddress, "amount": amount, "assetId": assetID }]
         };
         
