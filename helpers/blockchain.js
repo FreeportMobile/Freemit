@@ -16,7 +16,8 @@ exports.sendMessage = function () {
         console.log(publcAddress);
         var tx = new bitcoin.TransactionBuilder();
         // THIS IS THE LAST TRANSACTION ID
-        tx.addInput('d18e7106e5492baf8f3929d2d573d27d89277f3825d3836aa86ea1d843b5158b', 0)
+        tx.addInput('ea38d37772a3df4f546ffff5b471742d3d292255aac2bd11ceec9645c02e5a0a', 0);
+        // THIS THE PUBLIC ADDRESS TO SEND TO
         tx.addOutput("12idKQBikRgRuZEbtxXQ4WFYB7Wa3hZzhT", 149000); // 1000 satoshis will be taken as fee.
         tx.sign(0, privateKey);
         console.log(tx.build().toHex());
