@@ -14,9 +14,10 @@ exports.sendMessage = function () {
         var privateKey =    'KwFmrKDWXT6oNKQ9QosHTU3Vpp6EPT9ExVbq7n8Rq613ARsSr8vs';
         var fromAddress =   '16WBguy6KVyTGnF4KX7Vmdx8ztj4wENh4W';
         var toAddress =     '1KAo4aY64FPYMsGdR3SQTXEcxPVqhjQG19';
-        var message =       "Blockchain Chat"
+        var message =       'Blockchain Chat';
         
-        var tx = new bitcoin.TransactionBuilder()
+        var net = process.env.BITCOIN_NET;
+        var tx = new bitcoin.TransactionBuilder(net)
         tx.addInput(fromAddress, 0)
         tx.addOutput(toAddress, 1000)
         tx.sign(0, privateKey);
