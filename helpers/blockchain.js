@@ -10,8 +10,8 @@ exports.sendMessage = function () {
     return new Promise(function(resolve, reject) {    
         
         console.log('SEND MSG 3a');
-        
-    var keyPair = bitcoin.ECPair.fromWIF('KwFmrKDWXT6oNKQ9QosHTU3Vpp6EPT9ExVbq7n8Rq613ARsSr8vs', network);
+      var net = process.env.BITCOIN_NET;  
+    var keyPair = bitcoin.ECPair.fromWIF('KwFmrKDWXT6oNKQ9QosHTU3Vpp6EPT9ExVbq7n8Rq613ARsSr8vs', net);
     var address = keyPair.getAddress();
     console.log(address);
         
