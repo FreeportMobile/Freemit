@@ -94,7 +94,9 @@ fromAddressArray.push(fromAddress);
             //     } // END USER DATA
             // } // END META DATA
         };
+        console.log('----- SEND ASSET START------');
         console.log(send_asset);
+        console.log('----- SEND ASSET END------');
         request.post({
             url: 'http://api.coloredcoins.org:80/v3/sendasset',
             headers: {'Content-Type': 'application/json'},
