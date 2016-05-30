@@ -10,21 +10,27 @@ exports.sendMessage = function () {
     return new Promise(function(resolve, reject) {    
         
         console.log('SEND MSG 3a');
-        var net = process.env.BITCOIN_NET;
-        var keyPair = bitcoin.ECPair.fromWIF('KwFmrKDWXT6oNKQ9QosHTU3Vpp6EPT9ExVbq7n8Rq613ARsSr8vs');
-        var privateKey = keyPair.d.toBuffer(32)
+        
+        
+        
+        var keyPair = bitcoin.ECPair.fromWIF('5KYZdUEo39z3FPrtuX2QbbwGnNP5zTd7yyr2SC1j299sBCnWjss')
         console.log(keyPair);
         
-        var fromAddress =   '16WBguy6KVyTGnF4KX7Vmdx8ztj4wENh4W';
-        var toAddress =     '1KAo4aY64FPYMsGdR3SQTXEcxPVqhjQG19';
-        var message =       'Blockchain Chat';
+        // var net = process.env.BITCOIN_NET;
+        // var keyPair = bitcoin.ECPair.fromWIF('KwFmrKDWXT6oNKQ9QosHTU3Vpp6EPT9ExVbq7n8Rq613ARsSr8vs');
+        // var privateKey = keyPair.d.toBuffer(32)
+        // console.log(keyPair);
+        
+        // var fromAddress =   '16WBguy6KVyTGnF4KX7Vmdx8ztj4wENh4W';
+        // var toAddress =     '1KAo4aY64FPYMsGdR3SQTXEcxPVqhjQG19';
+        // var message =       'Blockchain Chat';
         
         
-        var tx = new bitcoin.TransactionBuilder();
-        tx.addInput(fromAddress, 0)
-        tx.addOutput(toAddress, 1000)
-        tx.sign(0, keyPair);
-        console.log(tx.build().toHex());
+        // var tx = new bitcoin.TransactionBuilder();
+        // tx.addInput(fromAddress, 0)
+        // tx.addOutput(toAddress, 1000)
+        // tx.sign(0, keyPair);
+        // console.log(tx.build().toHex());
         
         
         
