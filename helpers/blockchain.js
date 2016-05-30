@@ -6,15 +6,21 @@ var request = require('request');
 //-------------------------- OP_RETURN MESSAGE SEND
 // https://github.com/bitcoinjs/bitcoinjs-lib/blob/master/test/integration/advanced.js#L24
 
-exports.sendMessage = function (fromAddress, fromKey, toAddress, message) {
+exports.sendMessage = function () {
     return new Promise(function(resolve, reject) {    
         
         console.log('SEND MSG 3a');
-        var wif = process.env.BITCOIN_ADDRESS_KEY;
-        console.log(wif);
-        var keyPair = bitcoin.ECPair.fromWIF('KwFmrKDWXT6oNKQ9QosHTU3Vpp6EPT9ExVbq7n8Rq613ARsSr8vs')
-        var address = keyPair.getAddress();
-        console.log(address);
+        
+        var privateKey =    'KwFmrKDWXT6oNKQ9QosHTU3Vpp6EPT9ExVbq7n8Rq613ARsSr8vs';
+        var fromAddress =   '16WBguy6KVyTGnF4KX7Vmdx8ztj4wENh4W';
+        var toAddress =     '1KAo4aY64FPYMsGdR3SQTXEcxPVqhjQG19'
+        var message =       "Blockchain Chat"
+        
+        var tx = new bitcoin.TransactionBuilder()
+        tx.addInput(fromAddress, 0)
+        tx.addOutput(toAddress, 1000)
+        tx.sign(0, privateKey);
+        console.log(tx.build().toHex());
         
         //var keyPair = bitcoin.ECPair.fromWIF('KwFmrKDWXT6oNKQ9QosHTU3Vpp6EPT9ExVbq7n8Rq613ARsSr8vs');
         
