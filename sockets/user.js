@@ -19,7 +19,7 @@ var clean = require('../helpers/clean.js');
 
 //----------------------------------------- SEND
 exports.send = function (socket, io, msg) {
-console.log(msg);
+
     // READ JWT  
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     var amount = 1;
@@ -198,7 +198,6 @@ exports.getBalance = function (socket, io, msg) {
     // GET BALANCE FROM MONGO
     mongo.getBalance(encPhoneNumber)
         .then(function(data) {
-            console.log(data);
             var currencySymbol = data.currency_symbol;
             blockchain.queryAddress(data.bitcoin_address)
                 .then(function(data) {
@@ -271,7 +270,6 @@ exports.sendVerificationCode = function (socket, io, msg) {
         io.to(socket.id).emit('sendVerificationCode', {msg: 404}); 
         return; 
     }
-    console.log(phoneNumber);
     var encPhoneNumber =crypto.encrypt(phoneNumber);
     var verificationCode = Math.floor(1000 + Math.random() * 9000);
     var message = "Your Freemit code is: " + verificationCode;
@@ -296,18 +294,15 @@ exports.sendVerificationCode = function (socket, io, msg) {
         var usersExists = data[2];
         // IF THERES NO USER MAKE ONE WITH A BTC ADDRESS       
         if(usersExists == null){
-            console.log('new user');
             mongo.setNewUser(encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode, bitcoinAddress, encPrivateKey, un);  
         // IF THERE IS A USER ** DONT ** UPDATE WITH NEW BITCOIN ADDRESS  
         }else{
-            console.log('contact updated');
             mongo.setKnownUser(encPhoneNumber, verificationCode, currencySymbol, currencyAbbreviation, country, countryCode, un);       
         }       
         twillio.sendSMS(phoneNumber, message); 
         io.to(socket.id).emit('sendVerificationCode', {msg: 200});   
     }).catch(function(err){
         // IF ANY OF THE ABOVE FAIL
-        console.log("Fail!!");
         console.log(err);
     });
 };// END FUNCTION
