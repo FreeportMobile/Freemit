@@ -8,7 +8,7 @@ var express = require('express');
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
-var freemit = require('./freemit');
+var freemit = require('./sockets/freemit');
 
 //-- MAKE STATIC FILES AVAILABLE
 app.use(express.static(__dirname + '/public')); 
