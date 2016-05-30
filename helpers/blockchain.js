@@ -11,10 +11,9 @@ exports.sendMessage = function () {
         
         console.log('SEND MSG 3a');
         
-        
-        
-        var keyPair = bitcoin.ECPair.fromWIF('5KYZdUEo39z3FPrtuX2QbbwGnNP5zTd7yyr2SC1j299sBCnWjss')
-        console.log(keyPair);
+    var keyPair = bitcoin.ECPair.fromWIF('Kxr9tQED9H44gCmp6HAdmemAzU3n84H3dGkuWTKvE23JgHMW8gct');
+    var address = keyPair.getAddress();
+    console.log(address);
         
         // var net = process.env.BITCOIN_NET;
         // var keyPair = bitcoin.ECPair.fromWIF('KwFmrKDWXT6oNKQ9QosHTU3Vpp6EPT9ExVbq7n8Rq613ARsSr8vs');
