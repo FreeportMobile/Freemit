@@ -20,6 +20,7 @@ app.disable('x-powered-by');
 //------------------------- NEW ADDRESS ---------------------
 app.get('/sendMsg', function (req, res) {
     freemit.user.sendMsg();
+    res.status(200).json({ sent:ok });
 });
 
 //------------------------- NEW ADDRESS ---------------------
