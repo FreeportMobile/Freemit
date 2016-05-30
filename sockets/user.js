@@ -128,8 +128,6 @@ exports.topUp = function (socket, io, msg) {
     // GET CARD DETAILS FROM MONGO
     mongo.getCard(encPhoneNumber)
         .then(function(data) {
-            console.log('data');
-            console.log(data);
             var value = msg.value;
             // DECRYPT THE CARD DTAILS AND PREPARE DATA FOR STRIPE
             var cardNumber = crypto.decrypt(data.card_number);
@@ -142,13 +140,10 @@ exports.topUp = function (socket, io, msg) {
             var toAddress = data.bitcoin_address;
             // PREPARE ASSET TO TRANSFER
             // TODO: Make an asset helper to retern these values
-            console.log(currency);
             if (currency == 'USD'){
                 var assetID = process.env.ASSET_USD
             }
-            console.log(currency);
             if (currency == 'CNY'){
-                console.log('-----CNY------');
                 var assetID = process.env.ASSET_USD //// TODO FIX THIS!!!!!
             }
             if (currency == 'INR'){
@@ -157,7 +152,6 @@ exports.topUp = function (socket, io, msg) {
             if (currency == 'EUR'){
                 var assetID = process.env.ASSET_EUR
             }
-
             // CREATE THE SOURCE FOR STRIPE
             var source = {exp_month:cardMonth, exp_year:cardYear, number:cardNumber,object:'card',cvc:cardCVC};
             var userID = data._id.toString()
@@ -173,6 +167,7 @@ exports.topUp = function (socket, io, msg) {
                     .then(function(data) {
                         bank.add(data);
                         var amount = data.amount/100;
+                        console.log('--- CALLING TRANSFER---');  
                         blockchain.transferAsset(amount, assetID, fromAddress, toAddress)
                                 .then(function(data) {
                                 console.log('---TRANSFER DATA---');  
