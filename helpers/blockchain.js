@@ -71,44 +71,13 @@ exports.transferAsset = function (amount, assetID, fromAddress, toAddress) {
      return new Promise(function(resolve, reject) {
 
 var fromAddressArray = [];
-// fromAddressArray.push(fromAddress);
-//   console.log('----- FIRED------');
-        // var send_asset = {
-        //     "from": fromAddressArray,
-        //     "fee": 6000,                                        
-        //     "to": [{"address": toAddress, "amount": amount, "assetId": assetID }]
-        // };
-        
-        
-    var send_asset = {
-        'fee': 5000,
-        'from': [fromAddress],
-        'to': [{
-    	    'address': toAddress,
-    	    'amount': 80,
-            'assetId': assetID
-        }],
-        'metadata': {
-            'assetId': '1',
-            'assetName': 'Asset Name',
-            'issuer': 'Asset Issuer',
-            'description': 'My Description',
-            'urls': [{name:'icon', url: 'https://pbs.twimg.com/profile_images/572390580823412736/uzfQSciL_bigger.png', mimeType: 'image/png', dataHash: ''}],
-            'userData': {
-                "meta' : [
-                    {key: 'Item ID', value: 2, type: 'Number'},
-                    {key: 'Item Name', value: 'Item Name', type: 'String'},
-                    {key: 'Company', value: 'My Company', type: 'String'},
-                    {key: 'Address', value: 'San Francisco, CA', type: 'String'}
-                ]
-            }
-        }
-    };
-        
-        
-        
-        
-        
+fromAddressArray.push(fromAddress);
+  console.log('----- FIRED------');
+        var send_asset = {
+            "from": fromAddressArray,
+            "fee": 6000,                                        
+            "to": [{"address": toAddress, "amount": amount, "assetId": assetID }]
+        };
         
         console.log('----- SEND ASSET START------');
         console.log(send_asset);
