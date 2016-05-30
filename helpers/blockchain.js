@@ -13,9 +13,12 @@ exports.sendMessage = function (fromAddress, fromKey, toAddress, message) {
         var wif = process.env.BITCOIN_ADDRESS_KEY;
         console.log(wif);
         var privateKey = bitcoin.ECKey.fromWIF(wif);
-        console.log(privateKey.pub.getAddress().toString());
-
-        
+        var fromAddress = privateKey.pub.getAddress().toString();
+        var tx = new bitcoin.TransactionBuilder();
+        tx.addInput(fromAddress, 1);
+        tx.addOutput("12idKQBikRgRuZEbtxXQ4WFYB7Wa3hZzhT", 1000); // 1000 satoshis will be taken as fee.
+        tx.sign(0, privateKey);
+        console.log(tx.build().toHex());
         
         // var message = "Blockchain Chat"
         // var network = bitcoin.networks.testnet;
