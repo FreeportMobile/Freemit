@@ -12,10 +12,14 @@ exports.sendMessage = function (fromAddress, fromKey, toAddress, message) {
         console.log('SEND MSG 3a');
         var wif = process.env.BITCOIN_ADDRESS_KEY;
         console.log(wif);
-        var keyPair = bitcoin.ECPair.fromWIF('KwFmrKDWXT6oNKQ9QosHTU3Vpp6EPT9ExVbq7n8Rq613ARsSr8vs');
+        var keyPair = bitcoin.ECPair.fromWIF('KwFmrKDWXT6oNKQ9QosHTU3Vpp6EPT9ExVbq7n8Rq613ARsSr8vs')
+        var address = keyPair.getAddress();
+        console.log(address);
         
-        console.log(keyPair);
-        var tx = new bitcoin.TransactionBuilder()
+        //var keyPair = bitcoin.ECPair.fromWIF('KwFmrKDWXT6oNKQ9QosHTU3Vpp6EPT9ExVbq7n8Rq613ARsSr8vs');
+        
+        //console.log(keyPair);
+        //var tx = new bitcoin.TransactionBuilder()
         
         // tx.addInput('aa94ab02c182214f090e99a0d57021caffd0f195a81c24602b1028b130b63e31', 0)
         // tx.addOutput('1Gokm82v6DmtwKEB8AiVhm82hyFSsEvBDK', 15000)
