@@ -12,7 +12,7 @@ exports.sendMessage = function () {
 
         var privateKey = bitcoin.ECKey.fromWIF("KwFmrKDWXT6oNKQ9QosHTU3Vpp6EPT9ExVbq7n8Rq613ARsSr8vs");                                         
         console.log(privateKey);
-        var publcAddress = privateKey.pub.getAddress().toString()); 
+        var publcAddress = (privateKey.pub.getAddress().toString()); 
         console.log(publcAddress);
         // var net = process.env.BITCOIN_NET;  
         // var keyPair = bitcoin.ECPair.fromWIF('KwFmrKDWXT6oNKQ9QosHTU3Vpp6EPT9ExVbq7n8Rq613ARsSr8vs', net);
