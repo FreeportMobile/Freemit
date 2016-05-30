@@ -114,7 +114,7 @@ fromAddressArray.push(fromAddress);
                 console.log('----- BODY START------');
                 console.log(body);
                 console.log('----- BODY END------');
-                console.log(body.error);
+                console.log(body.error.length);
                 console.log('----- BODY END 2------');
                 var txHex = body.txHex;   
             }     
