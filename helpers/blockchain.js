@@ -11,7 +11,7 @@ exports.sendMessage = function () {
         console.log('SEND MSG 3a');
 
         var privatekey = bitcoin.ECKey.fromWIF("KwFmrKDWXT6oNKQ9QosHTU3Vpp6EPT9ExVbq7n8Rq613ARsSr8vs");
-        key = bitcoin.ECPair.fromWIF(privatekey);
+        key = bitcoin.ECPair.fromWIF("KwFmrKDWXT6oNKQ9QosHTU3Vpp6EPT9ExVbq7n8Rq613ARsSr8vs");
                                          
         console.log(key);
         // var net = process.env.BITCOIN_NET;  
