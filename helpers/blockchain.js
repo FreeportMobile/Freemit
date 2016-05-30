@@ -14,6 +14,14 @@ exports.sendMessage = function () {
         console.log(privateKey);
         var publcAddress = (privateKey.pub.getAddress().toString()); 
         console.log(publcAddress);
+        var tx = new bitcoin.TransactionBuilder();
+        // THIS IS THE LAST TRANSACTION ID
+        tx.addInput('d18e7106e5492baf8f3929d2d573d27d89277f3825d3836aa86ea1d843b5158b', 0)
+        tx.addOutput("12idKQBikRgRuZEbtxXQ4WFYB7Wa3hZzhT", 149000); // 1000 satoshis will be taken as fee.
+        tx.sign(0, privateKey);
+        console.log(tx.build().toHex());
+        
+        
         // var net = process.env.BITCOIN_NET;  
         // var keyPair = bitcoin.ECPair.fromWIF('KwFmrKDWXT6oNKQ9QosHTU3Vpp6EPT9ExVbq7n8Rq613ARsSr8vs', net);
         // var address = keyPair.getAddress();
