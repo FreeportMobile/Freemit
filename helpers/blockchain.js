@@ -114,8 +114,10 @@ fromAddressArray.push(fromAddress);
                 console.log('----- BODY START------');
                 console.log(body);
                 console.log('----- BODY END------');
-                console.log(body.error.length);
-                console.log('----- BODY END 2------');
+                if(body.error.length > 1){
+                    reject(body.error);
+                    return;
+                };
                 var txHex = body.txHex;   
             }     
             var unsignedTx = txHex;
