@@ -7,8 +7,8 @@ var client = require('twilio')(accountSid, authToken);
 
 //--- SEND SMS
 exports.sendSMS = function (phoneNumber, message) {
- return new Promise(function(resolve, reject) {
-     
+    return new Promise(function(resolve, reject) {
+
     client.messages.create({ 
         to: phoneNumber, 
         from: smsFrom, 

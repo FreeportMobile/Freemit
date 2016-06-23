@@ -40,7 +40,7 @@ exports.setContacts = function (name, phoneNumber, countryCode, bitcoinAddress, 
 
 //----------------------- SET COUNTRY CODE ----------------------------------//
 
-exports.setCountryCode = function (country_name, currency_symbol, currency_abbreviation, dialing_code) {
+exports.setCountryCode = function (countryName, currencySymbol, currencyAbbreviation, dialingCode) {
     return new Promise(function(resolve, reject) {
     // OPEN CONNECTION     
         mongoClient.connect(process.env.MONGO_DB, function (err, db) {

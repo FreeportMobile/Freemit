@@ -2,7 +2,6 @@
 
 var stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
-
 //----------------------------- CREATE CHARGE
 exports.createCharge = function (value, currency, source, description, metadata, idempotencyKey) {
     return new Promise(function(resolve, reject) { 
@@ -26,10 +25,3 @@ exports.createCharge = function (value, currency, source, description, metadata,
 }; //-- END FUNCTION
 
 
-//----------------------------- TRANSFER
-exports.transfer = function (phoneNumber, verificationCode) {
-    return new Promise(function(resolve, reject) {
- 
-         
-    }); //-- END PROMISE
-}; //-- END FUNCTION

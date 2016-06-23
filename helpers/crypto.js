@@ -3,20 +3,31 @@
 var aes = require('aes-cross');
 var uuid = require('uuid-js');
 var jwt = require('jsonwebtoken');
+var sha256 = require('sha256');
+
+//----------------------------- ENCRYPT SHA256 x2
+exports.sha256x2 = function (text) {
+    return sha256.x2(text);
+};
+
+//----------------------------- ENCRYPT SHA256
+exports.sha256 = function (text) {
+    return sha256(text);
+};
 
 //----------------------------- MAKE UUID
 exports.makeID = function () {
     return uuid.create().toString();
 };
 
-//----------------------------- ENCRYPT
+//----------------------------- AES ENCRYPT
 exports.encrypt = function (text) {
     var key = process.env.AUTH_SECRET;
     var enc = aes.encText(text,key);
     return enc
 };
 
-//----------------------------- DECRYPT
+//----------------------------- AES DECRYPT
 exports.decrypt = function (text) {
     var key = process.env.AUTH_SECRET;
     var dec = aes.decText(text,key);
