@@ -109,7 +109,7 @@ exports.saveContacts = function (socket, io, msg) {
     //     var phoneUn = data.un;
         //LOOP OVER CONTACTS
         for (var i = 0; i < allContacts.length; i++) {
-            console.log('4+ 'i);
+            console.log('4+ '+i);
             // // TODO: Review this assumption carefully!!!
              var name = allContacts[i].name;
              var sentNumber = allContacts[i].phoneNumber;
