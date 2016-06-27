@@ -23,14 +23,38 @@ var colu = require('../helpers/colu.js');
 exports.send = function (socket, io, msg) {
 
     // READ JWT  
-    var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
-    var amount = 1;
-    var sentNumber = msg.phoneNumber;
+    var fromNumber = crypto.readJWT(msg.jwt).phone_number;
+    var amount = msg.value;
+    var toNumber = msg.phoneNumber;
+    
 
-    var phoneNumber = clean.numUn(sentNumber,'CHN');
-    console.log(phoneNumber);
-    var encPhoneNumber = crypto.encrypt(phoneNumber);
-    console.log(encPhoneNumber);
+    mongo.getCountryCode(fromNumber)
+    .then(function(data) {  
+        var currencySymbol = data.currency_symbol;
+        var currencyAbbreviation = data.currency_abbreviation;
+        var countryCode = data.country_code;   
+        var phoneUn = data.un;
+
+
+            var isPlus = sentNumber.substring(0,1);
+            if (isPlus =='+'){
+                var phoneNumber = clean.num(sentNumber);
+            } else {
+                var phoneNumber = clean.numUn(sentNumber, phoneUn);
+            }
+            // is stil not defined just add in the country code.
+            if (phoneNumber == undefined || phoneNumber == [] || phoneNumber == null || phoneNumber == ''){
+                var phoneNumber = clean.num(countryCode + sentNumber); 
+            } 
+            if(phoneNumber != undefined){
+                var encPhoneNumber = crypto.encrypt(phoneNumber);
+                exports.setOneContact(name, encPhoneNumber, countryCode);
+            }
+ 
+    })
+    .catch(function(err) {
+    // some error
+    })
     // CLEAN THE PHONE NUMBER
         // FIND WHAT CURRENCY THEY NEED
             // CONVERT THE AMOUNT TO THE CURRENCY 
@@ -73,51 +97,50 @@ exports.saveContacts = function (socket, io, msg) {
     // READ JWT  
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     // FIND COUNTRY THE USER IS IN
-    mongo.getCountryCode(encPhoneNumber)
-    .then(function(data) {  
-        var currencySymbol = data.currency_symbol;
-        var currencyAbbreviation = data.currency_abbreviation;
-        var countryCode = data.country_code;   
+    // mongo.getCountryCode(encPhoneNumber)
+    // .then(function(data) {  
+    //     var currencySymbol = data.currency_symbol;
+    //     var currencyAbbreviation = data.currency_abbreviation;
+    //     var countryCode = data.country_code;   
         var allContacts = msg.contacts;
-        var phoneUn = data.un;
+    //     var phoneUn = data.un;
         //LOOP OVER CONTACTS
         for (var i = 0; i < allContacts.length; i++) {
-            // TODO: Review this assumption carefully!!!
-            var name = allContacts[i].name;
-            var sentNumber = allContacts[i].phoneNumber;
-            // does the number start with a + ??
-            var isPlus = sentNumber.substring(0,1);
-            if (isPlus =='+'){
-                var phoneNumber = clean.num(sentNumber);
-            } else {
-                var phoneNumber = clean.numUn(sentNumber, phoneUn);
-            }
-            // is stil not defined just add in the country code.
-            if (phoneNumber == undefined || phoneNumber == [] || phoneNumber == null || phoneNumber == ''){
-                var phoneNumber = clean.num(countryCode + sentNumber); 
-            } 
-            if(phoneNumber != undefined){
+            // // TODO: Review this assumption carefully!!!
+             var name = allContacts[i].name;
+             var sentNumber = allContacts[i].phoneNumber;
+            // // does the number start with a + ??
+            // var isPlus = sentNumber.substring(0,1);
+            // if (isPlus =='+'){
+            //     var phoneNumber = clean.num(sentNumber);
+            // } else {
+            //     var phoneNumber = clean.numUn(sentNumber, phoneUn);
+            // }
+            // // is stil not defined just add in the country code.
+            // if (phoneNumber == undefined || phoneNumber == [] || phoneNumber == null || phoneNumber == ''){
+            //     var phoneNumber = clean.num(countryCode + sentNumber); 
+            // } 
+            // if(phoneNumber != undefined){
+                var phoneNumber = clean.sentNum(sentNumber, encPhoneNumber);
                 var encPhoneNumber = crypto.encrypt(phoneNumber);
-                exports.setOneContact(name, encPhoneNumber, countryCode);
-            }
+                exports.setOneContact(name, encPhoneNumber);
+            // }
         }
-    })
-    .catch(function(err) {
-    // some error
-    })
+    // })
+    // .catch(function(err) {
+    // // some error
+    // })
     //TODO: SANITIZE ALL INPUTS TO STOP BAD ACTORS !!! VERY VERY IMPORTANT !!! 
 };// END FUNCTION
 
 //------------------------------------------ SET ONE CONTACT
 
-exports.setOneContact = function(name, encPhoneNumber, countryCode){
-    
+exports.setOneContact = function(name, encPhoneNumber){
+    var countryCode = '+00' /// THIS NEEDS REMOVING
     // DOES THE PHONE NUMBER ALREADY EXISTS?
     mongo.getOneUser(encPhoneNumber)
         .then(function(data) {
             if(data == null){
-                // IF IT DOENST EXIST MAKE A BTC ADDRESS AND ADD IT
-                //blockchain.makeAddress()
                 colu.makeAddress()
                 .then(function(data) {
                 var bitcoinAddress = data.publicAddress;
