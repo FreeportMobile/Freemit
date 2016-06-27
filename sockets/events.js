@@ -46,7 +46,7 @@ module.exports = function (io) {
         
         
         socket.on('send', function (msg) {
-            console.log('SEND: '+msg);
+            console.log(msg);
             rateLimiter(socket);
             freemit.user.send(socket, io, msg);
         });
