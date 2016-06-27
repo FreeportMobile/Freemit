@@ -16,6 +16,8 @@ var bank =  require('./bank.js');
 var clean = require('../helpers/clean.js');
 //-- MAKE COLU AVAILABLE
 var colu = require('../helpers/colu.js');
+//-- MAKE FX AVAILABLE
+var colu = require('../helpers/fx.js');
 
 
 
