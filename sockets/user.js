@@ -123,7 +123,6 @@ exports.setOneContact = function(name, encPhoneNumber, countryCode){
 
 //----------------------------------------- TOP UP
 exports.topUp = function (socket, io, msg) {
-    blockchain.transferAsset(1, 'La9nxm3TKUKnmEkgJAc4jo2ivZQ66eBcp5HeZb', '16WBguy6KVyTGnF4KX7Vmdx8ztj4wENh4W', '1FfyHBuvo7zRDqt2gnmKr3UiXXTpP79sLo')
     // READ THE JWT
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     // GET CARD DETAILS FROM MONGO
@@ -138,6 +137,7 @@ exports.topUp = function (socket, io, msg) {
             var currency = data.currency_abbreviation;
             // PREPARE TRANSFER PARTIES
             var fromAddress = process.env.BITCOIN_ADDRESS;
+            var privateKey = process.env.BITCOIN_ADDRESS_KEY;
             var toAddress = data.bitcoin_address;
             // PREPARE ASSET TO TRANSFER
             // TODO: Make an asset helper to retern these values
@@ -168,7 +168,8 @@ exports.topUp = function (socket, io, msg) {
                         bank.add(data);
                         var amount = data.amount/100;
                         console.log('--- CALLING TRANSFER---');  
-                        blockchain.transferAsset(amount, assetID, fromAddress, toAddress)
+                        colu.transferFunds(fromAddress, amount, toAddress, privateKey, currency)
+                        //blockchain.transferAsset(amount, assetID, fromAddress, toAddress)
                                 .then(function(data) {
                                 console.log('---TRANSFER DATA---');  
                                 console.log(data) 
@@ -282,6 +283,7 @@ exports.sendVerificationCode = function (socket, io, msg) {
     // GET ALL THESE VALUES    
     Promise.all([
         mongo.getCurrency(countryCode),
+        // TODO: We should not make a new address if the user already has one
         colu.makeAddress(),
         mongo.getOneUser(encPhoneNumber),
         ]) 
