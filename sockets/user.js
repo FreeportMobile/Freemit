@@ -39,7 +39,9 @@ console.log('SEND STAGE 1');
         var toPhoneUn = clean.getUn(phoneNumber);
         // FIND WHAT CURRENCY THEY NEED
         var fromCurrency = fx.currency(fromPhoneUn);
+        console.log(fromCurrency); 
         var toCurrency = fx.currency(toPhoneUn);
+        console.log(toCurrency); 
         // CONVERT THE AMOUNT TO THE CURRENCY
         fx.exchange(fromCurrency, toCurrency, amount)
         .then(function(data) {   
