@@ -11,8 +11,9 @@ exports.makeAddress = function(){
                 reject(error);
             }
             if (!error && response.statusCode == 200) {
-                console.log(body);
-                resolve(body);
+                var json = JSON.parse(body); 
+                console.log(json);
+                resolve(json);
             }
         })
     }); //-- END PROMISE
