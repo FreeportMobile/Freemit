@@ -38,9 +38,9 @@ exports.getBallence = function(address){
 exports.transferFunds = function(fromAddress, amount, toAddress, privateKey, currency, fromPhone, toPhone){
     return new Promise(function(resolve, reject) {   
     console.log('SENDING TO COIN OUTLET');    
-    request('http://coinoutlet.biz:4700/sendCurrency?fromAddress='+fromAddress+'&amount='+amount+'&toAddress='+toAddress+'&privateKey='+privateKey+'&currency='+currency+'&fromPhone='+fromPhone+'&toPhone='+toPhone, function (error, response, body) {
     console.log('SENDING THIS'); 
     console.log('http://coinoutlet.biz:4700/sendCurrency?fromAddress='+fromAddress+'&amount='+amount+'&toAddress='+toAddress+'&privateKey='+privateKey+'&currency='+currency+'&fromPhone='+fromPhone+'&toPhone='+toPhone);
+    request('http://coinoutlet.biz:4700/sendCurrency?fromAddress='+fromAddress+'&amount='+amount+'&toAddress='+toAddress+'&privateKey='+privateKey+'&currency='+currency+'&fromPhone='+fromPhone+'&toPhone='+toPhone, function (error, response, body) {
 
         if(error){
             console.log('ERROR BELOW...');
