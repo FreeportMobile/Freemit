@@ -53,6 +53,7 @@ console.log('SEND STAGE 1');
         })
         .catch(function(err) {
         // some error
+        console.log(err);
     }   )
 
 
