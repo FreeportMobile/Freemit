@@ -112,7 +112,9 @@ exports.saveContacts = function (socket, io, msg) {
             console.log('4+ '+i);
             // // TODO: Review this assumption carefully!!!
              var name = allContacts[i].name;
+             console.log('Name '+name);
              var sentNumber = allContacts[i].phoneNumber;
+             console.log('Sent Number '+sentNumber);
             // // does the number start with a + ??
             // var isPlus = sentNumber.substring(0,1);
             // if (isPlus =='+'){
@@ -126,6 +128,7 @@ exports.saveContacts = function (socket, io, msg) {
             // } 
             // if(phoneNumber != undefined){
                 var phoneNumber = clean.sentNum(sentNumber, encPhoneNumber);
+                console.log('Phone Number '+phoneNumber);
                 var encPhoneNumber = crypto.encrypt(phoneNumber);
                 exports.setOneContact(name, encPhoneNumber);
             // }
