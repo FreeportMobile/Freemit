@@ -2,8 +2,9 @@
 
 var user = require('./user.js');
 var bank = require('./bank.js');
-var exchange = require('./exchange.js');
+var transfer = require('./transfer.js');
+
 
 exports.user = user;
 exports.bank = bank;
-exports.exchange = exchange;
+exports.transfer = transfer;

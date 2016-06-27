@@ -1,66 +1,54 @@
 'use strict';
 
-//-- MAKE TWILLIO AVAILABLE
 var twillio = require('../helpers/twillio.js');
-//-- MAKE CRYPTO AVAILABLE
 var crypto = require('../helpers/crypto.js');
-//-- MAKE MONGO AVAILABLE
 var mongo = require('../helpers/mongo.js');
-//-- MAKE STRIPE AVAILABLE
 var stripe = require('../helpers/stripe.js');
-//-- MAKE BLOCKCHAIN AVAILABLE
 var blockchain = require('../helpers/blockchain.js');
-//-- MAKE BANK AVAILABLE
 var bank =  require('./bank.js');
-//-- MAKE CLEAN AVAILABLE
 var clean = require('../helpers/clean.js');
-//-- MAKE COLU AVAILABLE
 var colu = require('../helpers/colu.js');
-//-- MAKE FX AVAILABLE
 var fx = require('../helpers/fx.js');
-
-
+var transfer = require('./transfer.js');
 
 //----------------------------------------- SEND TRANSFER
 exports.send = function (socket, io, msg) {
-console.log('SEND STAGE 1');
     // READ JWT  
-    var fromPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
+    var fromPhone = crypto.readJWT(msg.jwt).phone_number;
     var amount = msg.value;
-    var toPhoneNumber = msg.phoneNumber;
-    console.log('SEND STAGE 2');
-  // CLEAN THE PHONE NUMBER
-    mongo.getCountryCode(fromPhoneNumber)
+    var toPhone = msg.phoneNumber;
+    // CLEAN THE PHONE NUMBER
+    mongo.getCountryCode(fromPhone)
     .then(function(data) {  
-        console.log('SEND STAGE 3');
         var countryCode = data.country_code;   
         var fromPhoneUn = data.un;
-        var phoneNumber = clean.sentNum(toPhoneNumber, fromPhoneNumber, fromPhoneUn, countryCode);
+        var phoneNumber = clean.sentNum(toPhone, fromPhone, fromPhoneUn, countryCode);
         var toPhoneUn = clean.getUn(phoneNumber);
         // FIND WHAT CURRENCY THEY NEED
         var fromCurrency = fx.currency(fromPhoneUn);
         var toCurrency = fx.currency(toPhoneUn);
         // CONVERT THE AMOUNT TO THE CURRENCY
-        fx.exchange(fromCurrency, toCurrency, amount)
-        .then(function(data) {   
-            console.log('SEND STAGE 4');     
-            console.log(data);
-            // MAKE SURE BOTH HAPPEN AND IN ORDER
-                // TRANSFR THE AMOUNT FROM TH SENDR BACK TO HOT WALLET FIRST
-                // THEN ISSUE NEW ASSET TO THE TO ADDRESS IN THE CORRECT CURRENCY
-        })
-        .catch(function(err) {
-        console.log(err);
-    }   )
-
-
+            fx.exchange(fromCurrency, toCurrency, amount)
+            .then(function(data) {   
+                console.log(data);
+                    // SEND THE AMOUNT BACK TO THE HOT WALLET FIRST
+                    transfer.toWallet(fromPhone, toPhone, fromCurrency, amount) 
+                    .then(function(data) {   
+                    // THEN ISSUE NEW ASSET TO THE TO ADDRESS IN THE CORRECT CURRENCY
+                    var amount = amount * data; //TODO Check this is divided by!!
+                    transfer.fromWallet(fromPhone, toPhone, toCurrency, amount) 
+                    })
+                    .catch(function(err) {
+                    console.log(err);
+                    })
+            })
+            .catch(function(err) {
+            console.log(err);
+            })
     })
     .catch(function(err) {
     // some error
     })
-
-
-    
 };// END FUNCTION
 
 //----------------------------------------- LAST FOUR
@@ -131,7 +119,6 @@ exports.setOneContact = function(name, encPhoneNumber, phoneUn){
         .catch(function(err) {
             console.log(err);
         })
-                    
             // TODO: MOVE THIS INTO MONGO (JUST OPEN 1 CONNECTION)  
 };
 
@@ -148,6 +135,7 @@ exports.topUp = function (socket, io, msg) {
             var cardCVC = crypto.decrypt(data.card_CVC);
             var cardMonth = crypto.decrypt(data.card_month);
             var cardYear = crypto.decrypt(data.card_year);
+// TODO: Put this back once we have all currency assets issued
             //var currency = data.currency_abbreviation;
             var currency = "USD";
             // PREPARE TRANSFER PARTIES
@@ -156,20 +144,6 @@ exports.topUp = function (socket, io, msg) {
             var toAddress = data.bitcoin_address;
             var fromPhone = "4083297423";
             var toPhone = "4083297423";
-            // PREPARE ASSET TO TRANSFER
-            // TODO: Make an asset helper to retern these values
-            if (currency == 'USD'){
-                var assetID = process.env.ASSET_USD
-            }
-            if (currency == 'CNY'){
-                var assetID = process.env.ASSET_USD //// TODO FIX THIS!!!!!
-            }
-            if (currency == 'INR'){
-                var assetID = process.env.ASSET_INR
-            }
-            if (currency == 'EUR'){
-                var assetID = process.env.ASSET_EUR
-            }
             // CREATE THE SOURCE FOR STRIPE
             var source = {exp_month:cardMonth, exp_year:cardYear, number:cardNumber,object:'card',cvc:cardCVC};
             var userID = data._id.toString()
@@ -184,30 +158,22 @@ exports.topUp = function (socket, io, msg) {
                     .then(function(data) {
                         bank.add(data);
                         var amount = data.amount/100;
-                        console.log('--- CALLING TRANSFER---');  
+                        // TODO: SWAP THIS FOR transfer.fromWallet - fromPhone, toPhone, currency, amount
                         colu.transferFunds(fromAddress, amount, toAddress, privateKey, currency, fromPhone, toPhone)
-                        //blockchain.transferAsset(amount, assetID, fromAddress, toAddress)
-                                .then(function(data) {
-                                console.log('---TRANSFER DATA---');  
-                                console.log(data) 
-                                })
-                                .catch(function(err) {
-                                console.log('---TRANSFER ERROR START---');  
-                                console.log(err);
-                                console.log('---TRANSFER ERROR END---');  
-                                });
+                        .then(function(data) {
+                        console.log(data) 
+                        })
+                        .catch(function(err) {
+                        console.log(err);
+                        });
                     })
                     .catch(function(err) {
-                    console.log('---STRIPE ERROR START---');  
                     console.log(err);
-                    console.log('---STRIPE ERROR END---');  
                     io.to(socket.id).emit('topup', {error: err.raw.message});
                     });      
         })
         .catch(function(err) {
-            console.log('---MONGO ERROR START---');  
             console.log(err) //TODO: Do somthing more meaningfull!
-            console.log('---MONGO ERROR END---');  
         });
 
 };// END FUNCTION
