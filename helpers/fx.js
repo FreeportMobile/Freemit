@@ -6,11 +6,11 @@ exports.exchange = function (fromCurrency, toCurrency, amount) {
      return new Promise(function(resolve, reject) {
         var url = 'http://api.fixer.io/latest?base=' + fromCurrency;
         request(url, function (err, result, body) {
-            console.log(result);
+            console.log(body.rates[toCurrency]);
             var result = JSON.parse(body);
-            if (result.rates[toCurrency]) {
+            if (body.rates[toCurrency]) {
                 console.log('FIRE EXCHANGE 3');
-                resolve(result.rates[toCurrency])
+                resolve(body.rates[toCurrency])
             }
             else {
                 reject("Not Found");
