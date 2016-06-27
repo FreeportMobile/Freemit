@@ -5,7 +5,7 @@ var mongoClient = require('mongodb').MongoClient;
 
 //----------------------- SET CONTACTS ----------------------------------//
 
-exports.setContacts = function (name, phoneNumber, countryCode, bitcoinAddress, encPrivateKey) {
+exports.setContacts = function (name, phoneNumber, phoneUn, bitcoinAddress, encPrivateKey) {
 
     return new Promise(function(resolve, reject) {
         // OPEN CONNECTION     
@@ -19,7 +19,7 @@ exports.setContacts = function (name, phoneNumber, countryCode, bitcoinAddress, 
             var doc = {
                 name: name,
                 phone_number: phoneNumber,
-                country_code: countryCode,
+                un: phoneUn,
                 bitcoin_address: bitcoinAddress,
                 private_key: encPrivateKey,
             };

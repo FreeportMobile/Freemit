@@ -23,43 +23,25 @@ var colu = require('../helpers/colu.js');
 exports.send = function (socket, io, msg) {
 
     // READ JWT  
-    var fromNumber = crypto.readJWT(msg.jwt).phone_number;
+    var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     var amount = msg.value;
-    var toNumber = msg.phoneNumber;
+    var sentNumber = msg.phoneNumber;
     
-
     mongo.getCountryCode(fromNumber)
     .then(function(data) {  
-        var currencySymbol = data.currency_symbol;
-        var currencyAbbreviation = data.currency_abbreviation;
         var countryCode = data.country_code;   
         var phoneUn = data.un;
-
-
-            var isPlus = sentNumber.substring(0,1);
-            if (isPlus =='+'){
-                var phoneNumber = clean.num(sentNumber);
-            } else {
-                var phoneNumber = clean.numUn(sentNumber, phoneUn);
-            }
-            // is stil not defined just add in the country code.
-            if (phoneNumber == undefined || phoneNumber == [] || phoneNumber == null || phoneNumber == ''){
-                var phoneNumber = clean.num(countryCode + sentNumber); 
-            } 
-            if(phoneNumber != undefined){
-                var encPhoneNumber = crypto.encrypt(phoneNumber);
-                exports.setOneContact(name, encPhoneNumber, countryCode);
-            }
- 
-    })
-    .catch(function(err) {
-    // some error
-    })
+        var phoneNumber = clean.sentNum(sentNumber, encPhoneNumber, phoneUn, countryCode);
     // CLEAN THE PHONE NUMBER
         // FIND WHAT CURRENCY THEY NEED
             // CONVERT THE AMOUNT TO THE CURRENCY 
                 // TRANSFR THE AMOUNT IN FROM CURENCY BACK TO HOT WALLET
                     // ISSUE NEW ASSET TO THE TO ADDRESS
+    })
+    .catch(function(err) {
+    // some error
+    })
+
 
 
     
@@ -110,7 +92,7 @@ exports.saveContacts = function (socket, io, msg) {
             var phoneNumber = clean.sentNum(sentNumber, encPhoneNumber, phoneUn, countryCode);
             if(phoneNumber != undefined){
                 var encPhoneNumber = crypto.encrypt(phoneNumber);
-                exports.setOneContact(name, encPhoneNumber);
+                exports.setOneContact(name, encPhoneNumber, phoneUn);
             }
         }
     })
@@ -122,8 +104,7 @@ exports.saveContacts = function (socket, io, msg) {
 
 //------------------------------------------ SET ONE CONTACT
 
-exports.setOneContact = function(name, encPhoneNumber){
-    var countryCode = '+00' /// THIS NEEDS REMOVING
+exports.setOneContact = function(name, encPhoneNumber, phoneUn){
     // DOES THE PHONE NUMBER ALREADY EXISTS?
     mongo.getOneUser(encPhoneNumber)
         .then(function(data) {
@@ -133,7 +114,7 @@ exports.setOneContact = function(name, encPhoneNumber){
                 var bitcoinAddress = data.publicAddress;
                 var privateKey = data.privateKey;
                 var encPrivateKey = crypto.encrypt(privateKey);
-                mongo.setContacts(name, encPhoneNumber, countryCode, bitcoinAddress, encPrivateKey); 
+                mongo.setContacts(name, encPhoneNumber, phoneUn, bitcoinAddress, encPrivateKey); 
                 })
                 .catch(function(err) {
                     console.log(err);
