@@ -16,7 +16,6 @@ app.use(express.static(__dirname + '/public'));
 app.disable('x-powered-by');
 
 
-
 //------------------------- NEW ADDRESS ---------------------
 app.get('/newAddress', function (req, res) {
     var key = bitcoin.ECKey.makeRandom();
@@ -133,7 +132,7 @@ var send_asset = {
 
 app.get('/transferAsset', function (req, res) {
 
-        address='mm3dtEPHfghf7P7AsCCnJGV3RS3dSJE9dN';
+        //address='mm3dtEPHfghf7P7AsCCnJGV3RS3dSJE9dN';
         request.get('http://testnet.api.coloredcoins.org:80/v3/addressinfo/'+address, function (error, response, body) {
             if (error) {
                 res.status(200).json({error:"you no coin 4"});

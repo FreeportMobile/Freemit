@@ -3,6 +3,9 @@
 //-- SETUP MONGO
 var mongoClient = require('mongodb').MongoClient;
 
+// -- Setup Mongoose models
+var users = require('./models/users.js');
+
 //----------------------- SET CONTACTS ----------------------------------//
 
 exports.setContacts = function (name, phoneNumber, phoneUn, bitcoinAddress, encPrivateKey) {
