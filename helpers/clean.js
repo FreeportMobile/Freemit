@@ -30,7 +30,9 @@ exports.numUn = function (num, un) {
 
 //----------------------- CLEAN NUMBER SENT BY ----------------------------------//
 exports.sentNum = function (sentNumber, encPhoneNumber) {
-            var data = mongo.getCountryCode(encPhoneNumber)
+            var data = mongo.getCountryCode(encPhoneNumber);
+            console.log('DATA');
+            console.log(data);
             console.log('5');
             var phoneUn = data.un;
             console.log('UN '+phoneUn);
