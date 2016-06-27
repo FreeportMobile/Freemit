@@ -21,15 +21,16 @@ var colu = require('../helpers/colu.js');
 
 //----------------------------------------- SEND TRANSFER
 exports.send = function (socket, io, msg) {
-
+console.log('SEND STAGE 1');
     // READ JWT  
     var fromPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     var amount = msg.value;
     var toPhoneNumber = msg.phoneNumber;
-    
+    console.log('SEND STAGE 2');
   // CLEAN THE PHONE NUMBER
     mongo.getCountryCode(fromPhoneNumber)
     .then(function(data) {  
+        console.log('SEND STAGE 3');
         var countryCode = data.country_code;   
         var fromPhoneUn = data.un;
         var phoneNumber = clean.sentNum(toPhoneNumber, fromPhoneNumber, fromPhoneUn, countryCode);
@@ -39,7 +40,8 @@ exports.send = function (socket, io, msg) {
         var toCurrency = fx.currency(toPhoneUn);
         // CONVERT THE AMOUNT TO THE CURRENCY
         fx.exchange(fromCurrency, toCurrency, amount)
-        .then(function(data) {        
+        .then(function(data) {   
+            console.log('SEND STAGE 4');     
             console.log(data);
             // MAKE SURE BOTH HAPPEN AND IN ORDER
                 // TRANSFR THE AMOUNT FROM TH SENDR BACK TO HOT WALLET FIRST
