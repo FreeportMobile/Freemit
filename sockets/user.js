@@ -95,48 +95,27 @@ exports.lastFour = function (socket, io, msg) {
 //----------------------------------------- SAVE CONTACTS
 exports.saveContacts = function (socket, io, msg) {
     // READ JWT  
-    console.log('1');
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
-    console.log('2');
     // FIND COUNTRY THE USER IS IN
-    // mongo.getCountryCode(encPhoneNumber)
-    // .then(function(data) {  
-    //     var currencySymbol = data.currency_symbol;
-    //     var currencyAbbreviation = data.currency_abbreviation;
-    //     var countryCode = data.country_code;   
+    mongo.getCountryCode(encPhoneNumber)
+    .then(function(data) {  
+        var countryCode = data.country_code;   
         var allContacts = msg.contacts;
-        console.log('3');
-    //     var phoneUn = data.un;
+        var phoneUn = data.un;
         //LOOP OVER CONTACTS
         for (var i = 0; i < allContacts.length; i++) {
-            console.log('4+ '+i);
             // // TODO: Review this assumption carefully!!!
-             var name = allContacts[i].name;
-             console.log('Name '+name);
-             var sentNumber = allContacts[i].phoneNumber;
-             console.log('Sent Number '+sentNumber);
-            // // does the number start with a + ??
-            // var isPlus = sentNumber.substring(0,1);
-            // if (isPlus =='+'){
-            //     var phoneNumber = clean.num(sentNumber);
-            // } else {
-            //     var phoneNumber = clean.numUn(sentNumber, phoneUn);
-            // }
-            // // is stil not defined just add in the country code.
-            // if (phoneNumber == undefined || phoneNumber == [] || phoneNumber == null || phoneNumber == ''){
-            //     var phoneNumber = clean.num(countryCode + sentNumber); 
-            // } 
-            // if(phoneNumber != undefined){
-                var phoneNumber = clean.sentNum(sentNumber, encPhoneNumber);
-                console.log('Phone Number '+phoneNumber);
-                var encPhoneNumber = crypto.encrypt(phoneNumber);
-                exports.setOneContact(name, encPhoneNumber);
-            // }
+            var name = allContacts[i].name;
+            var sentNumber = allContacts[i].phoneNumber;
+            var phoneNumber = clean.sentNum(sentNumber, encPhoneNumber, phoneUn, countryCode);
+            console.log('Phone Number '+phoneNumber);
+            var encPhoneNumber = crypto.encrypt(phoneNumber);
+            exports.setOneContact(name, encPhoneNumber);
         }
-    // })
-    // .catch(function(err) {
-    // // some error
-    // })
+    })
+    .catch(function(err) {
+    // some error
+    })
     //TODO: SANITIZE ALL INPUTS TO STOP BAD ACTORS !!! VERY VERY IMPORTANT !!! 
 };// END FUNCTION
 

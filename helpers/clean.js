@@ -4,9 +4,6 @@
 var xss = require('xss');
 //-- SETUP PHONE
 var phone = require('phone');
-//-- MAKE MONGO AVAILABLE
-var mongo = require('./mongo.js');
-
 
 //----------------------- CLEAN ME ----------------------------------//
 exports.me = function (item) {
@@ -29,15 +26,7 @@ exports.numUn = function (num, un) {
 }; //-- END FUNCTION
 
 //----------------------- CLEAN NUMBER SENT BY ----------------------------------//
-exports.sentNum = function (sentNumber, encPhoneNumber) {
-            var data = mongo.getCountryCode(encPhoneNumber);
-            console.log('DATA');
-            console.log(data);
-            console.log('5');
-            var phoneUn = data.un;
-            console.log('UN '+phoneUn);
-            var countryCode = data.country_code;
-            console.log('countryCode '+countryCode);
+exports.sentNum = function (sentNumber, encPhoneNumber, phoneUn, countryCode) {
             var isPlus = sentNumber.substring(0,1);
             if (isPlus =='+'){
                 var phoneNumber = exports.num(sentNumber);
@@ -49,10 +38,7 @@ exports.sentNum = function (sentNumber, encPhoneNumber) {
             } 
             if(phoneNumber != undefined){
                 return(phoneNumber); 
-            } else{
-                return('error'); 
-            }   
-
+            }  
 }; //-- END FUNCTION
 
 
