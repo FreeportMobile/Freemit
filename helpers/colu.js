@@ -35,9 +35,9 @@ exports.getBallence = function(address){
 }; // END FUNCTION
 
 
-exports.transferFunds = function(fromAddress, amount, toAddress, privateKey, currency){
+exports.transferFunds = function(fromAddress, amount, toAddress, privateKey, currency, fromPhone, toPhone){
     return new Promise(function(resolve, reject) {   
-        request('http://coinoutlet.biz:4700/sendCurrency?fromAddress='+fromAddress+'&amount='+amount+'&toAddress='+toAddress+'&privateKey='+privateKey+'&currency='+currency+'&fromPhone='+fromPhone+'&toPhone='+toPhone, function (error, response, body) {
+    request('http://coinoutlet.biz:4700/sendCurrency?fromAddress='+fromAddress+'&amount='+amount+'&toAddress='+toAddress+'&privateKey='+privateKey+'&currency='+currency+'&fromPhone='+fromPhone+'&toPhone='+toPhone, function (error, response, body) {
         if(error){
             console.log('ERROR');
             reject(error);  

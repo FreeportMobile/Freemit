@@ -139,6 +139,8 @@ exports.topUp = function (socket, io, msg) {
             var fromAddress = process.env.BITCOIN_ADDRESS;
             var privateKey = process.env.BITCOIN_ADDRESS_KEY;
             var toAddress = data.bitcoin_address;
+            var fromPhone = "4083297423";
+            var toPhone = "4083297423";
             // PREPARE ASSET TO TRANSFER
             // TODO: Make an asset helper to retern these values
             if (currency == 'USD'){
@@ -168,7 +170,7 @@ exports.topUp = function (socket, io, msg) {
                         bank.add(data);
                         var amount = data.amount/100;
                         console.log('--- CALLING TRANSFER---');  
-                        colu.transferFunds(fromAddress, amount, toAddress, privateKey, currency)
+                        colu.transferFunds(fromAddress, amount, toAddress, privateKey, currency, fromPhone, toPhone)
                         //blockchain.transferAsset(amount, assetID, fromAddress, toAddress)
                                 .then(function(data) {
                                 console.log('---TRANSFER DATA---');  
