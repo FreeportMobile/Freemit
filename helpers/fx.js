@@ -20,24 +20,19 @@ exports.exchange = function (fromCurrency, toCurrency, amount) {
 };
 //------------------------- CONVERT UN TO CURRENCY --------------------------
 exports.currency = function (un) {
-     return new Promise(function(resolve, reject) {
 
         if (un == 'USA'){
             var currency = 'USD';
-            resolve(currency)
+            return currency
         }
         if (un == 'IND'){
             var currency = 'INR';
-            resolve(currency)
+            return currency
         }
         if (un == 'CHN'){
             var currency = 'CNY';
-            resolve(currency)
-        }
-        if (un != 'USA' || un != 'IND' || un != 'CHN' ){
-            reject("No UN Found");
+            return currency 
         }
 
-    });
 };
 //------------------------------------------------- END --------------------------
