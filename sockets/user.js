@@ -25,7 +25,12 @@ exports.send = function (socket, io, msg) {
     // READ JWT  
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     var amount = 1;
-    var toPhoneNumber = msg.phoneNumber;
+    var sentNumber = msg.phoneNumber;
+    var phoneNumber = clean.num(sentNumber);
+    console.log(phoneNumber);
+    var encPhoneNumber = crypto.encrypt(phoneNumber);
+    console.log(encPhoneNumber);
+    // CLEAN THE PHONE NUMBER
         // FIND WHAT CURRENCY THEY NEED
             // CONVERT THE AMOUNT TO THE CURRENCY 
                 // TRANSFR THE AMOUNT IN FROM CURENCY BACK TO HOT WALLET
