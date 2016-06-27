@@ -5,7 +5,7 @@ var xss = require('xss');
 //-- SETUP PHONE
 var phone = require('phone');
 //-- MAKE MONGO AVAILABLE
-var mongo = require('mongo.js');
+var mongo = require('./mongo.js');
 
 
 //----------------------- CLEAN ME ----------------------------------//
