@@ -108,9 +108,10 @@ exports.saveContacts = function (socket, io, msg) {
             var name = allContacts[i].name;
             var sentNumber = allContacts[i].phoneNumber;
             var phoneNumber = clean.sentNum(sentNumber, encPhoneNumber, phoneUn, countryCode);
-            console.log('Phone Number '+phoneNumber);
-            var encPhoneNumber = crypto.encrypt(phoneNumber);
-            exports.setOneContact(name, encPhoneNumber);
+            if(phoneNumber != undefined){
+                var encPhoneNumber = crypto.encrypt(phoneNumber);
+                exports.setOneContact(name, encPhoneNumber);
+            }
         }
     })
     .catch(function(err) {
