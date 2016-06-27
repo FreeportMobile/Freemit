@@ -93,7 +93,7 @@ exports.saveContacts = function (socket, io, msg) {
                 var phoneNumber = clean.numUn(sentNumber, phoneUn);
             }
             // is stil not defined just add in the country code.
-            if (phoneNumber == undefined){
+            if (phoneNumber == undefined || phoneNumber == [] || phoneNumber == null || phoneNumber == ''){
                 var phoneNumber = clean.num(countryCode + sentNumber); 
             } 
             if(phoneNumber != undefined){
