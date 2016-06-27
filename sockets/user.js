@@ -100,9 +100,10 @@ exports.setOneContact = function(name, encPhoneNumber, countryCode){
         .then(function(data) {
             if(data == null){
                 // IF IT DOENST EXIST MAKE A BTC ADDRESS AND ADD IT
-                blockchain.makeAddress()
+                //blockchain.makeAddress()
+                colu.makeAddress()
                 .then(function(data) {
-                var bitcoinAddress = data.bitcoinAddress;
+                var bitcoinAddress = data.publicAddress;
                 var privateKey = data.privateKey;
                 var encPrivateKey = crypto.encrypt(privateKey);
                 mongo.setContacts(name, encPhoneNumber, countryCode, bitcoinAddress, encPrivateKey); 
