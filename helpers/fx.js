@@ -2,11 +2,14 @@
 var request = require('request');
 //------------------------------------------------- FX NOW --------------------------
 exports.exchange = function (fromCurrency, toCurrency, amount) {
+    console.log('FIRE EXCHANGE 1');
     return new Promise(function (fulfill, reject) { // Create Promise
         var url = 'http://api.fixer.io/latest?base=' + fromCurrency;
         request(url, function (err, result, body) {
+            console.log('FIRE EXCHANGE 2');
             var result = JSON.parse(body);
             if (result.rates[toCurrency]) {
+                console.log('FIRE EXCHANGE 3');
                 fulfill(result.rates[toCurrency])
             }
             else {
