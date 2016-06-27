@@ -4,8 +4,6 @@
 var xss = require('xss');
 //-- SETUP PHONE
 var phone = require('phone');
-//-- MAKE CRYPTO AVAILABLE
-var crypto = require('crypto.js');
 //-- MAKE MONGO AVAILABLE
 var mongo = require('mongo.js');
 
