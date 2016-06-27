@@ -95,7 +95,9 @@ exports.lastFour = function (socket, io, msg) {
 //----------------------------------------- SAVE CONTACTS
 exports.saveContacts = function (socket, io, msg) {
     // READ JWT  
+    console.log('1');
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
+    console.log('2');
     // FIND COUNTRY THE USER IS IN
     // mongo.getCountryCode(encPhoneNumber)
     // .then(function(data) {  
@@ -103,9 +105,11 @@ exports.saveContacts = function (socket, io, msg) {
     //     var currencyAbbreviation = data.currency_abbreviation;
     //     var countryCode = data.country_code;   
         var allContacts = msg.contacts;
+        console.log('3');
     //     var phoneUn = data.un;
         //LOOP OVER CONTACTS
         for (var i = 0; i < allContacts.length; i++) {
+            console.log('4+ 'i);
             // // TODO: Review this assumption carefully!!!
              var name = allContacts[i].name;
              var sentNumber = allContacts[i].phoneNumber;
