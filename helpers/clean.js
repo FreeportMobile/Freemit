@@ -32,8 +32,11 @@ exports.numUn = function (num, un) {
 exports.sentNum = function (sentNumber, encPhoneNumber) {
         mongo.getCountryCode(encPhoneNumber)
         .then(function (data) {
+            console.log('5');
             var phoneUn = data.un;
+            console.log('UN '+phoneUn);
             var countryCode = data.country_code;
+            console.log('countryCode '+countryCode);
             var isPlus = sentNumber.substring(0,1);
             if (isPlus =='+'){
                 var phoneNumber = exports.num(sentNumber);
