@@ -19,24 +19,37 @@ var colu = require('../helpers/colu.js');
 
 
 
-//----------------------------------------- SEND
+//----------------------------------------- SEND TRANSFER
 exports.send = function (socket, io, msg) {
 
     // READ JWT  
-    var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
+    var fromPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     var amount = msg.value;
-    var sentNumber = msg.phoneNumber;
+    var toPhoneNumber = msg.phoneNumber;
     
-    mongo.getCountryCode(fromNumber)
+  // CLEAN THE PHONE NUMBER
+    mongo.getCountryCode(fromPhoneNumber)
     .then(function(data) {  
         var countryCode = data.country_code;   
-        var phoneUn = data.un;
-        var phoneNumber = clean.sentNum(sentNumber, encPhoneNumber, phoneUn, countryCode);
-    // CLEAN THE PHONE NUMBER
+        var fromPhoneUn = data.un;
+        var phoneNumber = clean.sentNum(toPhoneNumber, fromPhoneNumber, fromPhoneUn, countryCode);
+        var toPhoneUn = clean.getUn(phoneNumber);
         // FIND WHAT CURRENCY THEY NEED
-            // CONVERT THE AMOUNT TO THE CURRENCY 
-                // TRANSFR THE AMOUNT IN FROM CURENCY BACK TO HOT WALLET
-                    // ISSUE NEW ASSET TO THE TO ADDRESS
+        var fromCurrency = fx.currency(fromPhoneUn);
+        var toCurrency = fx.currency(toPhoneUn);
+        // CONVERT THE AMOUNT TO THE CURRENCY
+        fx.exchange(fromCurrency, toCurrency, amount)
+        .then(function(data) {        
+            console.log(data);
+            // MAKE SURE BOTH HAPPEN AND IN ORDER
+                // TRANSFR THE AMOUNT FROM TH SENDR BACK TO HOT WALLET FIRST
+                // THEN ISSUE NEW ASSET TO THE TO ADDRESS IN THE CORRECT CURRENCY
+        })
+        .catch(function(err) {
+        // some error
+    }   )
+
+
     })
     .catch(function(err) {
     // some error

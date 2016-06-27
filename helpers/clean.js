@@ -30,12 +30,12 @@ exports.getUn = function (num) {
 }; //-- END FUNCTION
 
 //----------------------- CLEAN NUMBER SENT BY ----------------------------------//
-exports.sentNum = function (sentNumber, encPhoneNumber, phoneUn, countryCode) {
+exports.sentNum = function (sentNumber, encPhoneNumber, fromPhoneUn, countryCode) {
             var isPlus = sentNumber.substring(0,1);
             if (isPlus =='+'){
                 var phoneNumber = exports.num(sentNumber);
             } else {
-                var phoneNumber = exports.numUn(sentNumber, phoneUn);
+                var phoneNumber = exports.numUn(sentNumber, fromPhoneUn);
             }
             if (phoneNumber == undefined || phoneNumber == [] || phoneNumber == null || phoneNumber == ''){
                 var phoneNumber = exports.num(countryCode + sentNumber); 
@@ -44,5 +44,4 @@ exports.sentNum = function (sentNumber, encPhoneNumber, phoneUn, countryCode) {
                 return(phoneNumber); 
             }  
 }; //-- END FUNCTION
-
 
