@@ -282,7 +282,6 @@ exports.sendVerificationCode = function (socket, io, msg) {
     // GET ALL THESE VALUES    
     Promise.all([
         mongo.getCurrency(countryCode),
-        //blockchain.makeAddress(),
         colu.makeAddress(),
         mongo.getOneUser(encPhoneNumber),
         ]) 
@@ -292,7 +291,7 @@ exports.sendVerificationCode = function (socket, io, msg) {
         // TODO: SOLVE THE USA AND CANADA CONFUSION THEY HAVE THE SAME DIALING CODE
         var currencySymbol = data[0].currency_symbol;
         var currencyAbbreviation = data[0].currency_abbreviation;
-        var bitcoinAddress = data[1].bitcoinAddress;
+        var bitcoinAddress = data[1].publicAddress;
         var encPrivateKey = crypto.encrypt(data[1].privateKey);
         var usersExists = data[2];
         // IF THERES NO USER MAKE ONE WITH A BTC ADDRESS       
