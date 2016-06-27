@@ -18,3 +18,10 @@ exports.num = function (num) {
         return(cleanedPhone[0]); 
 }; //-- END FUNCTION
 
+//----------------------- CLEAN NUMBER + UN ----------------------------------//
+exports.numUn = function (num, un) {
+        var cleanedPhone = phone(num, un);
+        console.log(cleanedPhone[0]);
+        return(cleanedPhone[0]); 
+}; //-- END FUNCTION
+

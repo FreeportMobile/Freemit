@@ -26,7 +26,7 @@ exports.send = function (socket, io, msg) {
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     var amount = 1;
     var sentNumber = msg.phoneNumber;
-    var phoneNumber = clean.num(sentNumber);
+    var phoneNumber = clean.num(sentNumber,'CHN');
     console.log(phoneNumber);
     var encPhoneNumber = crypto.encrypt(phoneNumber);
     console.log(encPhoneNumber);
