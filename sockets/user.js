@@ -83,15 +83,16 @@ exports.saveContacts = function (socket, io, msg) {
     .then(function(data) {  
         var countryCode = data.country_code;   
         var allContacts = msg.contacts;
-        var phoneUn = data.un;
+        var fromPhoneUn = data.un;
         //LOOP OVER CONTACTS
         for (var i = 0; i < allContacts.length; i++) {
             // // TODO: Review this assumption carefully!!!
             var name = allContacts[i].name;
             var sentNumber = allContacts[i].phoneNumber;
-            var phoneNumber = clean.sentNum(sentNumber, encPhoneNumber, phoneUn, countryCode);
+            var phoneNumber = clean.sentNum(sentNumber, encPhoneNumber, fromPhoneUn, countryCode);
             if(phoneNumber != undefined){
                 var encPhoneNumber = crypto.encrypt(phoneNumber);
+                var phoneUn = clean.getUn(phoneNumber);
                 exports.setOneContact(name, encPhoneNumber, phoneUn);
             }
         }

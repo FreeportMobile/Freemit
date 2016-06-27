@@ -23,6 +23,12 @@ exports.numUn = function (num, un) {
         return(cleanedPhone[0]); 
 }; //-- END FUNCTION
 
+//----------------------- GET UN ----------------------------------//
+exports.getUn = function (num) {
+        var phoneUn = phone(num);
+        return(phoneUn[1]); 
+}; //-- END FUNCTION
+
 //----------------------- CLEAN NUMBER SENT BY ----------------------------------//
 exports.sentNum = function (sentNumber, encPhoneNumber, phoneUn, countryCode) {
             var isPlus = sentNumber.substring(0,1);
