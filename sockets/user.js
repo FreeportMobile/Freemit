@@ -26,6 +26,7 @@ exports.send = function (socket, io, msg) {
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     var amount = 1;
     var sentNumber = msg.phoneNumber;
+
     var phoneNumber = clean.numUn(sentNumber,'CHN');
     console.log(phoneNumber);
     var encPhoneNumber = crypto.encrypt(phoneNumber);
@@ -35,6 +36,9 @@ exports.send = function (socket, io, msg) {
             // CONVERT THE AMOUNT TO THE CURRENCY 
                 // TRANSFR THE AMOUNT IN FROM CURENCY BACK TO HOT WALLET
                     // ISSUE NEW ASSET TO THE TO ADDRESS
+
+
+    
     
     
     
@@ -75,12 +79,20 @@ exports.saveContacts = function (socket, io, msg) {
         var currencyAbbreviation = data.currency_abbreviation;
         var countryCode = data.country_code;   
         var allContacts = msg.contacts;
+        var phoneUn = data.un;
         //LOOP OVER CONTACTS
         for (var i = 0; i < allContacts.length; i++) {
             // TODO: Review this assumption carefully!!!
             var name = allContacts[i].name;
             var sentNumber = allContacts[i].phoneNumber;
-            var phoneNumber = clean.num(sentNumber);
+            // does the number start with a + ??
+            var isPlus = sentNumber.substring(0,1);
+            if (isPlus =='+'){
+                var phoneNumber = clean.num(sentNumber);
+            } else {
+                var phoneNumber = clean.numUn(sentNumber, phoneUn);
+            }
+            // is stil not defined just add in the country code.
             if (phoneNumber == undefined){
                 var phoneNumber = clean.num(countryCode + sentNumber); 
             } 
