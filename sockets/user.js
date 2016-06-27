@@ -39,9 +39,7 @@ console.log('SEND STAGE 1');
         var toPhoneUn = clean.getUn(phoneNumber);
         // FIND WHAT CURRENCY THEY NEED
         var fromCurrency = fx.currency(fromPhoneUn);
-        console.log(fromCurrency); 
         var toCurrency = fx.currency(toPhoneUn);
-        console.log(toCurrency); 
         // CONVERT THE AMOUNT TO THE CURRENCY
         fx.exchange(fromCurrency, toCurrency, amount)
         .then(function(data) {   
@@ -52,7 +50,6 @@ console.log('SEND STAGE 1');
                 // THEN ISSUE NEW ASSET TO THE TO ADDRESS IN THE CORRECT CURRENCY
         })
         .catch(function(err) {
-        // some error
         console.log(err);
     }   )
 
@@ -63,19 +60,6 @@ console.log('SEND STAGE 1');
     })
 
 
-
-    
-    
-    
-    
-    // // FIND LAST FOUR DIGITS FROM DEBIT CARD
-    // mongo.getLastFour(encPhoneNumber)
-    // .then(function(data) {        
-    //     io.to(socket.id).emit('lastFour', {lastFour: data.last_four});
-    // })
-    // .catch(function(err) {
-    // // some error
-    // })
     
 };// END FUNCTION
 
