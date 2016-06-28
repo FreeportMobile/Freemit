@@ -9,15 +9,13 @@ var crypto = require('../helpers/crypto.js');
 //------------------------- TRANSFER TO WALLET-------------------------
 exports.toWallet = function (fromPhone, toPhone, currency, amount) {
     return new Promise(function(resolve, reject) {
-        console.log('---------------');
-        console.log('From Phone: '+ fromPhone);
+        var encFromPhone = fromPhone;
         var toAddress =  process.env.BITCOIN_ADDRESS;   
         var encPhoneNumber = fromPhone;
         mongo.getOneUser(encPhoneNumber)
             .then(function(data) {
                 var fromAddress = data.bitcoin_address;
                 var privateKey = crypto.decrypt(data.private_key);
-                //var fromPhone = crypto.decrypt(fromPhone);
                 colu.transferFunds(fromAddress, amount, toAddress, privateKey, currency, fromPhone, toPhone)
                 .then(function(data) {   
                 resolve(data);     
@@ -38,9 +36,7 @@ exports.toWallet = function (fromPhone, toPhone, currency, amount) {
 //------------------------- TRANSFER FROM WALLET-------------------------
 exports.fromWallet = function (fromPhone, toPhone, currency, amount) {
     return new Promise(function(resolve, reject) {
-        
-        console.log('---------------');
-        console.log('From Phone: '+ fromPhone);
+        var encFromPhone = fromPhone;
         var fromAddress = process.env.BITCOIN_ADDRESS;
         var privateKey =  process.env.BITCOIN_ADDRESS_KEY;
         var encPhoneNumber = crypto.encrypt(toPhone);
@@ -48,9 +44,7 @@ exports.fromWallet = function (fromPhone, toPhone, currency, amount) {
             .then(function(data) {
                 var toAddress = data.bitcoin_address;
                 console.log('---------------');
-                console.log('From Phone:'+fromPhone);
-                var fromPhone = crypto.decrypt(fromPhone);
-                console.log('From Phone Decrypted:'+fromPhone);
+                console.log('From Phone:'+ encFromPhone);
                 console.log('---------------');
                     colu.transferFunds(fromAddress, amount, toAddress, privateKey, currency, fromPhone, toPhone)
                     .then(function(data) {   
