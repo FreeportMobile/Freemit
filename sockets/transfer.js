@@ -38,11 +38,15 @@ exports.fromWallet = function (fromPhone, toPhone, currency, amount) {
         var fromAddress = process.env.BITCOIN_ADDRESS;
         var privateKey =  process.env.BITCOIN_ADDRESS_KEY;
         // TODO: Get the to address below from the database using the to phone
-        var toAddress = toAddress;
 
-            console.log('-----------');
-            console.log(fromAddress, amount, toAddress, privateKey, currency, fromPhone, toPhone);
-            console.log('-----------');
+            mongo.getOneUser(toPhone)
+            .then(function(data) {
+                console.log('--------------');
+                console.log(data);
+                console.log('--------------');
+            //var toAddress = toAddress;
+            })
+
             colu.transferFunds(fromAddress, amount, toAddress, privateKey, currency, fromPhone, toPhone)
             .then(function(data) {   
             // TODO: Save the transaction ID to the mongo        
