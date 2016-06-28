@@ -45,7 +45,7 @@ exports.send = function (socket, io, msg) {
                     .then(function(data) {   
                         console.log('---4---');
                         console.log('exchangeAmount' + exchangeAmount)
-                        transfer.fromWallet(fromPhone, toPhone, toCurrency, amount)
+                        transfer.fromWallet(fromPhone, toPhone, toCurrency, exchangeAmount)
                         .then(function(data){
                             console.log(data);
                         })
