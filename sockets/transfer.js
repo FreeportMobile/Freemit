@@ -42,15 +42,20 @@ exports.fromWallet = function (fromPhone, toPhone, currency, amount) {
             mongo.getOneUser(encPhoneNumber)
             .then(function(data) {
             var toAddress = data.bitcoin_address;
+                colu.transferFunds(fromAddress, amount, toAddress, privateKey, currency, fromPhone, toPhone)
+                .then(function(data) {   
+                    console.log(data);
+                // TODO: Save the transaction ID to the mongo        
+                })
+                .catch(function(err) {
+                    console.log(err);
+                })
+            }) 
+            .then(function(data) {   
+                console.log(data);    
             })
 
-            colu.transferFunds(fromAddress, amount, toAddress, privateKey, currency, fromPhone, toPhone)
-            .then(function(data) {   
-            // TODO: Save the transaction ID to the mongo        
-            })
-            .catch(function(err) {
-            console.log(err);
-            })
+            
 
     }); //-- END PROMISE
 };// END FUNCTION
