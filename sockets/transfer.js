@@ -15,7 +15,7 @@ exports.toWallet = function (fromPhone, toPhone, currency, amount) {
             .then(function(data) {
                 var fromAddress = data.bitcoin_address;
                 var privateKey = crypto.decrypt(data.private_key);
-                var fromPhone = crypto.decrypt(fromPhone);
+                //var fromPhone = crypto.decrypt(fromPhone);
                 colu.transferFunds(fromAddress, amount, toAddress, privateKey, currency, fromPhone, toPhone)
                 .then(function(data) {   
                 resolve(data);     
@@ -42,7 +42,7 @@ exports.fromWallet = function (fromPhone, toPhone, currency, amount) {
             mongo.getOneUser(encPhoneNumber)
             .then(function(data) {
             var toAddress = data.bitcoin_address;
-            var fromPhone = crypto.decrypt(fromPhone);
+            //var fromPhone = crypto.decrypt(fromPhone);
                 colu.transferFunds(fromAddress, amount, toAddress, privateKey, currency, fromPhone, toPhone)
                 .then(function(data) {   
                     resolve(data);     
