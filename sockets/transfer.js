@@ -35,26 +35,29 @@ exports.toWallet = function (fromPhone, toPhone, currency, amount) {
 
 //------------------------- TRANSFER FROM WALLET-------------------------
 exports.fromWallet = function (fromPhone, toPhone, currency, amount) {
-    return new Promise(function(resolve, reject) {   
+    return new Promise(function(resolve, reject) {
+        var fromPhone = fromPhone;
+        console.log('---------------');
+        console.log('From Phone:'+fromPhone);
         var fromAddress = process.env.BITCOIN_ADDRESS;
         var privateKey =  process.env.BITCOIN_ADDRESS_KEY;
         var encPhoneNumber = crypto.encrypt(toPhone);
             mongo.getOneUser(encPhoneNumber)
             .then(function(data) {
-            var toAddress = data.bitcoin_address;
-            console.log('---------------');
-            console.log('From Phone:'+fromPhone);
-            var fromPhone = crypto.decrypt(fromPhone);
-            console.log('From Phone Decrypted:'+fromPhone);
-            console.log('---------------');
-                colu.transferFunds(fromAddress, amount, toAddress, privateKey, currency, fromPhone, toPhone)
-                .then(function(data) {   
-                    resolve(data);     
-                })
-                .catch(function(err) {
-                    console.log(err);
-                    reject(err);
-                })
+                var toAddress = data.bitcoin_address;
+                console.log('---------------');
+                console.log('From Phone:'+fromPhone);
+                var fromPhone = crypto.decrypt(fromPhone);
+                console.log('From Phone Decrypted:'+fromPhone);
+                console.log('---------------');
+                    colu.transferFunds(fromAddress, amount, toAddress, privateKey, currency, fromPhone, toPhone)
+                    .then(function(data) {   
+                        resolve(data);     
+                    })
+                    .catch(function(err) {
+                        console.log(err);
+                        reject(err);
+                    })
             }) 
             .catch(function(err) {   
                 console.log(data);
