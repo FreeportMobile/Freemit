@@ -9,6 +9,8 @@ var crypto = require('../helpers/crypto.js');
 //------------------------- TRANSFER TO WALLET-------------------------
 exports.toWallet = function (fromPhone, toPhone, currency, amount) {
     return new Promise(function(resolve, reject) {
+        console.log('---------------');
+        console.log('From Phone: '+ fromPhone);
         var toAddress =  process.env.BITCOIN_ADDRESS;   
         var encPhoneNumber = fromPhone;
         mongo.getOneUser(encPhoneNumber)
@@ -36,9 +38,9 @@ exports.toWallet = function (fromPhone, toPhone, currency, amount) {
 //------------------------- TRANSFER FROM WALLET-------------------------
 exports.fromWallet = function (fromPhone, toPhone, currency, amount) {
     return new Promise(function(resolve, reject) {
-        var fromPhone = fromPhone;
+        
         console.log('---------------');
-        console.log('From Phone:'+fromPhone);
+        console.log('From Phone: '+ fromPhone);
         var fromAddress = process.env.BITCOIN_ADDRESS;
         var privateKey =  process.env.BITCOIN_ADDRESS_KEY;
         var encPhoneNumber = crypto.encrypt(toPhone);
