@@ -16,8 +16,6 @@ exports.send = function (socket, io, msg) {
     // READ JWT  
     var fromPhone = crypto.readJWT(msg.jwt).phone_number;
     var amount = msg.value;
-    console.log('---0---');
-    console.log(amount);
     var toPhone = msg.phoneNumber;
     // CLEAN THE PHONE NUMBER
     mongo.getCountryCode(fromPhone)
@@ -33,21 +31,12 @@ exports.send = function (socket, io, msg) {
             fx.exchange(fromCurrency, toCurrency, amount)
             .then(function(data) {
                 var exchangeRate = data;
-                console.log('---1---');
-                console.log('amount1 : '+ amount);
-                console.log('exchangeRate : '+ exchangeRate);
-                console.log('---2---');
                 var exchangeAmount = amount * exchangeRate;
-                console.log('---3---');
-                console.log('exchangeAmount : '+ exchangeAmount);
-                    // SEND THE AMOUNT BACK TO THE HOT WALLET FIRST
                     transfer.toWallet(fromPhone, toPhone, fromCurrency, amount) 
                     .then(function(data) {   
-                        console.log('---4---');
-                        console.log('exchangeAmount' + exchangeAmount)
                         transfer.fromWallet(fromPhone, toPhone, toCurrency, exchangeAmount)
                         .then(function(data){
-                            console.log(data);
+                        // TODO: Signal to the app the transfr was completed 
                         })
                         .catch(function(err) {
                             console.log(err);

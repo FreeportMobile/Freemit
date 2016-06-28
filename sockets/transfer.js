@@ -18,7 +18,6 @@ exports.toWallet = function (fromPhone, toPhone, currency, amount) {
                 var privateKey = crypto.decrypt(data.private_key);
                 colu.transferFunds(fromAddress, amount, toAddress, privateKey, currency, fromPhone, toPhone)
                 .then(function(data) {   
-                console.log(data); 
                 resolve(data);     
                 })
                 .catch(function(err) {
