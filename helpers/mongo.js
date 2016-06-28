@@ -2,7 +2,6 @@
 
 //-- SETUP MONGO
 var mongoClient = require('mongodb').MongoClient;
-
 // -- Setup Mongoose models
 var users = require('../models/users.js');
 
