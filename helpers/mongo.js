@@ -4,7 +4,7 @@
 var mongoClient = require('mongodb').MongoClient;
 
 // -- Setup Mongoose models
-var users = require('./models/users.js');
+var users = require('../models/users.js');
 
 //----------------------- SET CONTACTS ----------------------------------//
 
