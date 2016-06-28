@@ -8,25 +8,25 @@ var crypto = require('../helpers/crypto.js');
 
 //------------------------- TRANSFER TO WALLET-------------------------
 exports.toWallet = function (fromPhone, toPhone, currency, amount) {
-    return new Promise(function(resolve, reject) {   
-        var fromPhone = fromPhone; 
-        var toPhone = toPhone;
-        var currency = currency;
-        var amount = amount; 
-        // TODO: Get the 2 items bewlow from the database, use the fromPhone above to find them
-        var fromAddress = fromAddress;
-        var privateKey =  privateKey;
-        // Transfer to our hot wallet
-        var toAddress =  process.env.BITCOIN_ADDRESS;
+    return new Promise(function(resolve, reject) {
 
-            colu.transferFunds(fromAddress, amount, toAddress, privateKey, currency, fromPhone, toPhone)
-            .then(function(data) {   
-            // TODO: Save the transaction ID to a new table in mongo        
+        var toAddress =  process.env.BITCOIN_ADDRESS;   
+        var encPhoneNumber = fromPhone;
+        mongo.getOneUser(encPhoneNumber)
+            .then(function(data) {
+                var fromAddress = data.bitcoin_address;
+                var privateKey = crypto.decrypt(data.private_key);
+                colu.transferFunds(fromAddress, amount, toAddress, privateKey, currency, fromPhone, toPhone)
+                .then(function(data) {   
+                console.log(data);     
+                })
+                .catch(function(err) {
+                console.log(err);
+                })
             })
             .catch(function(err) {
             console.log(err);
             })
-
     }); //-- END PROMISE
 };// END FUNCTION
 
