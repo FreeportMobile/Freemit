@@ -32,7 +32,8 @@ exports.checkNumber = function (phoneNumber, countryCode) {
 
     client.phoneNumbers(phoneNumber).get({
     countryCode: countryCode,
-    type: 'carrier'
+   // type: 'carrier'
+   // type: 'caller-name'
     }, function(error, number) {
         if(error){
             reject(error)
