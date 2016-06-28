@@ -52,11 +52,11 @@ exports.transferFunds = function(fromAddress, amount, toAddress, privateKey, cur
             reject(error);  
         }
         if (!error && response.statusCode == 200) {
-            console.log(' ------------ END SENDING ------------'); 
             var EndDate = new Date();
             var EndTime = EndDate.getTime();
             var FetchTime = EndTime - startTime;
             console.log('Time to fetch: '+ FetchTime);
+            console.log(' ------------ END SENDING ------------'); 
             resolve(body);
         }
     })

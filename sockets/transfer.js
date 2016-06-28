@@ -9,7 +9,6 @@ var crypto = require('../helpers/crypto.js');
 //------------------------- TRANSFER TO WALLET-------------------------
 exports.toWallet = function (fromPhone, toPhone, currency, amount) {
     return new Promise(function(resolve, reject) {
-
         var toAddress =  process.env.BITCOIN_ADDRESS;   
         var encPhoneNumber = fromPhone;
         mongo.getOneUser(encPhoneNumber)
