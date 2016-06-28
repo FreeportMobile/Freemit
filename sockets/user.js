@@ -30,12 +30,15 @@ exports.send = function (socket, io, msg) {
         // CONVERT THE AMOUNT TO THE CURRENCY
             fx.exchange(fromCurrency, toCurrency, amount)
             .then(function(data) {   
-                console.log(data);
+                    console.log('amount: '+ amount);
                     // SEND THE AMOUNT BACK TO THE HOT WALLET FIRST
                     transfer.toWallet(fromPhone, toPhone, fromCurrency, amount) 
                     .then(function(data) {   
                     // THEN ISSUE NEW ASSET TO THE TO ADDRESS IN THE CORRECT CURRENCY
+                    console.log('amount: '+ amount);
+                    console.log('data: '+ data);
                     var amount = amount * data; //TODO Check this is divided by!!
+                    console.log('new amount: '+ amount);
                     transfer.fromWallet(fromPhone, toPhone, toCurrency, amount) 
                     })
                     .catch(function(err) {
