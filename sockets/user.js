@@ -30,7 +30,6 @@ exports.send = function (socket, io, msg) {
         // CONVERT THE AMOUNT TO THE CURRENCY
             fx.exchange(fromCurrency, toCurrency, amount)
             .then(function(data) {
-                var amount = amount;
                 var exchangeRate = data;
                 console.log('---1---');
                 console.log('amount1 : '+ amount);
