@@ -44,7 +44,8 @@ exports.fromWallet = function (fromPhone, toPhone, currency, amount) {
             .then(function(data) {
                 var toAddress = data.bitcoin_address;
                 console.log('---------------');
-                console.log('From Phone:'+ encFromPhone);
+                var fromPhone = crypto.decrypt(encFromPhone);
+                console.log('From Phone:'+ fromPhone);
                 console.log('---------------');
                     colu.transferFunds(fromAddress, amount, toAddress, privateKey, currency, fromPhone, toPhone)
                     .then(function(data) {   
