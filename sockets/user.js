@@ -135,7 +135,6 @@ exports.topUp = function (socket, io, msg) {
             var cardCVC = crypto.decrypt(data.card_CVC);
             var cardMonth = crypto.decrypt(data.card_month);
             var cardYear = crypto.decrypt(data.card_year);
-// TODO: Put this back once we have all currency assets issued
             var currency = data.currency_abbreviation;
             // PREPARE TRANSFER PARTIES
             var fromAddress = process.env.BITCOIN_ADDRESS;
@@ -157,12 +156,6 @@ exports.topUp = function (socket, io, msg) {
                     .then(function(data) {
                         bank.add(data);
                         var amount = data.amount/100;
-                        console.log('-----------------');
-                        console.log(fromPhone);
-                        console.log(toPhone);
-                        console.log(currency);
-                        console.log(amount);
-                        console.log('-----------------');
                         transfer.fromWallet(fromPhone, toPhone, currency, amount) 
                         .then(function(data) {
                         console.log(data) 
