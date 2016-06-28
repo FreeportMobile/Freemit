@@ -16,6 +16,8 @@ exports.send = function (socket, io, msg) {
     // READ JWT  
     var fromPhone = crypto.readJWT(msg.jwt).phone_number;
     var amount = msg.value;
+    console.log('---0---');
+    console.log(amount);
     var toPhone = msg.phoneNumber;
     // CLEAN THE PHONE NUMBER
     mongo.getCountryCode(fromPhone)
