@@ -29,20 +29,28 @@ exports.send = function (socket, io, msg) {
         var toCurrency = fx.currency(toPhoneUn);
         // CONVERT THE AMOUNT TO THE CURRENCY
             fx.exchange(fromCurrency, toCurrency, amount)
-            .then(function(data) {   
-                    console.log('amount: '+ amount);
+            .then(function(data) {
+                var amount = amount;
+                var exchangeRate = data;
+                console.log('---1---');
+                console.log('amount1 : '+ amount);
+                console.log('exchangeRate : '+ exchangeRate);
+                console.log('---2---');
                     // SEND THE AMOUNT BACK TO THE HOT WALLET FIRST
                     transfer.toWallet(fromPhone, toPhone, fromCurrency, amount) 
                     .then(function(data) {   
-                    // THEN ISSUE NEW ASSET TO THE TO ADDRESS IN THE CORRECT CURRENCY
-                    console.log('amount: '+ amount);
-                    console.log('data: '+ data);
-                    var amount = amount * data; //TODO Check this is divided by!!
-                    console.log('new amount: '+ amount);
-                    transfer.fromWallet(fromPhone, toPhone, toCurrency, amount) 
+                        // THEN ISSUE NEW ASSET TO THE TO ADDRESS IN THE CORRECT CURRENCY
+                        console.log('---3---');
+                        console.log('amount2 : '+ amount);
+                        console.log('---4---');
+                        console.log('exchangeRate: '+ exchangeRate);
+                        var amount = amount * exchangeRate; //TODO Check this is divided by!!
+                        console.log('---5---');
+                        console.log('new amount: '+ amount);
+                        transfer.fromWallet(fromPhone, toPhone, toCurrency, amount) 
                     })
                     .catch(function(err) {
-                    console.log(err);
+                        console.log(err);
                     })
             })
             .catch(function(err) {
