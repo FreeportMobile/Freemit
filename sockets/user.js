@@ -137,13 +137,12 @@ exports.topUp = function (socket, io, msg) {
             var cardYear = crypto.decrypt(data.card_year);
 // TODO: Put this back once we have all currency assets issued
             var currency = data.currency_abbreviation;
-            //var currency = "USD";
             // PREPARE TRANSFER PARTIES
             var fromAddress = process.env.BITCOIN_ADDRESS;
             var privateKey = process.env.BITCOIN_ADDRESS_KEY;
             var toAddress = data.bitcoin_address;
-            var fromPhone = "4083297423";
-            var toPhone = "4083297423";
+            var fromPhone = "0";
+            var toPhone = crypto.decrypt(encPhoneNumber);
             // CREATE THE SOURCE FOR STRIPE
             var source = {exp_month:cardMonth, exp_year:cardYear, number:cardNumber,object:'card',cvc:cardCVC};
             var userID = data._id.toString()
@@ -158,8 +157,13 @@ exports.topUp = function (socket, io, msg) {
                     .then(function(data) {
                         bank.add(data);
                         var amount = data.amount/100;
-                        // TODO: SWAP THIS FOR transfer.fromWallet - fromPhone, toPhone, currency, amount
-                        colu.transferFunds(fromAddress, amount, toAddress, privateKey, currency, fromPhone, toPhone)
+                        console.log('-----------------');
+                        console.log(fromPhone);
+                        console.log(toPhone);
+                        console.log(currency);
+                        console.log(amount);
+                        console.log('-----------------');
+                        transfer.fromWallet(fromPhone, toPhone, currency, amount) 
                         .then(function(data) {
                         console.log(data) 
                         })
