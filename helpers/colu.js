@@ -55,7 +55,7 @@ exports.transferFunds = function(fromAddress, amount, toAddress, privateKey, cur
             var EndDate = new Date();
             var EndTime = EndDate.getTime();
             var FetchTime = EndTime - startTime;
-            console.log('Time to fetch: '+ FetchTime);
+            console.log('Transaction Time: '+ FetchTime);
             console.log(' ------------ END SENDING ------------'); 
             resolve(body);
         }
