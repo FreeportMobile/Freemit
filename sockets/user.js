@@ -37,18 +37,21 @@ exports.send = function (socket, io, msg) {
                 console.log('amount1 : '+ amount);
                 console.log('exchangeRate : '+ exchangeRate);
                 console.log('---2---');
+                var exchangeAmount = amount * exchangeRate;
+                console.log('---3---');
+                console.log('exchangeAmount : '+ exchangeAmount);
                     // SEND THE AMOUNT BACK TO THE HOT WALLET FIRST
                     transfer.toWallet(fromPhone, toPhone, fromCurrency, amount) 
                     .then(function(data) {   
-                        // THEN ISSUE NEW ASSET TO THE TO ADDRESS IN THE CORRECT CURRENCY
-                        console.log('---3---');
-                        console.log('amount2 : '+ amount);
                         console.log('---4---');
-                        console.log('exchangeRate: '+ exchangeRate);
-                        var amount = amount * exchangeRate; //TODO Check this is divided by!!
-                        console.log('---5---');
-                        console.log('new amount: '+ amount);
-                        transfer.fromWallet(fromPhone, toPhone, toCurrency, amount) 
+                        console.log('exchangeAmount' + exchangeAmount)
+                        transfer.fromWallet(fromPhone, toPhone, toCurrency, amount)
+                        .then(function(data){
+                            console.log(data);
+                        })
+                        .catch(function(err) {
+                            console.log(err);
+                        })
                     })
                     .catch(function(err) {
                         console.log(err);
