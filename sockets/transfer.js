@@ -4,6 +4,7 @@
 var colu = require('../helpers/colu.js');
 //-- MAKE MONGO
 var mongo = require('../helpers/mongo.js');
+var crypto = require('../helpers/crypto.js');
 
 //------------------------- TRANSFER TO WALLET-------------------------
 exports.toWallet = function (fromPhone, toPhone, currency, amount) {
@@ -38,8 +39,8 @@ exports.fromWallet = function (fromPhone, toPhone, currency, amount) {
         var fromAddress = process.env.BITCOIN_ADDRESS;
         var privateKey =  process.env.BITCOIN_ADDRESS_KEY;
         // TODO: Get the to address below from the database using the to phone
-
-            mongo.getOneUser(toPhone)
+        var encPhoneNumber = crypto.encrypt(toPhone);
+            mongo.getOneUser(encPhoneNumber)
             .then(function(data) {
                 console.log('--------------');
                 console.log(data);
