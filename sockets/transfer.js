@@ -38,14 +38,10 @@ exports.fromWallet = function (fromPhone, toPhone, currency, amount) {
         // Transfer from our hot wallet
         var fromAddress = process.env.BITCOIN_ADDRESS;
         var privateKey =  process.env.BITCOIN_ADDRESS_KEY;
-        // TODO: Get the to address below from the database using the to phone
         var encPhoneNumber = crypto.encrypt(toPhone);
             mongo.getOneUser(encPhoneNumber)
             .then(function(data) {
-                console.log('--------------');
-                console.log(data);
-                console.log('--------------');
-            //var toAddress = toAddress;
+            var toAddress = data.bitcoin_address;
             })
 
             colu.transferFunds(fromAddress, amount, toAddress, privateKey, currency, fromPhone, toPhone)
