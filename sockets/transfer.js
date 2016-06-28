@@ -34,8 +34,6 @@ exports.toWallet = function (fromPhone, toPhone, currency, amount) {
 //------------------------- TRANSFER FROM WALLET-------------------------
 exports.fromWallet = function (fromPhone, toPhone, currency, amount) {
     return new Promise(function(resolve, reject) {   
-
-        // Transfer from our hot wallet
         var fromAddress = process.env.BITCOIN_ADDRESS;
         var privateKey =  process.env.BITCOIN_ADDRESS_KEY;
         var encPhoneNumber = crypto.encrypt(toPhone);
@@ -44,19 +42,17 @@ exports.fromWallet = function (fromPhone, toPhone, currency, amount) {
             var toAddress = data.bitcoin_address;
                 colu.transferFunds(fromAddress, amount, toAddress, privateKey, currency, fromPhone, toPhone)
                 .then(function(data) {   
-                    console.log(data);
-                // TODO: Save the transaction ID to the mongo        
+                    resolve(data);     
                 })
                 .catch(function(err) {
                     console.log(err);
+                    reject(err);
                 })
             }) 
-            .then(function(data) {   
-                console.log(data);    
+            .catch(function(err) {   
+                console.log(data);
+                reject(err);
             })
-
-            
-
     }); //-- END PROMISE
 };// END FUNCTION
 
