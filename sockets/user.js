@@ -20,6 +20,8 @@ exports.send = function (socket, io, msg) {
     // CLEAN THE PHONE NUMBER
     mongo.getCountryCode(fromPhone)
     .then(function(data) {  
+                console.log('-------- 1 ---------');
+                console.log(data);
         var countryCode = data.country_code;   
         var fromPhoneUn = data.un;
         var phoneNumber = clean.sentNum(toPhone, fromPhone, fromPhoneUn, countryCode);
