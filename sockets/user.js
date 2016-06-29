@@ -20,8 +20,6 @@ exports.send = function (socket, io, msg) {
     // CLEAN THE PHONE NUMBER
     mongo.getCountryCode(fromPhone)
     .then(function(data) {  
-                console.log('-------- 1 ---------');
-                console.log(data);
         var countryCode = data.country_code;   
         var fromPhoneUn = data.un;
         var phoneNumber = clean.sentNum(toPhone, fromPhone, fromPhoneUn, countryCode);
@@ -34,19 +32,19 @@ exports.send = function (socket, io, msg) {
             .then(function(data) {
                 var exchangeRate = data;
                 var exchangeAmount = amount * exchangeRate;
-                    transfer.toWallet(fromPhone, toPhone, fromCurrency, amount) 
-                    .then(function(data) {   
-                        transfer.fromWallet(fromPhone, toPhone, toCurrency, exchangeAmount)
-                        .then(function(data){
-                        // TODO: Signal to the app the transfr was completed 
-                        })
-                        .catch(function(err) {
-                            console.log(err);
-                        })
-                    })
-                    .catch(function(err) {
-                        console.log(err);
-                    })
+                    // transfer.toWallet(fromPhone, toPhone, fromCurrency, amount) 
+                    // .then(function(data) {   
+                    //     transfer.fromWallet(fromPhone, toPhone, toCurrency, exchangeAmount)
+                    //     .then(function(data){
+                    //     // TODO: Signal to the app the transfr was completed 
+                    //     })
+                    //     .catch(function(err) {
+                    //         console.log(err);
+                    //     })
+                    // })
+                    // .catch(function(err) {
+                    //     console.log(err);
+                    // })
             })
             .catch(function(err) {
             console.log(err);
