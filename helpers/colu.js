@@ -20,12 +20,14 @@ exports.makeAddress = function(){
 
 exports.getBallence = function(address, currency){
     return new Promise(function(resolve, reject) {   
+        console.log('http://coinoutlet.site:4700/getbalance?address='+address+'&asset='+currency);
         request('http://coinoutlet.site:4700/getbalance?address='+address+'&asset='+currency, function (error, response, body) {
             if(error){
                 console.log('ERROR');  
                 reject(error); 
             }
             if (!error && response.statusCode == 200) {
+                console.log('FETCHED BALANCE');  
             resolve(body);
             }
         })
