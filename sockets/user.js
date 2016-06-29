@@ -22,7 +22,9 @@ exports.send = function (socket, io, msg) {
     .then(function(data) {  
         var countryCode = data.country_code;   
         var fromPhoneUn = data.un;
-        var phoneNumber = clean.sentNum(toPhone, fromPhone, fromPhoneUn, countryCode);
+        var phoneNumber = clean.sentNum(toPhone, fromPhoneUn, countryCode);
+        console.log('-----------');
+        console.log(phoneNumber);
         var toPhoneUn = clean.getUn(phoneNumber);
         // FIND WHAT CURRENCY THEY NEED
         var fromCurrency = fx.currency(fromPhoneUn);
@@ -83,18 +85,13 @@ exports.saveContacts = function (socket, io, msg) {
         //LOOP OVER CONTACTS
         for (var i = 0; i < allContacts.length; i++) {
             // // TODO: Review this assumption carefully!!!
-            console.log('------ CLEANING NUMBER -----');
             var name = allContacts[i].name;
-            console.log('Name: '+name);
             var sentNumber = allContacts[i].phoneNumber;
             var phoneNumber = clean.sentNum(sentNumber, fromPhoneUn, countryCode);
-            console.log('Clean Phone Number: '+phoneNumber);
             if(phoneNumber != undefined){
                 var encPhoneNumber = crypto.encrypt(phoneNumber);
-                console.log('Enc Phone Number: '+encPhoneNumber);
                 var phoneUn = clean.getUn(phoneNumber);
                 exports.setOneContact(name, encPhoneNumber, phoneUn);
-                console.log('------ SAVED NUMBER -----');
             }
         }
     })

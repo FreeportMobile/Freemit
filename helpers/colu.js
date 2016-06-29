@@ -3,7 +3,6 @@
 var request = require('request');
 
 exports.makeAddress = function(){
-    console.log("MAKING ADDRESS");
     return new Promise(function(resolve, reject) {   
         request('http://coinoutlet.biz:4700/newaddress', function (error, response, body) {
             if(error){
@@ -12,7 +11,6 @@ exports.makeAddress = function(){
             }
             if (!error && response.statusCode == 200) {
                 var json = JSON.parse(body); 
-                console.log(json);
                 resolve(json);
             }
         })
