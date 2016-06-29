@@ -187,19 +187,12 @@ exports.getBalance = function (socket, io, msg) {
         .then(function(data) {
             var currencySymbol = data.currency_symbol;
             var currencyAbbreviation = data.currency_abbreviation;
-            //blockchain.queryAddress(data.bitcoin_address)
-            colu.getBallence(data.bitcoin_address)
+            colu.getBallence(data.bitcoin_address, currencyAbbreviation)
                 .then(function(data) {
                     var data = JSON.parse(data);
-                    console.log(data.length);
-                    for (var i = 0; i < data.length; i++) { 
-                        if(data[i].Currency == currencyAbbreviation){
-                            console.log(data[i].Total);
-                            var amount = data[i].Total;
-                            io.to(socket.id).emit('getBalance', {balance: amount, currencySymbol: currencySymbol});
-                        }
-                    }
-                }).bind(io)
+                    var amount = data.Total;
+                    io.to(socket.id).emit('getBalance', {balance: amount, currencySymbol: currencySymbol});
+                })
                 .catch(function(err) {
                 console.log(err) //TODO: Do somthing more meaningfull!
                 });

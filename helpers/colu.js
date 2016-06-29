@@ -18,10 +18,9 @@ exports.makeAddress = function(){
 }; // END FUNCTION
 
 
-exports.getBallence = function(address){
+exports.getBallence = function(address, currency){
     return new Promise(function(resolve, reject) {   
-        console.log('http://coinoutlet.biz:4700/getbalance?address='+address);
-        request('http://coinoutlet.biz:4700/getbalance?address='+address, function (error, response, body) {
+        request('http://coinoutlet.biz:4700/getbalance?address='+address+'&asset='+currency, function (error, response, body) {
             if(error){
                 console.log('ERROR');  
                 reject(error); 
