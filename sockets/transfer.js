@@ -27,6 +27,7 @@ exports.toWallet = function (fromPhone, toPhone, currency, amount) {
                 })
             })
             .catch(function(err) {
+            console.log('ERROR POINT 1');
             console.log(err);
             reject(err);
             })
