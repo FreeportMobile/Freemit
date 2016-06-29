@@ -83,13 +83,18 @@ exports.saveContacts = function (socket, io, msg) {
         //LOOP OVER CONTACTS
         for (var i = 0; i < allContacts.length; i++) {
             // // TODO: Review this assumption carefully!!!
+            console.log('------ CLEANING NUMBER -----');
             var name = allContacts[i].name;
+            console.log('Name: '+name);
             var sentNumber = allContacts[i].phoneNumber;
-            var phoneNumber = clean.sentNum(sentNumber, encPhoneNumber, fromPhoneUn, countryCode);
+            var phoneNumber = clean.sentNum(sentNumber, fromPhoneUn, countryCode);
+            console.log('Clean Phone Number: '+phoneNumber);
             if(phoneNumber != undefined){
                 var encPhoneNumber = crypto.encrypt(phoneNumber);
+                console.log('Enc Phone Number: '+encPhoneNumber);
                 var phoneUn = clean.getUn(phoneNumber);
                 exports.setOneContact(name, encPhoneNumber, phoneUn);
+                console.log('------ SAVED NUMBER -----');
             }
         }
     })

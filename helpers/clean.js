@@ -30,7 +30,7 @@ exports.getUn = function (num) {
 }; //-- END FUNCTION
 
 //----------------------- CLEAN NUMBER SENT BY ----------------------------------//
-exports.sentNum = function (sentNumber, encPhoneNumber, fromPhoneUn, countryCode) {
+exports.sentNum = function (sentNumber, fromPhoneUn, countryCode) {
             var isPlus = sentNumber.substring(0,1);
             if (isPlus =='+'){
                 var phoneNumber = exports.num(sentNumber);
