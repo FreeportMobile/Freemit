@@ -190,6 +190,7 @@ exports.getBalance = function (socket, io, msg) {
             //blockchain.queryAddress(data.bitcoin_address)
             colu.getBallence(data.bitcoin_address)
                 .then(function(data) {
+                    var data = JSON.stringify(data);
                     console.log(data.length);
                     io.to(socket.id).emit('getBalance', {balance: data, currencySymbol: currencySymbol});
                 })
