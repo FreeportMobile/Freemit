@@ -47,7 +47,7 @@ module.exports = function (io) {
         });
         
         socket.on('lastFour', function (msg) {
-            console.log('--- SAVE CARD ---');
+            console.log('--- GET LAST 4 ---');
             rateLimiter(socket);
             freemit.user.lastFour(socket, io, msg);
         });
