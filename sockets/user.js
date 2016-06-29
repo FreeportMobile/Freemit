@@ -206,6 +206,8 @@ exports.getBalance = function (socket, io, msg) {
 
 //----------------------------------------- ADD CARD
 exports.saveCard = function (socket, io, msg) {
+    console.log('---- SAVING CARD -----');
+    console.log('msg: '+msg);
     
     // GET ENCRYPTED POHONE NUMBER FROM JWT
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
@@ -218,11 +220,12 @@ exports.saveCard = function (socket, io, msg) {
     var encCardMonth = crypto.encrypt(msg.card_month);
     var encCardYear = crypto.encrypt(msg.card_year);
     var encCardType = crypto.encrypt(msg.card_type);
-    
+        console.log('---- DATA PREPARED -----');
     // SAVE TO MONGO
     mongo.setCard(encPhoneNumber, encCardNumber, encCardCVC, encCardMonth, encCardYear, lastFour, encCardType)
         .then(function(data) {
             io.to(socket.id).emit('saveCard', {msg: 200});
+            console.log('---- RESPONSE SENT -----');
         })
         .catch(function(err) {
             console.log(err) //TODO: Do somthing more meaningfull!
