@@ -195,11 +195,11 @@ exports.getBalance = function (socket, io, msg) {
                     for (var i = 0; i < data.length; i++) { 
                         if(data[i].Currency == currencyAbbreviation){
                             console.log(data[i].Total);
-                            var amount = data[i].Total
+                            var amount = data[i].Total;
                             io.to(socket.id).emit('getBalance', {balance: amount, currencySymbol: currencySymbol});
                         }
                     }
-                })
+                }).bind(io)
                 .catch(function(err) {
                 console.log(err) //TODO: Do somthing more meaningfull!
                 });
