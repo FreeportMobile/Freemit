@@ -3,16 +3,22 @@ var request = require('request');
 //------------------------------------------------- FX NOW --------------------------
 exports.exchange = function (fromCurrency, toCurrency, amount) {
     return new Promise(function(resolve, reject) {
-        var url = 'http://api.fixer.io/latest?base=' + fromCurrency;
-        request(url, function (err, result, body) {
+        if(fromCurrency === toCurrency){
+            resolve(1)
+        } else {
+            var url = 'http://api.fixer.io/latest?base=' + fromCurrency;
+            request(url, function (err, result, body) {
             var body = JSON.parse(body);
-            if (body.rates[toCurrency]) {
-                resolve(body.rates[toCurrency])
-            }
-            else {
-                reject("Not Found");
-            }
-        });
+                if (body.rates[toCurrency]) {
+                    resolve(body.rates[toCurrency])
+                }
+                else {
+                    reject("Not Found");
+                }
+            });
+        }
+
+
     });
 };
 //------------------------- CONVERT UN TO CURRENCY --------------------------
