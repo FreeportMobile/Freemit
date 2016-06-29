@@ -193,9 +193,10 @@ exports.getBalance = function (socket, io, msg) {
                     var data = JSON.parse(data);
                     console.log(data.length);
                     for (var i = 0; i < data.length; i++) { 
-                        console.log(data[i]);
+                        if(data[i].Currency == currencyAbbreviation){
+                            console.log(data[i].Currency);
+                        }
                     }
-                    
                     io.to(socket.id).emit('getBalance', {balance: data, currencySymbol: currencySymbol});
                 })
                 .catch(function(err) {
