@@ -28,27 +28,27 @@ exports.send = function (socket, io, msg) {
         var fromCurrency = fx.currency(fromPhoneUn);
         var toCurrency = fx.currency(toPhoneUn);
         // CONVERT THE AMOUNT TO THE CURRENCY
-            fx.exchange(fromCurrency, toCurrency, amount)
-            .then(function(data) {
-                var exchangeRate = data;
-                var exchangeAmount = amount * exchangeRate;
-                    // transfer.toWallet(fromPhone, toPhone, fromCurrency, amount) 
-                    // .then(function(data) {   
-                    //     transfer.fromWallet(fromPhone, toPhone, toCurrency, exchangeAmount)
-                    //     .then(function(data){
-                    //     // TODO: Signal to the app the transfr was completed 
-                    //     })
-                    //     .catch(function(err) {
-                    //         console.log(err);
-                    //     })
-                    // })
-                    // .catch(function(err) {
-                    //     console.log(err);
-                    // })
-            })
-            .catch(function(err) {
-            console.log(err);
-            })
+            // fx.exchange(fromCurrency, toCurrency, amount)
+            // .then(function(data) {
+            //     var exchangeRate = data;
+            //     var exchangeAmount = amount * exchangeRate;
+            //         transfer.toWallet(fromPhone, toPhone, fromCurrency, amount) 
+            //         .then(function(data) {   
+            //             transfer.fromWallet(fromPhone, toPhone, toCurrency, exchangeAmount)
+            //             .then(function(data){
+            //             // TODO: Signal to the app the transfr was completed 
+            //             })
+            //             .catch(function(err) {
+            //                 console.log(err);
+            //             })
+            //         })
+            //         .catch(function(err) {
+            //             console.log(err);
+            //         })
+            // })
+            // .catch(function(err) {
+            // console.log(err);
+            // })
     })
     .catch(function(err) {
     // some error
