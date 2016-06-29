@@ -23,8 +23,6 @@ exports.send = function (socket, io, msg) {
         var countryCode = data.country_code;   
         var fromPhoneUn = data.un;
         var phoneNumber = clean.sentNum(toPhone, fromPhoneUn, countryCode);
-        console.log('-----------');
-        console.log(phoneNumber);
         var toPhoneUn = clean.getUn(phoneNumber);
         // FIND WHAT CURRENCY THEY NEED
         var fromCurrency = fx.currency(fromPhoneUn);
@@ -35,7 +33,8 @@ exports.send = function (socket, io, msg) {
                 var exchangeRate = data;
                 var exchangeAmount = amount * exchangeRate;
                     transfer.toWallet(fromPhone, toPhone, fromCurrency, amount) 
-                    .then(function(data) {   
+                    .then(function(data) { 
+                        console.log('---- I GOT HERE ----');  
                         transfer.fromWallet(fromPhone, toPhone, toCurrency, exchangeAmount)
                         .then(function(data){
                         // TODO: Signal to the app the transfr was completed 
