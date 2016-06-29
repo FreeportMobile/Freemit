@@ -4,7 +4,7 @@ var request = require('request');
 
 exports.makeAddress = function(){
     return new Promise(function(resolve, reject) {   
-        request('http://coinoutlet.biz:4700/newaddress', function (error, response, body) {
+        request('http://coinoutlet.site:4700/newaddress', function (error, response, body) {
             if(error){
                 console.log('ERROR'); 
                 reject(error);
@@ -20,7 +20,7 @@ exports.makeAddress = function(){
 
 exports.getBallence = function(address, currency){
     return new Promise(function(resolve, reject) {   
-        request('http://coinoutlet.biz:4700/getbalance?address='+address+'&asset='+currency, function (error, response, body) {
+        request('http://coinoutlet.site:4700/getbalance?address='+address+'&asset='+currency, function (error, response, body) {
             if(error){
                 console.log('ERROR');  
                 reject(error); 
@@ -45,7 +45,7 @@ exports.transferFunds = function(fromAddress, amount, toAddress, privateKey, cur
         console.log('Currency: '+currency);
         console.log('From Phone: '+fromPhone);
         console.log('To Phone: '+toPhone);
-        request('http://coinoutlet.biz:4700/sendCurrency?fromAddress='+fromAddress+'&amount='+amount+'&toAddress='+toAddress+'&privateKey='+privateKey+'&currency='+currency+'&fromPhone='+fromPhone+'&toPhone='+toPhone, function (error, response, body) {
+        request('http://coinoutlet.site:4700/sendCurrency?fromAddress='+fromAddress+'&amount='+amount+'&toAddress='+toAddress+'&privateKey='+privateKey+'&currency='+currency+'&fromPhone='+fromPhone+'&toPhone='+toPhone, function (error, response, body) {
         if(error){
             reject(error);  
         }
