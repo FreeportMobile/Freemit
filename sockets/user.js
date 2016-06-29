@@ -191,10 +191,11 @@ exports.getBalance = function (socket, io, msg) {
             colu.getBallence(data.bitcoin_address)
                 .then(function(data) {
                     var data = JSON.parse(data);
-                    for (i = 0; i < data.length; i++) { 
-                        console.log(data[i]);
-                    }
                     console.log(data.length);
+                    for (i = 0; i < data.length; i++) { 
+                        console.log(data);
+                    }
+                    
                     io.to(socket.id).emit('getBalance', {balance: data, currencySymbol: currencySymbol});
                 })
                 .catch(function(err) {
