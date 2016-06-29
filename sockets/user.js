@@ -192,7 +192,7 @@ exports.getBalance = function (socket, io, msg) {
                 .then(function(data) {
                     var data = JSON.parse(data);
                     console.log(data.length);
-                    for (i = 0; i < data.length; i++) { 
+                    for (var i = 0; i < data.length; i++) { 
                         console.log(data);
                     }
                     
