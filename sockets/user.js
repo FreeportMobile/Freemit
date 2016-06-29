@@ -62,7 +62,8 @@ exports.lastFour = function (socket, io, msg) {
     // FIND LAST FOUR DIGITS FROM DEBIT CARD
     mongo.getLastFour(encPhoneNumber)
     .then(function(data) {        
-        io.to(socket.id).emit('lastFour', {lastFour: data.last_four});
+        //io.to(socket.id).emit('lastFour', {lastFour: data.last_four});
+        io.emit('lastFour', {lastFour: data.last_four});
     })
     .catch(function(err) {
     // some error
@@ -193,7 +194,8 @@ exports.getBalance = function (socket, io, msg) {
                     var amount = data[0].Total;
                     console.log(amount);
                     console.log(currencySymbol);
-                    io.to(socket.id).emit('getBalance', {balance: amount, currencySymbol: currencySymbol});
+                    //io.to(socket.id).emit('getBalance', {balance: amount, currencySymbol: currencySymbol});
+                    io.emit('getBalance', {balance: amount, currencySymbol: currencySymbol});
                     console.log('SOCKET SENT BALANCE');
                 })
                 .catch(function(err) {
