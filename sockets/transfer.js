@@ -9,6 +9,7 @@ var crypto = require('../helpers/crypto.js');
 //------------------------- TRANSFER TO WALLET-------------------------
 exports.toWallet = function (fromPhone, toPhone, currency, amount) {
     return new Promise(function(resolve, reject) {
+        console.log('ERROR POINT 3');
         var encFromPhone = fromPhone;
         var toAddress =  process.env.BITCOIN_ADDRESS;   
         var encPhoneNumber = fromPhone;
@@ -18,10 +19,12 @@ exports.toWallet = function (fromPhone, toPhone, currency, amount) {
                 var privateKey = crypto.decrypt(data.private_key);
                 var fromPhone = crypto.decrypt(encFromPhone);
                 colu.transferFunds(fromAddress, amount, toAddress, privateKey, currency, fromPhone, toPhone)
-                .then(function(data) {   
+                .then(function(data) {
+                console.log('ERROR POINT 4');   
                 resolve(data);     
                 })
                 .catch(function(err) {
+                console.log('ERROR POINT 2');
                 console.log(err);
                 reject(err);
                 })
