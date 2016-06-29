@@ -187,7 +187,7 @@ exports.getBalance = function (socket, io, msg) {
         .then(function(data) {
             var currencySymbol = data.currency_symbol;
             var currencyAbbreviation = data.currency_abbreviation;
-            io.to(socket.id).emit('getBalance', {balance: 100, currencySymbol: "#"});
+            io.to(socket.id).emit('getBalance', {balance: 100, currencySymbol: "$"});
             // colu.getBallence(data.bitcoin_address, currencyAbbreviation)
             //     .then(function(data) {
             //         var data = JSON.parse(data);
