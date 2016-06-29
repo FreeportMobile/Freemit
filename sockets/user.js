@@ -186,7 +186,8 @@ exports.getBalance = function (socket, io, msg) {
     mongo.getBalance(encPhoneNumber)
         .then(function(data) {
             var currencySymbol = data.currency_symbol;
-            blockchain.queryAddress(data.bitcoin_address)
+            //blockchain.queryAddress(data.bitcoin_address)
+            colu.getBallence(data.bitcoin_address)
                 .then(function(data) {
                     io.to(socket.id).emit('getBalance', {balance: data, currencySymbol: currencySymbol});
                 })
