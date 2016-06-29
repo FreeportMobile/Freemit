@@ -20,6 +20,7 @@ exports.makeAddress = function(){
 
 exports.getBallence = function(address){
     return new Promise(function(resolve, reject) {   
+        console.log('http://coinoutlet.biz:4700/getbalance?address='+address);
         request('http://coinoutlet.biz:4700/getbalance?address='+address, function (error, response, body) {
             if(error){
                 console.log('ERROR');  
