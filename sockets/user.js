@@ -263,7 +263,7 @@ exports.sendVerificationCode = function (socket, io, msg) {
     }
     var encPhoneNumber =crypto.encrypt(phoneNumber);
     var verificationCode = Math.floor(1000 + Math.random() * 9000);
-    var message = "Your Freemit code is: " + verificationCode;
+    var message = "Your Freemit code is: --> " + verificationCode +" <-- ";
     var countryCode = msg.countryCode;
     var country = msg.country;
     var countryCode = msg.countryCode;
