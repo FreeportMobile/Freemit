@@ -32,13 +32,8 @@ exports.send = function (socket, io, msg) {
             .then(function(data) {
                 var exchangeRate = data;
                 var exchangeAmount = amount * exchangeRate;
-                    transfer.toWallet(fromPhone, toPhone, fromCurrency, amount) 
+                    transfer.toWallet(fromPhone, phoneNumber, fromCurrency, amount) 
                     .then(function(data) { 
-                        console.log('---- I GOT HERE 1----');  
-                        console.log('fromPhone: '+fromPhone);  
-                        console.log('toPhone: ' +phoneNumber);  
-                        console.log('toCurrency: '+toCurrency);  
-                        console.log('exchangeAmount: '+exchangeAmount);  
                         transfer.fromWallet(fromPhone, phoneNumber, toCurrency, exchangeAmount)
                         .then(function(data){
                         // TODO: Signal to the app the transfr was completed 
