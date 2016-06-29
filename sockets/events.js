@@ -10,42 +10,50 @@ module.exports = function (io) {
         socket.emit('connected', { msg: "--- CONNECTED" })
     //-- SOCKET EVENTS
         socket.on('sendVerificationCode', function (msg) {
+            console.log('--- SEND CODE ---');
             rateLimiter(socket);
             freemit.user.sendVerificationCode(socket, io, msg);
         });
         
         socket.on('checkVerificationCode', function (msg) {
+            console.log('--- VERIFICATOIN ---');
             rateLimiter(socket);
             freemit.user.checkVerificationCode(socket, io, msg);
         });
         
         socket.on('saveCard', function (msg) {
+            console.log('--- SAVE CARD ---');
             rateLimiter(socket);
             freemit.user.saveCard(socket, io, msg);
         });
         
         socket.on('getBalance', function (msg) {
+            console.log('--- BALANCE ---');
             rateLimiter(socket);
             freemit.user.getBalance(socket, io, msg);
         });
         
         socket.on('topup', function (msg) {
+            console.log('--- TOPUP ---');
             rateLimiter(socket);
             freemit.user.topUp(socket, io, msg);
         });
         
         socket.on('saveContacts', function (msg) {
+            console.log('--- SAVE CONTACTS ---');
             rateLimiter(socket);
             freemit.user.saveContacts(socket, io, msg);
         });
         
         socket.on('lastFour', function (msg) {
+            console.log('--- SAVE CARD ---');
             rateLimiter(socket);
             freemit.user.lastFour(socket, io, msg);
         });
         
         
         socket.on('send', function (msg) {
+            console.log('--- SEND FUNDS ---');
             rateLimiter(socket);
             freemit.user.send(socket, io, msg);
         });
