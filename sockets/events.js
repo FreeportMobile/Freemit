@@ -8,6 +8,7 @@ module.exports = function (io) {
         var freemit = require('./freemit');
     //-- SEND CONNECTED MESSAGE
         socket.emit('connected', { msg: "--- CONNECTED" })
+        console.log('--- SOCKET CONNECTED ---');
     //-- SOCKET EVENTS
         socket.on('sendVerificationCode', function (msg) {
             console.log('--- SEND CODE ---');
@@ -60,6 +61,7 @@ module.exports = function (io) {
         
     //-- DISCONNECT
         socket.on('disconnect', function(socket) {
+            console.log('--- SOCKET DISCONNECT ---');
         });
     });     //-- END CONNECT
 };  //-- END EXPORT
