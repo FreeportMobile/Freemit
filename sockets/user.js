@@ -207,8 +207,7 @@ exports.getBalance = function (socket, io, msg) {
 //----------------------------------------- ADD CARD
 exports.saveCard = function (socket, io, msg) {
     console.log('---- SAVING CARD -----');
-    console.log('msg: '+msg);
-    
+    console.log(msg);
     // GET ENCRYPTED POHONE NUMBER FROM JWT
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     // GET LAST 4 DIGITS OF CARD
