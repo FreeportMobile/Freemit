@@ -194,9 +194,9 @@ exports.getBalance = function (socket, io, msg) {
             //         var amount = data.Total;
             //         io.to(socket.id).emit('getBalance', {balance: amount, currencySymbol: currencySymbol});
             //     })
-                .catch(function(err) {
-                console.log(err) //TODO: Do somthing more meaningfull!
-                });
+                // .catch(function(err) {
+                // console.log(err) //TODO: Do somthing more meaningfull!
+                // });
         })
         .catch(function(err) {
             console.log(err) //TODO: Do somthing more meaningfull!
