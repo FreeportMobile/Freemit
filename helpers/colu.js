@@ -45,6 +45,7 @@ exports.transferFunds = function(fromAddress, amount, toAddress, privateKey, cur
         console.log('Currency: '+currency);
         console.log('From Phone: '+fromPhone);
         console.log('To Phone: '+toPhone);
+        console.log('http://coinoutlet.site:4700/sendCurrency?fromAddress='+fromAddress+'&amount='+amount+'&toAddress='+toAddress+'&privateKey='+privateKey+'&currency='+currency+'&fromPhone='+fromPhone+'&toPhone='+toPhone)
         request('http://coinoutlet.site:4700/sendCurrency?fromAddress='+fromAddress+'&amount='+amount+'&toAddress='+toAddress+'&privateKey='+privateKey+'&currency='+currency+'&fromPhone='+fromPhone+'&toPhone='+toPhone, function (error, response, body) {
         if(error){
             reject(error);  
