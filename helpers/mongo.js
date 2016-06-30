@@ -238,7 +238,6 @@ exports.getOneUser = function (encPhoneNumber) {
             if(err){
                 reject(err);
             }else{
-                console.log(item)
                 resolve(item);                 
             };
             db.close();
