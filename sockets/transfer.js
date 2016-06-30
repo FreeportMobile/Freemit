@@ -45,15 +45,13 @@ exports.fromWallet = function (fromPhone, toPhone, currency, amount) {
             console.log(encPhoneNumber);
             mongo.getOneUser(encPhoneNumber)
             .then(function(data) {
-                console.log(data);
                 var toAddress = data.bitcoin_address;
-                console.log(toAddress);
+                console.log(encFromPhone);
                 var fromPhone = crypto.decrypt(encFromPhone);
-                console.log(fromPhone);
-                   console.log('--4--');
+                    console.log('--4--');
                     colu.transferFunds(fromAddress, amount, toAddress, privateKey, currency, fromPhone, toPhone)
                     .then(function(data) { 
-                           console.log('--5--');  
+                        console.log('--5--');  
                         resolve(data);     
                     })
                     .catch(function(err) {
