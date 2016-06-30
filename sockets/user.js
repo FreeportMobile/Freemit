@@ -129,12 +129,12 @@ exports.setOneContact = function(name, encPhoneNumber, phoneUn){
 
 //----------------------------------------- TOP UP
 exports.topUp = function (socket, io, msg) {
-    console.log('topup');
     // READ THE JWT
     var encPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     // GET CARD DETAILS FROM MONGO
     mongo.getCard(encPhoneNumber)
         .then(function(data) {
+             console.log(data);
             var value = msg.value;
             // DECRYPT THE CARD DTAILS AND PREPARE DATA FOR STRIPE
             var cardNumber = crypto.decrypt(data.card_number);
