@@ -163,7 +163,7 @@ exports.topUp = function (socket, io, msg) {
                         var amount = data.amount/100;
                         transfer.fromWallet(fromPhone, toPhone, currency, amount) 
                         .then(function(data) {
-                        console.log(data) 
+                        console.log('completed');
                         })
                         .catch(function(err) {
                         console.log(err);
@@ -171,7 +171,7 @@ exports.topUp = function (socket, io, msg) {
                     })
                     .catch(function(err) {
                     console.log(err);
-                    io.to(socket.id).emit('topup', {error: err.raw.message});
+                    //  io.to(socket.id).emit('topup', {error: err.raw.message});
                     });      
         })
         .catch(function(err) {
