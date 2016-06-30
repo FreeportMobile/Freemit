@@ -223,6 +223,7 @@ exports.setNewUser = function (encPhoneNumber, verificationCode, currencySymbol,
 //-------------------------- GET ONE USER -----------------------//
 
 exports.getOneUser = function (encPhoneNumber) {
+    console.log('FIRED 1')
     return new Promise(function(resolve, reject) {
     // OPEN CONNECTION     
         mongoClient.connect(process.env.MONGO_DB, function (err, db) {
