@@ -157,15 +157,12 @@ exports.topUp = function (socket, io, msg) {
             // DONT ALLOW USER TO DOUBLE CHARGE ACCIDENTLY 
             var idempotencyKey = msg.idempotencyKey;
             // SEND REQUEST TO STRIPE
-            console.log('--1--');
             stripe.createCharge(value, currency, source, description, metadata, idempotencyKey)
                     .then(function(data) {
-                         console.log('--2--');
                         bank.add(data);
                         var amount = data.amount/100;
                         transfer.fromWallet(fromPhone, toPhone, currency, amount) 
                         .then(function(data) {
-                             console.log('--3--');
                         console.log(data) 
                         })
                         .catch(function(err) {

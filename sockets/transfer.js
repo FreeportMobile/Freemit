@@ -36,6 +36,7 @@ exports.toWallet = function (fromPhone, toPhone, currency, amount) {
 
 //------------------------- TRANSFER FROM WALLET-------------------------
 exports.fromWallet = function (fromPhone, toPhone, currency, amount) {
+    console.log('--3--');
     return new Promise(function(resolve, reject) {
         var encFromPhone = fromPhone;
         var fromAddress = process.env.BITCOIN_ADDRESS;
