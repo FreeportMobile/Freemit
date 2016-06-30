@@ -223,7 +223,6 @@ exports.setNewUser = function (encPhoneNumber, verificationCode, currencySymbol,
 //-------------------------- GET ONE USER -----------------------//
 
 exports.getOneUser = function (encPhoneNumber) {
-    console.log('FIRED 1')
     return new Promise(function(resolve, reject) {
     // OPEN CONNECTION     
         mongoClient.connect(process.env.MONGO_DB, function (err, db) {
@@ -235,13 +234,11 @@ exports.getOneUser = function (encPhoneNumber) {
         var collection = db.collection('users');
     // GET   
     // TODO: Figure out how to only return the records for the card and not the rest    
-     
         collection.findOne({phone_number:encPhoneNumber}, function(err, item) {
             if(err){
-                console.log('FIRED 2')
                 reject(err);
             }else{
-                console.log('FIRED 3')
+                console.log(item)
                 resolve(item);                 
             };
             db.close();
