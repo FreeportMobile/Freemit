@@ -238,8 +238,10 @@ exports.getOneUser = function (encPhoneNumber) {
      
         collection.findOne({phone_number:encPhoneNumber}, function(err, item) {
             if(err){
+                console.log('FIRED 2')
                 reject(err);
             }else{
+                console.log('FIRED 3')
                 resolve(item);                 
             };
             db.close();
