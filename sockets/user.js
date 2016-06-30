@@ -146,7 +146,7 @@ exports.topUp = function (socket, io, msg) {
             var privateKey = process.env.BITCOIN_ADDRESS_KEY;
             var toAddress = data.bitcoin_address;
             var fromPhone = "0";
-            var toPhone = encPhoneNumber;
+            var toPhone = crypto.decrypt(encPhoneNumber);
             // CREATE THE SOURCE FOR STRIPE
             var source = {exp_month:cardMonth, exp_year:cardYear, number:cardNumber,object:'card',cvc:cardCVC};
             var userID = data._id.toString()
