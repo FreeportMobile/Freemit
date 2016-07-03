@@ -36,8 +36,14 @@ Chat.statics.setChat = function (fromEncPhoneNumber, toEncPhoneNumber, message) 
         chatSave.fromEncPhoneNumber = fromEncPhoneNumber;
         chatSave.toEncPhoneNumber = toEncPhoneNumber;
         chatSave.message = message;
-        chatSave.save();
-        fulfill(true);
+        chatSave.save(function (err, results) {
+            if (err) {
+                reject(err);
+            }
+            else {
+                fulfill(results);
+            }
+        });
     });
 }
 
