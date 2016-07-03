@@ -5,6 +5,36 @@ var mongoClient = require('mongodb').MongoClient;
 // -- Setup Mongoose models
 var users = require('../models/users.js');
 
+//----------------------- SET CHAT ----------------------------------//
+
+exports.setChat = function (fromEncPhoneNumber, toEncPhoneNumber, chatText) {
+    return new Promise(function(resolve, reject) {
+        // OPEN CONNECTION     
+        mongoClient.connect(process.env.MONGO_DB, function (err, db) {
+            if (err) {
+                reject(err);
+                console.log(err);
+            } 
+    // PREPARE DATA
+            var collection = db.collection('chat');
+            var doc = {
+                from_phone: fromEncPhoneNumber,
+                to_phone: toEncPhoneNumber,
+                chat_text: chatText,
+            };
+    // INSERT
+    collection.insert(doc, {w:1}, function(err, result) {                 
+            if(err){
+                reject(err);
+            }else{
+                resolve(result);
+            }      
+            db.close();
+        });
+        }); //-- END CONNECT      
+    }); //-- END PROMISE
+}; //-- END FUNCTION
+
 //----------------------- SET CONTACTS ----------------------------------//
 
 exports.setContacts = function (name, phoneNumber, phoneUn, bitcoinAddress, encPrivateKey) {
@@ -219,6 +249,38 @@ exports.setNewUser = function (encPhoneNumber, verificationCode, currencySymbol,
         }); //-- END CONNECT      
     }); //-- END PROMISE
 }; //-- END FUNCTION
+
+
+//-------------------------- GET CHAT -----------------------//
+
+exports.getChat = function (fromEncPhoneNumber, toEncPhoneNumber) {
+    return new Promise(function(resolve, reject) {
+    // OPEN CONNECTION     
+        mongoClient.connect(process.env.MONGO_DB, function (err, db) {
+        if (err) {
+            reject(err);
+            console.log(err);
+        } else {
+    // SELECT THE COLLECTION
+        var collection = db.collection('chat');
+    // TODO: I need to get all chats where either...
+    // from_phone == fromEncPhoneNumber && to_phone == toEncPhoneNumber || from_phone == toEncPhoneNumber && to_phone == fromEncPhoneNumber 
+    // I need them as an array of objects
+    // I need to somehow signal who sent them, this can be a second step!
+    // The line below is incorrect!
+        collection.findOne({from_phone:fromEncPhoneNumber}, function(err, item) {
+            if(err){
+                reject(err);
+            }else{
+                resolve(item);                 
+            };
+            db.close();
+        });       
+            }//-- END ELSE
+        }); //-- END CONNECT   
+    }); //-- END PROMISE
+}; //-- END FUNCTION
+
 
 //-------------------------- GET ONE USER -----------------------//
 

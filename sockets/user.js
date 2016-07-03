@@ -55,6 +55,51 @@ exports.send = function (socket, io, msg) {
     })
 };// END FUNCTION
 
+
+//----------------------------------------- GET CHAT
+exports.getChat = function (socket, io, msg) {
+    // READ JWT TO GET FROM PHONE NUMBER  
+    var fromEncPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
+    // ENCRYPT THE TO PHONE NUMBER
+    var toEncPhoneNumber = crypto.encrypt(msg.phoneNumber)
+    console.log(fromEncPhoneNumber);
+    console.log(toEncPhoneNumber);
+    
+    mongo.getChat(fromEncPhoneNumber, toEncPhoneNumber)
+    .then(function(data) {
+        console.log(data);        
+        io.emit('chatUpdate', {chat: data});
+    })
+    .catch(function(err) {
+    // some error
+    })
+
+};// END FUNCTION
+
+//----------------------------------------- SET CHAT
+exports.setChat = function (socket, io, msg) {
+    // READ JWT TO GET FROM PHONE NUMBER  
+    var fromEncPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
+    // ENCRYPT THE TO PHONE NUMBER
+    var toEncPhoneNumber = crypto.encrypt(msg.phoneNumber);
+    // GET MESSAGE TO SAVE
+    var chatText = msg.chat;
+    console.log(fromEncPhoneNumber);
+    console.log(toEncPhoneNumber);
+    console.log(chatText);
+
+    mongo.setChat(fromEncPhoneNumber, toEncPhoneNumber, chatText)
+    .then(function(data) {        
+        console.log('--- SAVED CHAT ---');
+    })
+    .catch(function(err) {
+    // some error
+    })
+
+
+};// END FUNCTION
+
+
 //----------------------------------------- LAST FOUR
 exports.lastFour = function (socket, io, msg) {
     // READ JWT  
