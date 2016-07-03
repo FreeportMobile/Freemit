@@ -49,7 +49,6 @@ module.exports = function (io) {
         socket.on('lastFour', function (msg) {
             console.log('--- GET LAST 4 ---');
             rateLimiter(socket);
-            console.log(msg);
             freemit.user.lastFour(socket, io, msg);
         });
         
@@ -58,6 +57,18 @@ module.exports = function (io) {
             console.log('--- SEND FUNDS ---');
             rateLimiter(socket);
             freemit.user.send(socket, io, msg);
+        });
+
+        socket.on('getChat', function (msg) {
+            console.log('--- GET CHAT ---');
+            rateLimiter(socket);
+            //freemit.user.getChat(socket, io, msg);
+        });
+
+        socket.on('setChat', function (msg) {
+            console.log('--- SET CHAT ---');
+            rateLimiter(socket);
+            //freemit.user.setChat(socket, io, msg);
         });
         
     //-- DISCONNECT
