@@ -60,9 +60,14 @@ exports.getChat = function (socket, io, msg) {
     // READ JWT TO GET FROM PHONE NUMBER  
     var fromEncPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     // ENCRYPT THE TO PHONE NUMBER
-    var toEncPhoneNumber = crypto.encrypt(msg.phoneNumber)
+    var toEncPhoneNumber = crypto.encrypt(msg.phoneNumber);
+    var sentNumber = msg.phoneNumber
+    var fromPhoneUn = crypto.decrypt(fromEncPhoneNumber);
+    var countryCode = 'USA'
+    var cleanNumber = clean.sentNum(sentNumber, fromPhoneUn, countryCode);
+    var encCleanNumber = crypto.encrypt(cleanNumber);
     // GET CHATS FROM MONGO
-    chats.getChat(fromEncPhoneNumber, toEncPhoneNumber)
+    chats.getChat(fromEncPhoneNumber, encCleanNumber)
     .then(function (data) {
         // SEND CHATS OVER THE SOCKET
         console.log('----data----');
