@@ -54,18 +54,22 @@ exports.send = function (socket, io, msg) {
             // some error
         })
 };// END FUNCTION
+
 //----------------------------------------- GET CHAT
 exports.getChat = function (socket, io, msg) {
     // READ JWT TO GET FROM PHONE NUMBER  
     var fromEncPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     // ENCRYPT THE TO PHONE NUMBER
     var toEncPhoneNumber = crypto.encrypt(msg.phoneNumber)
-    console.log(fromEncPhoneNumber);
-    console.log(toEncPhoneNumber);
     chats.getChat(fromEncPhoneNumber, toEncPhoneNumber).then(function (results) {
+    
         console.log(results);
     })
-};// END FUNCTION
+    .catch(function(err){
+    console.log(err);
+    })
+};
+
 //----------------------------------------- SET CHAT
 exports.setChat = function (socket, io, msg) {
     // READ JWT TO GET FROM PHONE NUMBER  
