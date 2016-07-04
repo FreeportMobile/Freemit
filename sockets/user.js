@@ -61,15 +61,16 @@ exports.getChat = function (socket, io, msg) {
     var fromEncPhoneNumber = crypto.readJWT(msg.jwt).phone_number;
     // ENCRYPT THE TO PHONE NUMBER
     var toEncPhoneNumber = crypto.encrypt(msg.phoneNumber)
-    chats.getChat(fromEncPhoneNumber, toEncPhoneNumber).then(function (results) {
-    
-        console.log(results);
+    // GET CHATS FROM MONGO
+    chats.getChat(fromEncPhoneNumber, toEncPhoneNumber)
+    .then(function (data) {
+        // SEND CHATS OVER THE SOCKET
+        io.to(socket.id).emit('chatUpdate', {chat: data});
     })
     .catch(function(err){
-    console.log(err);
+        console.log(err);
     })
-};
-
+};// END FUNCTION
 //----------------------------------------- SET CHAT
 exports.setChat = function (socket, io, msg) {
     // READ JWT TO GET FROM PHONE NUMBER  
@@ -78,11 +79,10 @@ exports.setChat = function (socket, io, msg) {
     var toEncPhoneNumber = crypto.encrypt(msg.phoneNumber);
     // GET MESSAGE TO SAVE
     var chatText = msg.chat;
-    console.log(fromEncPhoneNumber);
-    console.log(toEncPhoneNumber);
-    console.log(chatText);
-    chats.setChat(fromEncPhoneNumber, toEncPhoneNumber, chatText).then(function (results) {
-        console.log(results);
+    // SAVE TO MONGO
+    chats.setChat(fromEncPhoneNumber, toEncPhoneNumber, chatText)
+    .then(function (data) {
+        console.log('--- CHAT SAVED ---');
     })
     .catch(function(err){
         console.log(err);
@@ -96,7 +96,6 @@ exports.lastFour = function (socket, io, msg) {
     mongo.getLastFour(encPhoneNumber)
         .then(function (data) {
             io.to(socket.id).emit('lastFour', {lastFour: data.last_four});
-            //io.emit('lastFour', {lastFour: data.last_four});
         })
         .catch(function (err) {
             // some error
