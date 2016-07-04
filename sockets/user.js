@@ -83,14 +83,11 @@ exports.setChat = function (socket, io, msg) {
     var fromPhoneUn = crypto.decrypt(fromEncPhoneNumber);
     var countryCode = 'USA'; /// GO to Mongo for this
     var cleanNumber = clean.sentNum(sentNumber, fromPhoneUn, countryCode);
-console.log('---- CLEAN NUMBER-----');
-    console.log(sentNumber, fromPhoneUn, countryCode);
-    console.log(cleanNumber);
-
+    var encCleanNumber = crypto.encrypt(cleanNumber);
     // GET MESSAGE TO SAVE
     var chatText = msg.chat;
     // SAVE TO MONGO
-    chats.setChat(fromEncPhoneNumber, cleanNumber, chatText)
+    chats.setChat(fromEncPhoneNumber, encCleanNumber, chatText)
     .then(function (data) {
         console.log('--- CHAT SAVED ---');
     })
