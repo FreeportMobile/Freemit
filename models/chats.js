@@ -39,11 +39,9 @@ Chat.statics.getChat = function (fromEncPhoneNumber, toEncPhoneNumber) {
                             results.push(results2[q]);  // Push results into original
 
                         }
-                        fulfill(results2);
+                        fulfill(results);
                     }
                 });
-
-                fulfill(results);
             }
         });
     });
