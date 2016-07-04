@@ -60,7 +60,6 @@ module.exports = function (io) {
         });
 
         socket.on('getChat', function (msg) {
-            console.log('--- GET CHAT ---');
             rateLimiter(socket);
             freemit.user.getChat(socket, io, msg);
         });
