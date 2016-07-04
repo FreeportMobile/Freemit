@@ -12,13 +12,11 @@ var Chat = new mongoose.Schema({
 if (!mongoose.connection.readyState) {
     mongoose.connect(process.env.MONGO_DB);
 }
-// Setup module to export the model
-var chats = mongoose.model('chats', Chat);
-module.exports = chats;
+
 
 //--- GET CHATS
 
-Chat.methods.getChat = function (fromEncPhoneNumber, toEncPhoneNumber) {
+Chat.statics.getChat = function (fromEncPhoneNumber, toEncPhoneNumber) {
     return new Promise(function (fulfill, reject) {
         Chat.find({
             fromEncPhoneNumber: {$in: [fromEncPhoneNumber, toEncPhoneNumber]},
@@ -36,7 +34,7 @@ Chat.methods.getChat = function (fromEncPhoneNumber, toEncPhoneNumber) {
 
 //--- SET CHATS 
 
-Chat.methods.setChat = function (fromEncPhoneNumber, toEncPhoneNumber, message) {
+Chat.statics.setChat = function (fromEncPhoneNumber, toEncPhoneNumber, message) {
     return new Promise(function (fulfill, reject) {
         console.log(fromEncPhoneNumber);
         console.log(toEncPhoneNumber);
@@ -56,3 +54,6 @@ Chat.methods.setChat = function (fromEncPhoneNumber, toEncPhoneNumber, message) 
     });
 }
 
+// Setup module to export the model
+var chats = mongoose.model('chats', Chat);
+module.exports = chats;

@@ -10,6 +10,7 @@ var colu = require('../helpers/colu.js');
 var fx = require('../helpers/fx.js');
 var transfer = require('./transfer.js');
 var chats = require('../models/chats.js');
+
 //----------------------------------------- SEND TRANSFER
 exports.send = function (socket, io, msg) {
     // READ JWT  
