@@ -19,6 +19,8 @@ if (!mongoose.connection.readyState) {
 Chat.statics.getChat = function (fromEncPhoneNumber, toEncPhoneNumber) {
     return new Promise(function (fulfill, reject) {
         chats.find({
+            var joinedResults = [];
+            console.log(joinedResults);
             fromEncPhoneNumber: fromEncPhoneNumber,
             toEncPhoneNumber:  toEncPhoneNumber
         }, function (err, results) {
@@ -26,6 +28,10 @@ Chat.statics.getChat = function (fromEncPhoneNumber, toEncPhoneNumber) {
                 reject(err);
             }
             else {
+                for (i in results){
+                joinedResults.push(results[i]);
+                }
+                console.log(joinedResults);
                 chats.find({
                     fromEncPhoneNumber: toEncPhoneNumber,
                     toEncPhoneNumber:  fromEncPhoneNumber
@@ -36,10 +42,10 @@ Chat.statics.getChat = function (fromEncPhoneNumber, toEncPhoneNumber) {
                     else {
                         for (q in results2)
                         {
-                            results.push(results2[q]);  // Push results into original
-
+                            joinedResults.push(results2[q]);  // Push results into original
                         }
-                        fulfill(results);
+                        console.log(joinedResults);
+                        fulfill(joinedResults);
                     }
                 });
             }
