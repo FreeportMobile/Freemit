@@ -19,13 +19,29 @@ if (!mongoose.connection.readyState) {
 Chat.statics.getChat = function (fromEncPhoneNumber, toEncPhoneNumber) {
     return new Promise(function (fulfill, reject) {
         chats.find({
-            fromEncPhoneNumber: {$in: [fromEncPhoneNumber, toEncPhoneNumber]},
-            $and: [{toEncPhoneNumber: {$in: [fromEncPhoneNumber, toEncPhoneNumber]}}]
+            fromEncPhoneNumber: fromEncPhoneNumber,
+            toEncPhoneNumber:  toEncPhoneNumber
         }, function (err, results) {
             if (err) {
                 reject(err);
             }
             else {
+                chats.find({
+                    fromEncPhoneNumber: toEncPhoneNumber,
+                    toEncPhoneNumber:  fromEncPhoneNumber
+                }, function (err, results2) {
+                    if (err) {
+                        reject(err);
+                    }
+                    else {
+                        for (q in results2)
+                        {
+                            results.push(results2[q]);
+                        }
+                        fulfill(results2);
+                    }
+                });
+
                 fulfill(results);
             }
         });
