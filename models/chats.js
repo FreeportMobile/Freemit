@@ -18,9 +18,10 @@ if (!mongoose.connection.readyState) {
 
 Chat.statics.getChat = function (fromEncPhoneNumber, toEncPhoneNumber) {
     return new Promise(function (fulfill, reject) {
+        var joinedResults = [];
+        console.log(joinedResults);
+
         chats.find({
-            var joinedResults = [];
-            console.log(joinedResults);
             fromEncPhoneNumber: fromEncPhoneNumber,
             toEncPhoneNumber:  toEncPhoneNumber
         }, function (err, results) {
