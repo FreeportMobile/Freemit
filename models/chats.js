@@ -18,7 +18,7 @@ module.exports = chats;
 
 //--- GET CHATS
 
-Chat.statics.getChat = function (fromEncPhoneNumber, toEncPhoneNumber) {
+Chat.methods.getChat = function (fromEncPhoneNumber, toEncPhoneNumber) {
     return new Promise(function (fulfill, reject) {
         Chat.find({
             fromEncPhoneNumber: {$in: [fromEncPhoneNumber, toEncPhoneNumber]},
@@ -36,7 +36,7 @@ Chat.statics.getChat = function (fromEncPhoneNumber, toEncPhoneNumber) {
 
 //--- SET CHATS 
 
-Chat.statics.setChat = function (fromEncPhoneNumber, toEncPhoneNumber, message) {
+Chat.methods.setChat = function (fromEncPhoneNumber, toEncPhoneNumber, message) {
     return new Promise(function (fulfill, reject) {
         console.log(fromEncPhoneNumber);
         console.log(toEncPhoneNumber);
