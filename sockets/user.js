@@ -79,6 +79,9 @@ exports.setChat = function (socket, io, msg) {
     chats.setChat(fromEncPhoneNumber, toEncPhoneNumber, chatText).then(function (results) {
         console.log(results);
     })
+    .catch(function(err){
+        console.log(err);
+    })
 };// END FUNCTION
 //----------------------------------------- LAST FOUR
 exports.lastFour = function (socket, io, msg) {

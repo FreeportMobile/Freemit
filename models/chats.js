@@ -15,6 +15,9 @@ if (!mongoose.connection.readyState) {
 // Setup module to export the model
 var chats = mongoose.model('chats', Chat);
 module.exports = chats;
+
+//--- GET CHATS
+
 Chat.statics.getChat = function (fromEncPhoneNumber, toEncPhoneNumber) {
     return new Promise(function (fulfill, reject) {
         Chat.find({
@@ -30,8 +33,14 @@ Chat.statics.getChat = function (fromEncPhoneNumber, toEncPhoneNumber) {
         });
     });
 }
+
+//--- SET CHATS 
+
 Chat.statics.setChat = function (fromEncPhoneNumber, toEncPhoneNumber, message) {
     return new Promise(function (fulfill, reject) {
+        console.log(fromEncPhoneNumber);
+        console.log(toEncPhoneNumber);
+        console.log(message);
         var chatSave = new chats();
         chatSave.fromEncPhoneNumber = fromEncPhoneNumber;
         chatSave.toEncPhoneNumber = toEncPhoneNumber;
