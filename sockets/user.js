@@ -70,8 +70,6 @@ exports.getChat = function (socket, io, msg) {
     chats.getChat(fromEncPhoneNumber, encCleanNumber)
     .then(function (data) {
         // SEND CHATS OVER THE SOCKET
-        console.log('----data----');
-        console.log(data);
         io.to(socket.id).emit('chatUpdate', {chat: data});
     })
     .catch(function(err){
