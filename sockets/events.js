@@ -62,13 +62,13 @@ module.exports = function (io) {
         socket.on('getChat', function (msg) {
             console.log('--- GET CHAT ---');
             rateLimiter(socket);
-            //freemit.user.getChat(socket, io, msg);
+            freemit.user.getChat(socket, io, msg);
         });
 
         socket.on('setChat', function (msg) {
             console.log('--- SET CHAT ---');
             rateLimiter(socket);
-            //freemit.user.setChat(socket, io, msg);
+            freemit.user.setChat(socket, io, msg);
         });
         
     //-- DISCONNECT
