@@ -36,7 +36,8 @@ Chat.statics.getChat = function (fromEncPhoneNumber, toEncPhoneNumber) {
                     else {
                         for (q in results2)
                         {
-                            results.push(results2[q]);
+                            results.push(results2[q]);  // Push results into original
+
                         }
                         fulfill(results2);
                     }
