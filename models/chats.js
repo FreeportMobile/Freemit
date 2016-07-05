@@ -7,9 +7,7 @@ var Chat = new mongoose.Schema({
         message: String,
         time: Number
     },
-    {timestamps: true});
-//console.log(mongoose.connection.readyState);
-// Create connection if its not alreayd instantiated as a singleton
+    {timestamps: false});
 if (!mongoose.connection.readyState) {
     mongoose.connect(process.env.MONGO_DB);
 }
