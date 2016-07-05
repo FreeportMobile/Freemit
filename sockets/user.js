@@ -70,6 +70,7 @@ exports.getChat = function (socket, io, msg) {
     // GET CHATS FROM MONGO
     chats.getChat(fromEncPhoneNumber, encCleanNumber)
     .then(function (data) {
+        console.log(data);
         // SORT THE CHATS
         var data = data.sortBy({ prop: "time", desc: false, });
         // SEND CHATS OVER THE SOCKET
