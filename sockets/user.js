@@ -71,7 +71,7 @@ exports.getChat = function (socket, io, msg) {
     chats.getChat(fromEncPhoneNumber, encCleanNumber)
     .then(function (data) {
         // SORT THE CHATS
-        data.sortBy({ prop: "time", desc: false, });
+        var data = data.sortBy({ prop: "time", desc: false, });
         // SEND CHATS OVER THE SOCKET
         io.to(socket.id).emit('chatUpdate', {chat: data});
     })
