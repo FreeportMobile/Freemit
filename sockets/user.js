@@ -8,6 +8,7 @@ var bank = require('./bank.js');
 var clean = require('../helpers/clean.js');
 var colu = require('../helpers/colu.js');
 var fx = require('../helpers/fx.js');
+var sortBy = require('../helpers/sortby.js');
 var transfer = require('./transfer.js');
 var chats = require('../models/chats.js');
 
@@ -69,6 +70,8 @@ exports.getChat = function (socket, io, msg) {
     // GET CHATS FROM MONGO
     chats.getChat(fromEncPhoneNumber, encCleanNumber)
     .then(function (data) {
+        // SORT THE CHATS
+        data.sortBy({ prop: "time", desc: false, });
         // SEND CHATS OVER THE SOCKET
         io.to(socket.id).emit('chatUpdate', {chat: data});
     })
