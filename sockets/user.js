@@ -39,7 +39,7 @@ exports.send = function (socket, io, msg) {
                                 .then(function (data) {
                                     // TODO: Signal to the app the transfr was completed
                                     var fromEncPhoneNumber = fromPhone;
-                                    var toEncPhoneNumber = phoneNumber
+                                    var toEncPhoneNumber = crypto.encrypt(phoneNumber);
                                     var chatText = 'Sent Successfully'
                                     var messageType = 'transfer'
                                     chats.setChat(fromEncPhoneNumber, toEncPhoneNumber, chatText, messageType)
