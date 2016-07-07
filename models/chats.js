@@ -42,7 +42,7 @@ Chat.statics.getChat = function (fromEncPhoneNumber, toEncPhoneNumber) {
                        {
                            joinedResults.push(results2[q]);  // Push results into original
                        }
-            while (joinedResults.length>8)
+            while (joinedResults.length>6)
 {
     joinedResults.pop();
 }
