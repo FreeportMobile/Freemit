@@ -46,7 +46,7 @@ Chat.statics.getChat = function (fromEncPhoneNumber, toEncPhoneNumber) {
                     }
                 });
             }
-        });
+        }).limit(7);
     });
 }
 
