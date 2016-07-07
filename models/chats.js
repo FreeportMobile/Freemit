@@ -5,7 +5,8 @@ var Chat = new mongoose.Schema({
         fromEncPhoneNumber: String,
         toEncPhoneNumber: String,
         message: String,
-        time: Number
+        time: Number,
+        type: String
     },
     {timestamps: false});
 if (!mongoose.connection.readyState) {
@@ -51,11 +52,9 @@ Chat.statics.getChat = function (fromEncPhoneNumber, toEncPhoneNumber) {
 
 //--- SET CHATS 
 
-Chat.statics.setChat = function (fromEncPhoneNumber, toEncPhoneNumber, message) {
+Chat.statics.setChat = function (fromEncPhoneNumber, toEncPhoneNumber, message, messageType) {
     return new Promise(function (fulfill, reject) {
-        console.log(fromEncPhoneNumber);
-        console.log(toEncPhoneNumber);
-        console.log(message);
+
         var chatSave = new chats();
         chatSave.fromEncPhoneNumber = fromEncPhoneNumber;
         chatSave.toEncPhoneNumber = toEncPhoneNumber;
@@ -63,6 +62,7 @@ Chat.statics.setChat = function (fromEncPhoneNumber, toEncPhoneNumber, message) 
         var insertDate = new Date();
         var epoch = insertDate.getTime();
         chatSave.time = epoch;
+        chatSave.type = messageType;
         chatSave.save(function (err, results) {
             if (err) {
                 reject(err);

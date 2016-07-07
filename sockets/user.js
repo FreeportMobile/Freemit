@@ -90,6 +90,7 @@ exports.setChat = function (socket, io, msg) {
     var countryCode = 'USA'; /// GO to Mongo for this
     var cleanNumber = clean.sentNum(sentNumber, fromPhoneUn, countryCode);
     var encCleanNumber = crypto.encrypt(cleanNumber);
+    var messageType = 'chat';
     // GET MESSAGE TO SAVE
     var chatText = msg.chat;
     // SAVE TO MONGO
