@@ -1,0 +1,343 @@
+<html>
+<head>
+    <title>Freemit - Balance</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no">
+    <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self' data: gap: 'unsafe-eval' https://dev.freemit.tech https://cdn.socket.io wss://dev.freemit.tech; 
+    style-src 'self' data: gap: 'unsafe-inline'  https://dev.freemit.tech https://cdn.socket.io wss://dev.freemit.tech; 
+    media-src 'self' data: gap: 'unsafe-inline'  https://dev.freemit.tech https://cdn.socket.io wss://dev.freemit.tech; 
+    script-src 'self' data: gap: 'unsafe-inline' https://dev.freemit.tech https://cdn.socket.io wss://dev.freemit.tech; 
+    connect-src 'self' data: gap: 'unsafe-inline' https://dev.freemit.tech https://cdn.socket.io wss://dev.freemit.tech
+    ">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <script type="text/javascript" src="js/socketio.js"></script>
+
+<style>
+    
+    *, *:before, *:after {
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    input, input:before, input:after {
+        -webkit-user-select: initial;
+        -khtml-user-select: initial;
+        -moz-user-select: initial;
+        -ms-user-select: initial;
+        user-select: initial;
+    }
+
+    body{
+        font-family: Arial, Helvetica, sans-serif;
+        padding-top: 195px;
+        background-color: white;
+    }
+
+    #top_container{
+        color: white;
+        font-size: 22px;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        padding-top:20px; 
+        height: 55px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #1cac96;
+        border-bottom: 1px solid #afb1b6;
+    }
+    
+    #wallet_navigation{
+        align-items: center;
+        display: flex;
+        width: 100%;
+        height: 45px;
+        position: fixed;
+        left: 0px;
+        top:76px;
+        }
+
+    .wallet_buttons{
+        flex: 1;
+        text-align: center;
+        color: #afb1b6;
+        font-size: 12px;
+        height: 70%;
+        cursor: hand;
+        cursor: pointer;
+        padding-top: 15px;
+    }
+
+    .wallet_buttons:nth-child(1) {
+        background: #1cac96; 
+        color: white;
+        border-bottom-right-radius: 4px;
+        border-bottom: 1px solid white
+
+    }
+
+    .wallet_buttons:nth-child(2) {
+            position: relative;
+            top:1px;
+            background: white; 
+            color: #afb1b6;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+            border-top: 4px solid white;
+    }
+
+    .wallet_buttons:nth-child(3) {
+
+            background: #1cac96; 
+            color: white;
+            border-bottom-left-radius: 4px;
+            border-bottom: 1px solid white
+    }
+    
+    .wallet_icon{
+        height: auto; 
+        width: auto; 
+        max-width: 40px; 
+        max-height: 40px;
+        padding-bottom: 10px;
+    }
+    
+    .withdraw_topup_btn{
+        color: #1CAC96;
+        margin-left: 15px;
+        width: 100%;
+        height: 60px;
+        font-size: 20px;
+        border-radius: 4px;
+        outline: none;
+        border: 1px solid #1CAC96;
+        margin-bottom: 15px;
+    }
+    
+    #top_up_btn{
+        margin-top: 0px;
+        margin-left: 15px;
+        width: calc(100%);
+        height: 60px;
+        font-size: 20px;
+        border-radius: 4px;
+        outline: none;
+        background-color: #1CAC96;
+        color: #f8faff; 
+        border: none;
+    }
+    
+    #withdraw_topup_container{
+        height: 155px;
+        width: calc(100% - 30px);
+        position: fixed;
+        bottom: 0px;
+        left: 0px;
+    }
+    
+    #balance_container{
+        display: flex;  
+        -webkit-flex-direction: column ;
+        flex-direction: column;
+        -webkit-align-items: center;
+        align-items: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+    }
+    
+    #balance{
+        flex: 10;
+        font-size: 100px;
+        width: 100%;
+        text-align: center;
+        color: #cecece;
+        height: auto;
+        letter-spacing: -0.06em;
+    }
+    
+    #balance::first-letter { 
+        font-size: 30px;
+        padding-right: 10px;
+        position: relative;
+        top: -200px;
+    }
+    
+    #balance_strap{
+        font-size: 16px;
+        width: 100%;
+        text-align: center;
+        color: #cecece;
+        padding-top: 20px;
+    }
+    
+    #currency_symbol{
+        flex: 2;
+        width: 35px;
+        height: 35px;
+        text-align: center;
+        color: #cecece;  
+    }
+    .spinner {
+        width: 130px;
+        height: 130px;
+        position: relative;
+        top:-2px;
+
+
+    }
+
+    .double-bounce1, .double-bounce2 {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background-color: #1CAC96;
+        opacity: 0.6;
+        position: absolute;
+        top: 0;
+        left: 0;
+        -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
+        animation: sk-bounce 2.0s infinite ease-in-out;
+    }
+
+    .double-bounce2 {
+        -webkit-animation-delay: -1.0s;
+        animation-delay: -1.0s;
+    }
+
+    @-webkit-keyframes sk-bounce {
+        0%, 100% { 
+            -webkit-transform: scale(0.0) 
+        }
+        50% { 
+            -webkit-transform: scale(1.0)
+        }
+    }
+
+    @keyframes sk-bounce {
+        0%, 100% { 
+            transform: scale(0.0);
+            -webkit-transform: scale(0.0);
+        } 50% { 
+            transform: scale(1.0);
+            -webkit-transform: scale(1.0);
+        }
+    }
+    
+</style>
+
+</head>
+
+<body>
+    
+    <div id="top_container">
+        Balance
+    </div>
+
+    <div id="wallet_navigation">
+        <div class="wallet_buttons" id="pay_btn">Pay</div>
+        <div class="wallet_buttons" id="balance_btn">Balance</div>
+        <div class="wallet_buttons" id="card_button">Card</div>
+    </div>
+    
+    <div id="balance_container">    
+        <div id="balance"></div>
+
+        <div class="spinner" id="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+
+    </div>
+    
+    <div id="balance_strap">
+        Getting Balance from the Blockchain.
+    </div>
+        
+<div id="withdraw_topup_container">   
+    <button type="button" class="withdraw_topup_btn" id="top_up_btn">Top Up</button>
+    <button type="button" class="withdraw_topup_btn" id="withdraw_btn">Withdraw</button>
+</div>  
+
+<script type="text/javascript" src="cordova.js"></script>
+<script>
+
+var app = {
+    initialize: function() {
+        this.bindEvents();
+    },
+    bindEvents: function() {
+        document.addEventListener('deviceready', this.onDeviceReady, false);
+    },
+    onDeviceReady: function() {
+        app.receivedEvent('deviceready');
+    },
+    receivedEvent: function(id) {
+
+        console.log('Received Event: ' + id);
+
+//------------------------ INSERT HERE ------------------
+
+    var socket = io.connect('https://dev.freemit.tech'); 
+    var jwt = localStorage.getItem("jwt");
+    
+    socket.on('connect', function() {       
+        socket.emit('getBalance', {jwt:jwt});
+    });
+
+    socket.on('getBalance', function (msg) {
+        var balance = parseFloat(msg.balance).toFixed(2);
+        var currencySymbol = msg.currencySymbol;
+        document.getElementById("balance").innerHTML = currencySymbol + balance; 
+        document.getElementById('spinner').style.display = 'none';   
+        document.getElementById('balance_strap').innerHTML = "My balance is";    
+    });    
+
+        
+//-- NAVIGATION
+
+    document.getElementById("top_up_btn").addEventListener("click", topUp);
+    document.getElementById("withdraw_btn").addEventListener("click", withdraw);
+    document.getElementById("pay_btn").addEventListener("click", payBtn);
+    document.getElementById("balance_btn").addEventListener("click", balanceBtn);
+    document.getElementById("card_button").addEventListener("click", cardBtn);
+
+    function payBtn(){
+        window.location.href = './pay.html';
+    }
+
+    function balanceBtn(){
+        window.location.href = './balance.html';
+    }
+
+    function cardBtn(){
+        window.location.href = './card.html';
+    }
+
+    function topUp(){
+        window.location.href = './topup.html';
+    }
+
+    function withdraw(){
+        window.location.href = './withdraw.html';
+    }
+
+
+//------------------------ INSERT END ------------------
+
+    }
+};
+
+app.initialize();
+
+</script>
+
+
+</body>
+</html>

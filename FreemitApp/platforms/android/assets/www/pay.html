@@ -1,0 +1,283 @@
+<html>
+<head>
+    <script src="cordova.js"></script>
+    <title>Freemit - Pay</title>
+    <meta name="format-detection" content="telephone=no">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; script-src 'self' 'unsafe-inline' https://dev.freemit.tech wss://dev.freemit.tech/; connect-src 'self' 'unsafe-inline' https://dev.freemit.tech wss://dev.freemit.tech/">
+    <style>
+    
+  *, *:before, *:after {
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+     }
+     
+     input, input:before, input:after {
+      -webkit-user-select: initial;
+      -khtml-user-select: initial;
+      -moz-user-select: initial;
+      -ms-user-select: initial;
+      user-select: initial;
+     } 
+    
+    body{
+        font-family: Arial, Helvetica, sans-serif;
+        padding-top: 112px;
+        background: #f8faff; 
+        padding-left:0px;
+        padding-right: 0px; 
+        margin-left: 0px;
+        margin-right: 0px; 
+    }
+
+    #top_container{
+        color: white;
+        font-size: 22px;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        padding-top:20px; 
+        height: 55px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #1cac96;
+        border-bottom: 1px solid #afb1b6;
+    }
+    
+    #wallet_navigation{
+        align-items: center;
+        display: flex;
+        width: 100%;
+        height: 45px;
+        position: fixed;
+        left: 0px;
+        top:77px;
+    }
+
+    .wallet_buttons{
+        flex: 1;
+        text-align: center;
+        color: #afb1b6;
+        font-size: 12px;
+        height: 70%;
+        padding-top: 15px;
+        position: relative;
+        top:-1px;
+    }
+
+    .wallet_buttons:nth-child(1) {
+        position: relative;
+        top:1px;
+        background: white; 
+        color: #afb1b6;
+        border-top-right-radius: 4px;
+        border-top: 4px solid white;
+    }
+
+    .wallet_buttons:nth-child(2) {
+        background: #1cac96; 
+        color: white;
+        border-bottom: 1px solid white;
+        border-right: 1px solid white;
+        border-bottom-right-radius: 4px;
+        border-bottom-left-radius: 4px;
+    }
+
+    .wallet_buttons:nth-child(3) {
+        background: #1cac96; 
+        color: white;
+        border-bottom: 1px solid white;
+        border-bottom-left-radius: 4px;
+    }
+
+    .wallet_icon{
+        height: auto; 
+        width: auto; 
+        max-width: 40px; 
+        max-height: 40px;
+        padding-bottom: 10px;
+    }
+
+    .row{
+        display: flex;
+        border-bottom: 1px solid #c4eae4;
+        background-color: white;
+        width: 100%;
+        padding: 24px 0px 15px 0px;
+    }
+
+    .name{
+        font-size: 20px;
+        padding-left: 25px;
+        color: #7d8089;
+        width: 100%;
+    }
+
+    .number{
+        font-size: 11px;
+        padding-left: 25px;
+        color: #1cac96;
+        width: 100%;
+    }
+
+    .name_container{
+        flex: 10;
+    }
+
+    .inviteBtn{
+        margin-right: 25;
+        background-color: white;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        border: 1px solid #1cac96;
+        background-image: url('./img/tick_btn.png');
+        background-size: 35px 35px;
+        background-repeat: no-repeat;
+   }
+   
+</style>
+</head>
+
+<body>
+        <div id="top_container">
+       Pay
+    </div>
+    <div id="wallet_navigation">
+        <div class="wallet_buttons" id="pay_btn">Pay</div>
+        <div class="wallet_buttons" id="balance_btn">Balance</div>
+        <div class="wallet_buttons" id="card_button">Card</div>
+    </div>
+
+<div id="myList"></div>
+    
+<script type="text/javascript" src="./js/socketio.js"></script>
+<script>
+    
+//-- NAVIGATION
+    document.getElementById("pay_btn").addEventListener("click", payBtn);
+    document.getElementById("balance_btn").addEventListener("click", balanceBtn);
+    document.getElementById("card_button").addEventListener("click", cardBtn);
+
+    function payBtn(){window.location.href = './pay.html';}
+    function balanceBtn(){
+        window.location.href = './balance.html';
+    }
+    function cardBtn(){window.location.href = './card.html';}
+            
+//-- PREPARE TO CONNECT THE SOCKET
+    var socket = io.connect('https://dev.freemit.tech', {
+    'reconnection': true,
+    });
+                          
+//-- GET THE JWT
+var jwt = localStorage.getItem("jwt");
+
+//-- PAGE LOADED?
+document.addEventListener("deviceready", function(){  
+    //-- PREPARE THE DATA
+    var options = new ContactFindOptions();
+    options.filter = "";
+    options.multiple = true;
+    filter = ["displayName", "name"];
+    //-- REQUEST THE DATA
+    navigator.contacts.find(filter, onSuccess, onError, options);
+},true);
+
+function onSuccess(contacts) {
+    //-- MAKE AN EMPTY ARRAY
+    var myContacts = [];
+    //-- LOOP OVER THE CONTACTS
+    for (var i = 0; i < contacts.length; i++) {
+        
+        if(contacts[i].phoneNumbers){
+            //-- LOOP OVER THE PHONE NUMBERS WITHIN CONACTS        
+            for (var j=0; j < contacts[i].phoneNumbers.length; j++) {  
+                // PUSH INTO THE ARRAY THE PHONE NUMBER AND NAME AND STRIP ALL NON NUMBER CHARECTORS
+                // TODO: We should also send what type of number ie mobile, home, main etc
+                console.log('FIRE A');
+                    if(contacts[i].phoneNumbers[j].length != null)
+                    console.log('FIRE B');
+                        myContacts.push({name:contacts[i].name.formatted, phoneNumber:contacts[i].phoneNumbers[j].value.replace(/-|\s/g,"")}
+                );
+            }
+        };
+    }
+    //-- SEND CONTACTS
+    socket.emit('saveContacts', {jwt:jwt, contacts:myContacts});
+    // Add the contents of options[0] to #MYLIST
+    // TODO: Maybe myContacts should come from the server??? with bitcoin address and phone numbers with dialing codes!
+    document.getElementById('myList').appendChild(makeDIV(myContacts));
+    
+    //-- LISTEN FOR A CLICK
+    var classname = document.getElementsByClassName("row");
+
+    for (var i = 0; i < classname.length; i++) {
+        classname[i].addEventListener('click', findClickedContact, false);
+    }
+
+    function findClickedContact() {
+        var id = this.getAttribute("id");
+        var selectedContact = myContacts[id];
+        window.location.href = './chat.html?name='+selectedContact.name+'&phoneNumber='+selectedContact.phoneNumber;
+        // TODO: Send the number too!
+        // TODO: We need to make sure this number is SMS capable! Somehow!
+    };
+    
+}; //- END SUCCESS
+
+//-- DO SOMTHING IF ERROR
+function onError(contactError) {
+     alert('Error');
+    // TODO: We need to show the user how to re-enable this incase they selected dont allow by mistake
+    console.log('Cant get contacts because you denied access!');
+};
+
+//-- MAKE LIST FROM ARRAY
+function makeDIV(array) {
+
+    // MAKE CONTAINER
+    var list = document.createElement('div');
+        list.setAttribute("class", "container");
+    // START LOOP
+    for(var i = 0; i < array.length; i++) {
+
+        // MAKE A ROW
+        var item0 = document.createElement('div');
+            item0.setAttribute("class", "row");   
+             item0.setAttribute("id", i);                   
+       // MAKE NAME 
+        var item1 = document.createElement('div');
+            item1.setAttribute("class", "name");
+            item1.appendChild(document.createTextNode(array[i].name));
+        // MAKE BUTTON    
+        var item2 = document.createElement('button');
+            item2.setAttribute("class", "inviteBtn");
+        // MAKE NAME CONTAINER
+        var item3 = document.createElement('div');
+            item3.setAttribute("class", "name_container");
+        // MAKE NUMBER
+        var item4 = document.createElement('div');
+            item4.setAttribute("class", "number");
+            item4.appendChild(document.createTextNode(array[i].phoneNumber));
+        
+        // ADD ITEMS TO EACH OTHER
+        list.appendChild(item0);
+        item0.appendChild(item3);
+        item0.appendChild(item2);
+        item3.appendChild(item1);
+        item3.appendChild(item4);
+    }
+    return list;
+}
+
+</script>
+
+</body>
+</html>

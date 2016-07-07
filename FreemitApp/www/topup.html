@@ -1,0 +1,288 @@
+<html>
+<head>
+    <title>Freemit - TopUp</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no">
+    <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self' data: gap: 'unsafe-eval' https://dev.freemit.tech https://cdn.socket.io wss://dev.freemit.tech; 
+    style-src 'self' data: gap: 'unsafe-inline'  https://dev.freemit.tech https://cdn.socket.io wss://dev.freemit.tech; 
+    media-src 'self' data: gap: 'unsafe-inline'  https://dev.freemit.tech https://cdn.socket.io wss://dev.freemit.tech; 
+    script-src 'self' data: gap: 'unsafe-inline' https://dev.freemit.tech https://cdn.socket.io wss://dev.freemit.tech; 
+    connect-src 'self' data: gap: 'unsafe-inline' https://dev.freemit.tech https://cdn.socket.io wss://dev.freemit.tech
+    ">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <script type="text/javascript" src="js/socketio.js"></script>
+    
+<style>
+    
+    *, *:before, *:after {
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+input, input:before, input:after {
+    -webkit-user-select: initial;
+    -khtml-user-select: initial;
+    -moz-user-select: initial;
+    -ms-user-select: initial;
+    user-select: initial;
+}
+
+    body{
+        font-family: Arial, Helvetica, sans-serif;
+        padding-top: 80px;
+        background: white; /* Old browsers */
+    }
+
+    .text{
+        font-size: 15px;
+        display: flex;
+        justify-content: center;
+        color: #aeb0b5;
+        width: calc(100% - 60px);
+        text-align: center;
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-bottom: 15px;
+        padding-top: 15px;
+    }
+    
+    #top_container{
+        color: white;
+        font-size: 22px;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        padding-top:20px; 
+        height: 55px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #1cac96;
+        border-bottom: 1px solid white;
+    }
+    
+    .cancel_topup_btn{
+        color: #1CAC96;
+        margin-left: 15px;
+        width: 100%;
+        height: 60px;
+        font-size: 20px;
+        border-radius: 4px;
+        outline: none;
+        border: 1px solid #1CAC96;
+
+        margin-bottom: 15px;
+    }
+    
+    #top_up_btn{
+        margin-top: 0px;
+        margin-left: 15px;
+        width: calc(100%);
+        height: 60px;
+        font-size: 20px;
+        border-radius: 4px;
+        outline: none;
+        background-color: #1CAC96;
+        color: #f8faff; 
+        border: none;
+    }
+    #topup_container{
+        display: flex;  
+        -webkit-flex-direction: column ;
+        flex-direction: column;
+        -webkit-align-items: center;
+        align-items: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+    }
+
+    #topup_text{
+        padding-bottom: 60px;
+    }
+    
+    #cancel_topup_container{
+        height: 490px;
+        width: calc(100% - 30px);
+        position: fixed;
+        bottom: 0px;
+        left: 0px;
+    }
+    #balance_strap{
+        font-size: 16px;
+        width: 100%;
+        text-align: center;
+        color: #cecece;
+        padding-top: 20px;
+        display: none;
+    }
+    .spinner {
+        width: 130px;
+        height: 130px;
+        position: relative;
+        top:-2px;
+        display: none;
+    }
+
+    .double-bounce1, .double-bounce2 {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background-color: #1CAC96;
+        opacity: 0.6;
+        position: absolute;
+        top: 0;
+        left: 0;
+        -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
+        animation: sk-bounce 2.0s infinite ease-in-out;
+    }
+
+    .double-bounce2 {
+        -webkit-animation-delay: -1.0s;
+        animation-delay: -1.0s;
+    }
+
+    @-webkit-keyframes sk-bounce {
+        0%, 100% { 
+            -webkit-transform: scale(0.0) 
+        }
+        50% { 
+            -webkit-transform: scale(1.0)
+        }
+    }
+
+    @keyframes sk-bounce {
+        0%, 100% { 
+            transform: scale(0.0);
+            -webkit-transform: scale(0.0);
+        } 50% { 
+            transform: scale(1.0);
+            -webkit-transform: scale(1.0);
+        }
+    }
+    
+
+</style>
+
+</head>
+
+<body>
+    <div id="top_container">
+    Amount
+    </div>
+
+    <div class="text" id="topup_text">By selecting confirm we will attempt to topup your acocunt from your card</div> 
+    <div id="topup_container">   
+        <div class="spinner" id="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+    <div id="balance_strap">
+        Transfering funds
+    </div>
+
+ <div id="cancel_topup_container">   
+    <button type="button" class="cancel_topup_btn" id="top_up_btn_200">$200</button>
+    <button type="button" class="cancel_topup_btn" id="top_up_btn_100">$100</button>
+    <button type="button" class="cancel_topup_btn" id="top_up_btn_50">$50</button>
+    <button type="button" class="cancel_topup_btn" id="top_up_btn_20">$20</button>
+    <button type="button" class="cancel_topup_btn" id="top_up_btn_10">$10</button>
+    </br>
+    </br>
+    </br>
+    <button type="button" class="cancel_topup_btn" id="cancel_btn">Cancel</button>
+</div>  
+<script type="text/javascript" src="cordova.js"></script>
+<script>
+
+var app = {
+    initialize: function() {
+        this.bindEvents();
+    },
+    bindEvents: function() {
+        document.addEventListener('deviceready', this.onDeviceReady, false);
+    },
+    onDeviceReady: function() {
+        app.receivedEvent('deviceready');
+    },
+    receivedEvent: function(id) {
+
+        console.log('Received Event: ' + id);
+
+//------------------------ INSERT HERE ------------------
+var socket = io.connect('https://dev.freemit.tech');
+//-- MAKE UNIQUE ID FOR THIS TRANSACTION
+var idempotencyKey = Date.now().toString();
+//-- GET THE JWT
+var jwt = localStorage.getItem("jwt");
+        
+socket.on('topup', function (msg) {
+    if(msg.error){
+        // IF THERES A CARD ERROR GO TO CARD  
+        window.location.href = './card.html';
+        localStorage.setItem('cardError', msg.error);  
+    } else {
+        // IF THERES NOT AN ERROR GO TO BALANCE
+        window.location.href = './balance.html';
+    }      
+});  
+
+//-- NAVIGATION
+    document.getElementById("top_up_btn_200").addEventListener("click", topUp200);
+    document.getElementById("top_up_btn_100").addEventListener("click", topUp100);
+    document.getElementById("top_up_btn_50").addEventListener("click", topUp50);
+    document.getElementById("top_up_btn_20").addEventListener("click", topUp20);
+    document.getElementById("top_up_btn_10").addEventListener("click", topUp10);
+    document.getElementById("cancel_btn").addEventListener("click", cancelIt);
+
+    function cancelIt(){
+        window.location.href = './balance.html';
+    }
+
+    function topUp200(){
+        socket.emit('topup', {jwt:jwt, value:200.00, idempotencyKey:idempotencyKey}); 
+        spinner();
+    }
+
+    function topUp100(){
+        socket.emit('topup', {jwt:jwt, value:100.00, idempotencyKey:idempotencyKey});
+        spinner();
+    }
+
+    function topUp50(){
+        socket.emit('topup', {jwt:jwt, value:50.00, idempotencyKey:idempotencyKey});
+        spinner();
+    }
+
+    function topUp20(){
+        socket.emit('topup', {jwt:jwt, value:20.00, idempotencyKey:idempotencyKey});   
+        spinner();
+    }
+
+    function topUp10(){
+        socket.emit('topup', {jwt:jwt, value:10.00, idempotencyKey:idempotencyKey});
+        spinner();
+    }
+
+    function spinner(){
+        document.getElementById('cancel_topup_container').style.display = 'none';  
+        document.getElementById('spinner').style.display = 'block';   
+        document.getElementById('balance_strap').style.display = 'block';   
+    }
+
+//------------------------ INSERT END ------------------
+
+    }
+};
+
+app.initialize();
+
+</script>
+</body>
+</html>

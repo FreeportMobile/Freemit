@@ -1,0 +1,261 @@
+<html>
+
+<head>
+    <script src="cordova.js"></script>
+    <title>Freemit - Balance</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; script-src 'self' 'unsafe-inline' https://dev.freemit.tech wss://dev.freemit.tech/; connect-src 'self' 'unsafe-inline' https://dev.freemit.tech wss://dev.freemit.tech/">
+
+    
+    
+<style>
+    
+    *, *:before, *:after {
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+input, input:before, input:after {
+    -webkit-user-select: initial;
+    -khtml-user-select: initial;
+    -moz-user-select: initial;
+    -ms-user-select: initial;
+    user-select: initial;
+}
+
+    body{
+        font-family: Arial, Helvetica, sans-serif;
+        padding-top: 112px;
+        background: white; 
+        padding-left:0px;
+        padding-right: 0px; 
+        margin-left: 0px;
+        margin-right: 0px; 
+    }
+    #top_container{
+        color: white;
+        font-size: 22px;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        padding-top:20px; 
+        height: 55px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #1cac96;
+        border-bottom: 1px solid #afb1b6;
+    }
+    #wallet_navigation{
+        align-items: center;
+        display: flex;
+        width: 100%;
+        height: 45px;
+        position: fixed;
+        left: 0px;
+        top:77px;
+    }
+    .wallet_buttons{
+        flex: 1;
+        text-align: center;
+        color: #afb1b6;
+        font-size: 12px;
+        height: 70%;
+        padding-top: 15px;
+        position: relative;
+        top:-1px;
+    }
+    .wallet_buttons:nth-child(1) {
+        position: relative;
+        top:1px;
+        background: white; 
+        color: #afb1b6;
+        border-top-right-radius: 4px;
+        border-top: 4px solid white;
+    }
+
+    .wallet_buttons:nth-child(2) {
+        background: #1cac96; 
+        color: white;
+        border-bottom: 1px solid white;
+        border-right: 1px solid white;
+        border-bottom-right-radius: 4px;
+        border-bottom-left-radius: 4px;
+    }
+
+    .wallet_buttons:nth-child(3) {
+        background: #1cac96; 
+        color: white;
+        border-bottom: 1px solid white;
+        border-bottom-left-radius: 4px;
+    }
+    .wallet_icon{
+        height: auto; 
+        width: auto; 
+        max-width: 40px; 
+        max-height: 40px;
+        padding-bottom: 10px;
+    }
+    .pay_user_btn{
+        color: #1cac96;
+        margin-left: 15px;
+        width: 100%;
+        height: 60px;
+        font-size: 20px;
+        border-radius: 4px;
+        outline: none;
+        border: 1px solid #1cac96;
+        background: white; 
+        margin-bottom: 15px;
+    }
+    #request_btn{
+        margin-top: 0px;
+        margin-left: 15px;
+        width: calc(100%);
+        height: 60px;
+        font-size: 20px;
+        border-radius: 4px;
+        outline: none;
+        background-color: #3a7ff5;
+        color: #f8faff; 
+        border: none;
+    }
+    #send_topup_container{
+        height: 155px;
+        width: calc(100% - 30px);
+        position: fixed;
+        bottom: 0px;
+        left: 0px;
+    }
+    #Cancel_btn{
+        color: white;
+        padding-top:20px; 
+        margin-top: 10px;
+        font-size: 14px;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        height: 55px;
+        width: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #1cac96;
+        border: none;
+        outline: none;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    }
+    #submit{
+        position: absolute; 
+        left: -9999px; 
+        width: 1px; 
+        height: 1px;
+    }
+    #chat{
+        color: #1cac96;
+        margin-left: 15px;
+        width: 100%;
+        height: 60px;
+        font-size: 20px;
+        border-radius: 4px;
+        outline: none;
+        border: 1px solid #1cac96;
+        background: white; 
+        margin-bottom: 15px;
+        -webkit-appearance: none;
+    }
+</style>
+</head>
+<body>
+    <div id="top_container"></div>
+    <button type="button" id="cancel_btn">Back</button>
+    <div id="wallet_navigation">
+        <div class="wallet_buttons" id="pay_btn">Pay</div>
+        <div class="wallet_buttons" id="balance_btn">Balance</div>
+        <div class="wallet_buttons" id="card_button">Card</div>
+    </div>
+    <div id="send_topup_container">  
+        <button type="button" class="pay_user_btn" id="send_btn">Send $10</button>
+        <form id="form1">
+        <input type="text" name="chat" id="chat">
+        <input type="submit" value="Submit" id="submit">
+        </form>
+    </div>
+    <script type="text/javascript" src="https://dev.freemit.tech/socket.io/socket.io.js" defer></script>
+<script>
+    document.addEventListener("deviceready", function(){
+        console.log("device ready");  
+//-- PREPARE TO CONNECT THE SOCKET
+    var socket = io.connect('https://dev.freemit.tech');
+    //-- GET THE JWT
+    var jwt = localStorage.getItem("jwt");
+
+    //-- REQUEST CHAT EVERY 3 SECONDS
+    socket.on('connect', function() {
+        setInterval(function(){ 
+            socket.emit('getChat', {jwt:jwt, phoneNumber:phoneNumber});
+        }, 3000);
+    });
+
+    //-- WAIT FOR REPLY AND SHOW IF NOT NULL
+        socket.on('chatUpdate', function (msg) {
+            if(msg.chat.length > 0){
+                var chatData = JSON.parse(msg.chat); 
+                for (var i = 0; i < chatData.length; i++) {
+                    alert(chatData[i].message)
+                }     
+            };
+        });   
+    
+
+    //-- GET THE NAME AND SET TITLE
+    var user = getQueryString('name');
+    document.getElementById("top_container").innerHTML = user;
+    //-- GET PGONE NUMBER 
+    var phoneNumber = getQueryString('phoneNumber');     
+    //-- NAVIGATION
+    document.getElementById("send_btn").addEventListener("click", send);
+    document.getElementById("pay_btn").addEventListener("click", payBtn);
+    document.getElementById("balance_btn").addEventListener("click", balanceBtn);
+    document.getElementById("card_button").addEventListener("click", cardBtn);
+    document.getElementById("cancel_btn").addEventListener("click", cancelBtn);
+    document.getElementById("form1").addEventListener("submit", setChat);
+
+
+    function setChat(evt){
+        evt.preventDefault();
+        var chatText = document.getElementById("chat").value;
+        document.getElementById("chat").value = "";
+        document.getElementById("chat").blur();
+        socket.emit('setChat', {jwt:jwt, chat:chatText, phoneNumber:phoneNumber});
+    }
+
+    function send(){
+        socket.emit('send', {jwt:jwt, value:10.00, phoneNumber:phoneNumber});
+    }
+    
+    function payBtn(){window.location.href = './pay.html';}
+    function balanceBtn(){window.location.href = './balance.html';}   
+    function cardBtn(){window.location.href = './card.html';}
+    function cancelBtn() {history.go(-1);}
+    //-- GET QUERY STRING
+    function getQueryString(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/-\s/g, ""));
+    }
+
+},true);
+</script>
+
+</body>
+</html>
