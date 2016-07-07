@@ -38,6 +38,17 @@ exports.send = function (socket, io, msg) {
                             transfer.fromWallet(fromPhone, phoneNumber, toCurrency, exchangeAmount)
                                 .then(function (data) {
                                     // TODO: Signal to the app the transfr was completed
+                                    var fromEncPhoneNumber = fromPhone;
+                                    var toEncPhoneNumber = phoneNumber
+                                    var chatText = 'Sent Successfully'
+                                    var messageType = 'transfer'
+                                    chats.setChat(fromEncPhoneNumber, toEncPhoneNumber, chatText, messageType)
+                                    .then(function (data) {
+                                        // TODO: This is rediculous, we need to reduce this promise chain!!!
+                                    })
+                                    .catch(function (err) {
+                                        console.log(err);
+                                    })
                                 })
                                 .catch(function (err) {
                                     console.log(err);
