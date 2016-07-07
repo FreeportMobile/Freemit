@@ -22,8 +22,9 @@ Chat.statics.getChat = function (fromEncPhoneNumber, toEncPhoneNumber) {
         chats.find({
             fromEncPhoneNumber: fromEncPhoneNumber,
             toEncPhoneNumber:  toEncPhoneNumber
-        }, function (err, results) {
-            if (err) {
+        }).limit(7)
+        .exec(function(err, results) {
+                        if (err) {
                 reject(err);
             }
             else {
@@ -46,7 +47,8 @@ Chat.statics.getChat = function (fromEncPhoneNumber, toEncPhoneNumber) {
                     }
                 });
             }
-        }).limit(7);
+
+        });
     });
 }
 
