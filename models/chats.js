@@ -17,42 +17,39 @@ if (!mongoose.connection.readyState) {
 //--- GET CHATS
 
 Chat.statics.getChat = function (fromEncPhoneNumber, toEncPhoneNumber) {
-   return new Promise(function (fulfill, reject) {
-       var joinedResults = [];
-       chats.find({
-           fromEncPhoneNumber: fromEncPhoneNumber,
-           toEncPhoneNumber:  toEncPhoneNumber
-       }, function (err, results) {
-           if (err) {
-               reject(err);
-           }
-           else {
-               for (i in results){
-               joinedResults.push(results[i]);
-               }
-               chats.find({
-                   fromEncPhoneNumber: toEncPhoneNumber,
-                   toEncPhoneNumber:  fromEncPhoneNumber
-               }, function (err, results2) {
-                   if (err) {
-                       reject(err);
-                   }
-                   else {
-                       for (q in results2)
-                       {
-                           joinedResults.push(results2[q]);  // Push results into original
-                       }
-            while (joinedResults.length>7)
-{
-    joinedResults.shift();
+    return new Promise(function (fulfill, reject) {
+        var joinedResults = [];
+        chats.find({
+            fromEncPhoneNumber: fromEncPhoneNumber,
+            toEncPhoneNumber:  toEncPhoneNumber
+        }, function (err, results) {
+            if (err) {
+                reject(err);
+            }
+            else {
+                for (i in results){
+                joinedResults.push(results[i]);
+                }
+                chats.find({
+                    fromEncPhoneNumber: toEncPhoneNumber,
+                    toEncPhoneNumber:  fromEncPhoneNumber
+                }, function (err, results2) {
+                    if (err) {
+                        reject(err);
+                    }
+                    else {
+                        for (q in results2)
+                        {
+                            joinedResults.push(results2[q]);  // Push results into original
+                        }
+                        fulfill(joinedResults);
+                    }
+                });
+            }
+        })
+    });
 }
-                       fulfill(joinedResults);
-                   }
-               });
-           }
-       })
-   });
-}
+
 //--- SET CHATS 
 
 Chat.statics.setChat = function (fromEncPhoneNumber, toEncPhoneNumber, message, messageType) {
