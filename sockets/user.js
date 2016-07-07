@@ -94,7 +94,7 @@ exports.setChat = function (socket, io, msg) {
     // GET MESSAGE TO SAVE
     var chatText = msg.chat;
     // SAVE TO MONGO
-    chats.setChat(fromEncPhoneNumber, encCleanNumber, chatText)
+    chats.setChat(fromEncPhoneNumber, encCleanNumber, chatText, messageType)
     .then(function (data) {
         console.log('--- CHAT SAVED ---');
     })
