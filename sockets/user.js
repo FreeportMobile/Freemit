@@ -44,6 +44,7 @@ exports.send = function (socket, io, msg) {
                                     var messageType = 'transfer'
                                     chats.setChat(fromEncPhoneNumber, toEncPhoneNumber, chatText, messageType)
                                     .then(function (data) {
+                                        io.to(socket.id).emit('transactionComplete', {status: 200});
                                         // TODO: This is rediculous, we need to reduce this promise chain!!!
                                     })
                                     .catch(function (err) {
